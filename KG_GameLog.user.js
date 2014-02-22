@@ -23,8 +23,10 @@ function main() {
 var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 .game-dlg .close {position: absolute; top: 10px; right: 10px;}\
 .game-dlg .game-info h3 {margin-bottom: 20px; font-size: 18px;}\
-.game-dlg .game-info h3 .game-name {}\
-.game-dlg .game-info h3 .game-time {display: block; font-size: 14px; color: #666; margin-top: 5px;}\
+.game-dlg .game-info h3 .gametype-sign {float: left; margin-right: 10px;}\
+.game-dlg .game-info h3 .game-title {margin-left: 58px;}\
+.game-dlg .game-info h3 .game-title .game-name {font-size: 18px;}\
+.game-dlg .game-info h3 .game-title .game-time {display: block; font-size: 14px; color: #666; margin-top: 5px;}\
 .game-dlg .game-info .game-text {padding: 5px; border: 3px solid #eee;  border-radius: 5px;}\
 .game-dlg .game-info .game-text .error-incorrect {color: red; text-decoration: line-through;}\
 .game-dlg .game-info .game-text .error-correct {color: #a00;}\
@@ -57,8 +59,11 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 <div class='close' ng:click='close()'>×</div>\n\
 <div class='game-info'>\
 <h3>\
-<span class='game-name' ng:bind-html='gameHtml'></span>\
+<div class='gametype-sign sign-{{gameType}} active'></div>\
+<div class='game-title'>\
+<span class='game-name' ng:bind-html='gameDescriptionHtml'></span>\
 <span class='game-time'>{{formatDateTimeValue(gameData.beginTime)}}</span>\
+</div>\
 </h3>\
 <div class=game-text ng:if='gameData.errorsText' ng:bind-html='gameData.errorsText | gameTextErrorize'></div>\n\
 <div class=game-text ng:if='!gameData.errorsText && gameData.text' ng:bind='gameData.text'></div>\n\
@@ -430,12 +435,13 @@ function showGameDataModal(gameData) {
                     $modalInstance.dismiss();
                 };
                 $scope.gameData = gameData;
+                $scope.gameType = /voc-(\d+)/.test(gameData.gameInfo.type) ? 'voc' : gameData.gameInfo.type;
                 $scope.timeFromMilliseconds = function(val) {
                     var min = Math.floor(val / 60000);
                     var sec = (val - 60000*min)/1000;
                     return 10 > sec && (sec = "0" + sec), 10 > min && (min = "0" + min), min + ":" + sec;
                 };
-                $scope.gameHtml = $sce.trustAsHtml(getGameDescriptionHtml(gameData));
+                $scope.gameDescriptionHtml = $sce.trustAsHtml(getGameDescriptionHtml(gameData));
                 $scope.formatDateTimeValue = function(val) {
                     var formatter = new google.visualization.DateFormat({ pattern: 'dd MMMM yyyy г., HH:mm:ss' });
                     return formatter.formatValue(new Date(val));
