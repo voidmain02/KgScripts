@@ -734,9 +734,9 @@ function getGameData(game) {
 function onGamePage() {
     var handler = function() {
         GameLog.pushGame(getGameData(game));
-        $$$('#inputtext').unbind('keyup', handler);
+        $$$('#inputtext').unbind('keypress', handler);
     };
-    $$$('#inputtext').bind('keyup', handler);
+    $$$('#inputtext').bind('keypress', handler);
 
     Game.prototype.kg_gamelog_updateRaceRating = Game.prototype.updateRaceRating;
     Game.prototype.updateRaceRating = function() {
