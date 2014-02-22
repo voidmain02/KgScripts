@@ -140,6 +140,8 @@ var statsOverviewTemplate = "<style>.gameLogButton {padding: 5px 10px;  font-siz
 
 var gameLogHtml = '<style>\
 h3 .back .icon-icomoon:before { content: "\\e608"; }\
+#datepicker { border: none; padding: initial; cursor: pointer; color: inherit; font-size: inherit; width: 120px; }\
+#datepicker:hover { color: #eb9d5b; }\
 #emptyGameLog { margin-top: 20px; font-size: 14px; font-weight: bold; color: #ccc; text-transform: uppercase; display: none; }\
 #gameLog { display: none; }\
 #gameLog .row + .row { margin-top: 20px; }\
@@ -151,8 +153,7 @@ h3 .back .icon-icomoon:before { content: "\\e608"; }\
 #gameLog .counter .value span { vertical-align: middle; }\
 </style>\n\
 <div id="gameLogPage">\n\
-<h3><button class="btn back" style="margin-right: 10px;"><div class="icon-icomoon"></div> Назад</button><span> Журнал заездов</span></h3>\n\
-<input type="text" id="datepicker"></input>\n\
+<h3><button class="btn back" style="margin-right: 10px;"><div class="icon-icomoon"></div> Назад</button><span> Журнал заездов</span><span>&ndash;</span><input type="text" id="datepicker" readonly></input></h3>\n\
 <div id="emptyGameLog">Нет данных</div>\n\
 <div id="gameLog">\n\
 <div class="checkbox"><label><input id="showNotFinished" type="checkbox" checked>Показывать недоезды</label></div>\n\
