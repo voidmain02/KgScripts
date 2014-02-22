@@ -22,9 +22,9 @@ function main() {
 
 var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 .game-dlg .close {position: absolute; top: 10px; right: 10px;}\
-.game-dlg .game-info h3 {margin-bottom: 20px;}\
+.game-dlg .game-info h3 {margin-bottom: 20px; font-size: 18px;}\
 .game-dlg .game-info h3 .game-name {}\
-.game-dlg .game-info h3 .game-time {display: block; font-size: 18px; color: #666; margin-top: 5px;}\
+.game-dlg .game-info h3 .game-time {display: block; font-size: 14px; color: #666; margin-top: 5px;}\
 .game-dlg .game-info .game-text {padding: 5px; border: 3px solid #eee;  border-radius: 5px;}\
 .game-dlg .game-info .game-text .error-incorrect {color: red; text-decoration: line-through;}\
 .game-dlg .game-info .game-text .error-correct {color: #a00;}\
@@ -57,7 +57,7 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 <div class='close' ng:click='close()'>×</div>\n\
 <div class='game-info'>\
 <h3>\
-<span class='game-name' ng:bind-html='gameTypeHtml'></span>\
+<span class='game-name' ng:bind-html='gameHtml'></span>\
 <span class='game-time'>{{formatDateTimeValue(gameData.beginTime)}}</span>\
 </h3>\
 <div class=game-text ng:if='gameData.errorsText' ng:bind-html='gameData.errorsText | gameTextErrorize'></div>\n\
@@ -132,7 +132,7 @@ var statsOverviewTemplate = "<style>.gameLogButton {padding: 5px 10px;  font-siz
 <ng:include ng:if=\"Overview.data.overview.err == 'permission blocked'\" src=\"'/views/partials/profile/stats/permission-blocked.html' | bust\"></ng:include>\
 </div>";
 
-//\e626 \e62F
+
 var gameLogHtml = '<style>\
 h3 .back .icon-icomoon:before { content: "\\e608"; }\
 #emptyGameLog { margin-top: 20px; font-size: 14px; font-weight: bold; color: #ccc; text-transform: uppercase; display: none; }\
@@ -304,7 +304,7 @@ var GameLog = {
 };
 
 
-function getGametypeName(gameType, isPremiumAbra, vocName)
+function getGameName(gameType, isPremiumAbra, vocName)
 {
     if(gameType == 'normal') {
         return 'Обычный';
@@ -340,44 +340,84 @@ function getGametypeName(gameType, isPremiumAbra, vocName)
 }
 
 
-function getGametypeHtml(gameType, isQualification, isPremiumAbra, vocId, vocName)
+function getGameHtml(gameType, isPremiumAbra, vocId, vocName)
 {
-    var html;
     if(gameType == 'normal') {
-        html = '<span class=gametype-normal>Обычный</span>';
+        return '<span class=gametype-normal>Обычный</span>';
     }
-    else if(gameType == 'abra') {
-        html = '<span class=gametype-abra>Абракадабра</span>';
+    if(gameType == 'abra') {
+        var html = '<span class=gametype-abra>Абракадабра</span>';
         if(isPremiumAbra) {
             html += ' <span class=gametype-abra-premium>Премиум</span>';
         }
+        return html;
     }
-    else if(gameType == 'referats') {
-        html = '<span class=gametype-referats>Яндекс.Рефераты</span>';
+    if(gameType == 'referats') {
+        return '<span class=gametype-referats>Яндекс.Рефераты</span>';
     }
-    else if(gameType == 'noerror') {
-        html = '<span class=gametype-noerror>Безошибочный</span>';
+    if(gameType == 'noerror') {
+        return '<span class=gametype-noerror>Безошибочный</span>';
     }
-    else if(gameType == 'marathon') {
-        html = '<span class=gametype-marathon>Марафон</span>';
+    if(gameType == 'marathon') {
+        return '<span class=gametype-marathon>Марафон</span>';
     }
-    else if(gameType == 'digits') {
-        html = '<span class=gametype-digits>Цифры</span>';
+    if(gameType == 'digits') {
+        return '<span class=gametype-digits>Цифры</span>';
     }
-    else if(gameType == 'sprint') {
-        html = '<span class=gametype-sprint>Спринт</span>';
+    if(gameType == 'sprint') {
+        return '<span class=gametype-sprint>Спринт</span>';
     }
-    else if(gameType == 'chars') {
-        html = '<span class=gametype-chars>Буквы</span>';
+    if(gameType == 'chars') {
+        return '<span class=gametype-chars>Буквы</span>';
     }
-    else if(/voc-(\d+)/.test(gameType)) {
-        html = '<span class=gametype-voc><a target=_blank href="/vocs/' + vocId + '/">' + vocName + '</a></span>';
+    if(/voc-(\d+)/.test(gameType)) {
+        return '<span class=gametype-voc><a target=_blank href="/vocs/' + vocId + '/">' + vocName + '</a></span>';
+    }
+}
+
+
+function getGameDescriptionHtml(gameData) {
+    var descstr = getGameHtml(gameData.gameInfo.type, gameData.gameInfo.isPremiumAbra, gameData.gameInfo.vocInfo ? gameData.gameInfo.vocInfo.id : null, gameData.gameInfo.vocInfo ? gameData.gameInfo.vocInfo.name : null);
+
+    if(gameData.gameInfo.vocInfo && gameData.gameInfo.vocInfo.type == 'book') {
+        descstr += ', ' + (gameData.gameInfo.bookPart || 1)+'-й отрывок';
     }
 
-    if(isQualification) {
-        html += ' <span>(к)</span>';
+    if(gameData.gameInfo.competition) {
+        descstr += ', соревнование (x' + gameData.gameInfo.competition + ')';
     }
-    return html;
+
+    if(gameData.gameInfo.isQualification) {
+        descstr += ", квалификация";
+    }
+
+    if(gameData.gameInfo.mode == 'normal') {
+        descstr += ', открытая игра';
+        if(gameData.gameInfo.levelFrom != 1 || gameData.gameInfo.levelTo != 9)
+        {
+            descstr += ' для ';
+            var levelNames = new Array('', 'новичков', 'любителей', 'таксистов', 'профи', 'гонщиков', 'маньяков', 'суперменов', 'кибергонщиков', 'экстракиберов');
+            descstr += levelNames[gameData.gameInfo.levelFrom] + '&ndash;' + levelNames[gameData.gameInfo.levelTo];
+        }
+    }
+    else if(gameData.gameInfo.mode == 'private') {
+        descstr += ', игра c&nbsp;друзьями'
+    }
+    else if(gameData.gameInfo.mode == 'practice') {
+        descstr += ', одиночный заезд';
+    }
+
+    if(!gameData.gameInfo.competition) {
+        descstr += ', таймаут&nbsp;';
+        if(gameData.gameInfo.timeout < 60) {
+            descstr += gameData.gameInfo.timeout+'&nbsp;сек';
+        }
+        else {
+            descstr += gameData.gameInfo.timeout / 60 + '&nbsp;мин';
+        }
+    }
+
+    return descstr;
 }
 
 
@@ -395,9 +435,7 @@ function showGameDataModal(gameData) {
                     var sec = (val - 60000*min)/1000;
                     return 10 > sec && (sec = "0" + sec), 10 > min && (min = "0" + min), min + ":" + sec;
                 };
-                $scope.gameTypeHtml = $sce.trustAsHtml(getGametypeHtml(gameData.gameInfo.type, gameData.gameInfo.isQualification, gameData.gameInfo.isPremiumAbra,
-                                                                       gameData.gameInfo.vocInfo ? gameData.gameInfo.vocInfo.id : null,
-                                                                       gameData.gameInfo.vocInfo ? gameData.gameInfo.vocInfo.name : null));
+                $scope.gameHtml = $sce.trustAsHtml(getGameDescriptionHtml(gameData));
                 $scope.formatDateTimeValue = function(val) {
                     var formatter = new google.visualization.DateFormat({ pattern: 'dd MMMM yyyy г., HH:mm:ss' });
                     return formatter.formatValue(new Date(val));
@@ -546,7 +584,11 @@ function createAndShowGameLog() {
         var tableDataView = new google.visualization.DataView(data);
         tableDataView.setColumns([0, {
             calc: function(dataTable, rowIndex) {
-                return getGametypeHtml(dataTable.getValue(rowIndex, 1), dataTable.getValue(rowIndex, 2), dataTable.getValue(rowIndex, 3), dataTable.getValue(rowIndex, 4), dataTable.getValue(rowIndex, 5));
+                var gameHtml = getGameHtml(dataTable.getValue(rowIndex, 1), dataTable.getValue(rowIndex, 3), dataTable.getValue(rowIndex, 4), dataTable.getValue(rowIndex, 5));
+                if(dataTable.getValue(rowIndex, 2)) {
+                    gameHtml += ' <span>(к)</span>';
+                }
+                return gameHtml;
             },
             type: 'string',
             label: 'Режим'
@@ -575,7 +617,7 @@ function createAndShowGameLog() {
         var chartDataView = new google.visualization.DataView(groupedData);
         chartDataView.setColumns([{
                 calc: function(dataTable, rowIndex) {
-                    return getGametypeName(dataTable.getValue(rowIndex, 0), dataTable.getValue(rowIndex, 1), dataTable.getValue(rowIndex, 2)) + (dataTable.getValue(rowIndex, 3) ? '' : ' (не завершен)');
+                    return getGameName(dataTable.getValue(rowIndex, 0), dataTable.getValue(rowIndex, 1), dataTable.getValue(rowIndex, 2)) + (dataTable.getValue(rowIndex, 3) ? '' : ' (не завершен)');
                 },
                 type: 'string',
                 label:'Режим'
@@ -657,6 +699,8 @@ function getGameData(game) {
             'isPremiumAbra': game.params.premium_abra == true,
             'isQualification': game.params.qual == 'on',
             'mode': game.params.type,
+            'competition': game.params.competition,
+            'bookPart': game.textinfo.part,
             'vocInfo': game.params.voc ? {
                 'id': game.params.voc.id,
                 'name': game.params.voc.name,
