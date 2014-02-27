@@ -28,8 +28,9 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 .game-dlg .game-info h3 .game-title .game-name {font-size: 18px;}\
 .game-dlg .game-info h3 .game-title .game-time {display: block; font-size: 14px; color: #666; margin-top: 5px;}\
 .game-dlg .game-info .game-text {padding: 5px; border: 3px solid #eee;  border-radius: 5px;}\
-.game-dlg .game-info .game-text .error-incorrect {color: red; text-decoration: line-through;}\
-.game-dlg .game-info .game-text .error-correct {color: #a00;}\
+.game-dlg .game-info .game-text .error-text .error-incorrect {color: red; text-decoration: line-through;}\
+.game-dlg .game-info .game-text .error-text .error-correct {color: #a00;}\
+.game-dlg .game-info .game-text .book-info {margin-top:15px; color:#666; text-align:right; font-style:italic;}\
 .game-dlg .game-info .stats {margin: 10px 0; margin-right: -15px; margin-left: -15px;}\
 .game-dlg .game-info .stats:before, .game-dlg  .game-info .stats:after {display: table; content: \" \";}\
 .game-dlg .game-info .stats:after {clear: both;}\
@@ -57,16 +58,23 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 </style>\n\
 <div class='game-dlg'>\n\
 <div class='close' ng:click='close()'>×</div>\n\
-<div class='game-info'>\
+<div class='game-info'>\n\
 <h3>\
 <div class='gametype-sign sign-{{gameType}} active'></div>\
 <div class='game-title'>\
 <span class='game-name' ng:bind-html='gameDescriptionHtml'></span>\
 <span class='game-time'>{{formatDateTimeValue(gameData.beginTime)}}</span>\
 </div>\
-</h3>\
-<div class=game-text ng:if='gameData.errorsText' ng:bind-html='gameData.errorsText | gameTextErrorize'></div>\n\
-<div class=game-text ng:if='!gameData.errorsText && gameData.text' ng:bind='gameData.text'></div>\n\
+</h3>\n\
+<div class='game-text' ng:if='gameData.errorsText || gameData.text'>\n\
+<div class='error-text' ng:if='gameData.errorsText' ng:bind-html='gameData.errorsText | gameTextErrorize'></div>\n\
+<div ng:if='!gameData.errorsText && gameData.text' ng:bind='gameData.text'></div>\n\
+<div class='book-info' ng:if='gameData.bookInfo'>\n\
+<span>{{gameData.bookInfo.author}}</span>\n\
+<span>&ndash;</span>\n\
+<span>&laquo;{{gameData.bookInfo.name}}&raquo;</span>\n\
+</div>\n\
+</div>\n\
 <div class='stats'>\n\
 <div class='stats-col'>\n\
 <table>\n\
@@ -780,7 +788,11 @@ function getGameData(game) {
         'charsTotal': charsTotal,
         'scoresGained': (player.info.record && game.params.type == 'normal') ? Math.round(player.info.record.scores_gained) : 0,
         'text': game.text,
-        'errorsText': game.errors_text_bbcode
+        'errorsText': game.errors_text_bbcode,
+        'bookInfo': game.textinfo.author && game.textinfo.name ? {
+            author: game.textinfo.author,
+            name: game.textinfo.name
+        } : null
     };
 }
 
