@@ -101,43 +101,6 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 </div>";
 
 
-var statsOverviewTemplate = "<style>.gameLogButton {padding: 5px 10px;  font-size: 12px;  width: 100%;  font-weight: bold;  line-height: 1.5;  color: #777;  text-transform: uppercase;  border-radius: 3px;}</style>\
-<div class='profile-stats-overview'>\
-<div ng:if='!Overview.data.overview.err'>\
-<div ng:if='Overview.data.overview.recent_gametypes.length &gt; 0'>\
-<div class='row'>\
-<div class='col-xs-8'>\
-<h4>Выберите режим:</h4>\
-<div app:chart-pie chart-click='Overview.onGametypeSelect(row)' chart-data-table='Overview.dataTable' chart-selection='Overview.selection' chart-slices='Overview.pieSlices' class='chart-pie'></div>\
-</div>\
-<div class='col-xs-4'>\
-<div class='recent'>\
-<h4>Недавние режимы</h4>\
-<ul>\
-<li ng:mouseenter='Overview.onGametypeHover(i)' ng:mouseleave='Overview.onGametypeHover(null)' ng:repeat='i in Overview.data.overview.recent_gametypes'>\
-<a app:gametype-color='i' ng:href='#/{{$routeSegment.$routeParams.user}}/stats/{{i}}/'>\
-{{Overview.data.overview.gametypes[i].name}}\
-</a>\
-</li>\
-</ul>\
-</div>\
-<button class='btn gameLogButton' ng:click='KG_GameLog.showGameLog()' href=\"#\">Журнал</button>\
-</div>\
-</div>\
-<div class='row'>\
-<div app:chart-table chart-click='Overview.onGametypeSelect(row)' chart-data-table='Overview.dataTable' chart-options='{sortColumn: 1, sortAscending: false}' chart-selection='Overview.selection' class='chart-table'></div>\
-</div>\
-</div>\
-<div class='stats-empty' ng:if='Overview.data.overview.recent_gametypes.length == 0'>\
-<h3>Данные статистики отсутствуют</h3>\
-Пройдите хотя бы один текст, чтобы открыть этот раздел.\
-<div class='icon-icomoon icon-stats'></div>\
-</div>\
-</div>\
-<ng:include ng:if=\"Overview.data.overview.err == 'permission blocked'\" src=\"'/views/partials/profile/stats/permission-blocked.html' | bust\"></ng:include>\
-</div>";
-
-
 var gameLogHtml = '<style>\
 h3 .back .icon-icomoon:before { content: "\\e608"; }\
 #datepicker { border: none; padding: 0; cursor: pointer; color: inherit; font-size: inherit; width: 120px; }\
@@ -199,6 +162,11 @@ h3 .back .icon-icomoon:before { content: "\\e608"; }\
 </div>\n\
 </div>\n\
 </div>';
+
+
+var gameLogButtonTemplate = "\n<style>.gameLogButton {padding: 5px 10px; font-size: 12px; width: 100%; font-weight: bold; line-height: 1.5; \
+color: #777; text-transform: uppercase; border-radius: 3px;}</style>\n\
+<button class='btn gameLogButton' ng:click='KG_GameLog.showGameLog()' href=\"#\">Журнал</button>\n";
 
 
 var gameLogSettingsTemplate = "\n<div class=\'drop-pref\'>\n\
@@ -843,6 +811,10 @@ function onProfilePage() {
     rootScope.$on('routeSegmentChange', function(e, obj) {
         var scope = e.targetScope;
         if(obj.segment && obj.segment.name == 'overview' && obj.segment.locals.data.summary.user.id == rootScope.Me.id) {
+            var statsOverviewTemplate = obj.segment.locals.$template;
+            var pattern = '</li>\n</ul>\n</div>';
+            var index = statsOverviewTemplate.indexOf(pattern) + pattern.length;
+            statsOverviewTemplate = statsOverviewTemplate.substring(0, index) + gameLogButtonTemplate + statsOverviewTemplate.substring(index, statsOverviewTemplate.length);
             obj.segment.locals.$template = statsOverviewTemplate;
             if(!scope.KG_GameLog) {
                 scope.KG_GameLog = {};
