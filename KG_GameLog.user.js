@@ -4,7 +4,7 @@
 // @description Позволяет вести журнал всех заездов
 // @author      voidmain
 // @license     MIT
-// @version     0.6
+// @version     0.7
 // @include     http://klavogonki.ru/*
 // @grant       none
 // @run-at      document-end 
@@ -121,7 +121,7 @@ var statsOverviewTemplate = "<style>.gameLogButton {padding: 5px 10px;  font-siz
 </li>\
 </ul>\
 </div>\
-<button class='btn gameLogButton' ng:click='showGameLog()' href=\"#\">Журнал</button>\
+<button class='btn gameLogButton' ng:click='KG_GameLog.showGameLog()' href=\"#\">Журнал</button>\
 </div>\
 </div>\
 <div class='row'>\
@@ -140,7 +140,7 @@ var statsOverviewTemplate = "<style>.gameLogButton {padding: 5px 10px;  font-siz
 
 var gameLogHtml = '<style>\
 h3 .back .icon-icomoon:before { content: "\\e608"; }\
-#datepicker { border: none; padding: initial; cursor: pointer; color: inherit; font-size: inherit; width: 120px; }\
+#datepicker { border: none; padding: 0; cursor: pointer; color: inherit; font-size: inherit; width: 120px; }\
 #datepicker:hover { color: #eb9d5b; }\
 #emptyGameLog { margin-top: 20px; font-size: 14px; font-weight: bold; color: #ccc; text-transform: uppercase; display: none; }\
 #gameLog { display: none; }\
@@ -153,7 +153,7 @@ h3 .back .icon-icomoon:before { content: "\\e608"; }\
 #gameLog .counter .value span { vertical-align: middle; }\
 </style>\n\
 <div id="gameLogPage">\n\
-<h3><button class="btn back" style="margin-right: 10px;"><div class="icon-icomoon"></div> Назад</button><span> Журнал заездов</span><span>&ndash;</span><input type="text" id="datepicker" readonly></input></h3>\n\
+<h3><button class="btn back" style="margin-right: 10px;"><div class="icon-icomoon"></div> Назад</button><span> Журнал заездов</span><span>&ndash;</span><input type="text" id="datepicker" readonly></h3>\n\
 <div id="emptyGameLog">Нет данных</div>\n\
 <div id="gameLog">\n\
 <div class="checkbox"><label><input id="showNotFinished" type="checkbox" checked>Показывать недоезды</label></div>\n\
@@ -201,35 +201,40 @@ h3 .back .icon-icomoon:before { content: "\\e608"; }\
 </div>';
 
 
+var gameLogSettingsTemplate = "\n<div class=\'drop-pref\'>\n\
+Начало клаводня в журнале заездов:\n\
+<div class='btn-group'><input type=\"text\" ng-model='KG_GameLog.klavodayStartTimeString' ng-change='KG_GameLog.onKlavodayStartTimeChanged()'></div>\n\
+</div>\n";
+
 
 var GameLog = {
-    getDaysCount: function() {
-        return localStorage['KG_GameLog_daysCount'] ? parseInt(localStorage['KG_GameLog_daysCount'], 10) : 0;
+    getLength: function() {
+        if(localStorage['KG_GameLog_length']) {
+            return parseInt(localStorage['KG_GameLog_length'], 10);
+        }
+
+        if(!localStorage['KG_GameLog_lastLogItemId']) {
+            return 0;
+        }
+
+        var length = 0;
+        var currentLogItemId = localStorage['KG_GameLog_lastLogItemId'];
+        while(currentLogItemId) {
+            length++;
+            var currentLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + currentLogItemId]);
+            currentLogItemId = currentLogItem.prev;
+        }
+        localStorage['KG_GameLog_length'] = length;
+        return length;
     },
 
-    getGamesList: function() {
+    getGames: function() {
         var games = [];
         var currentLogItemId = localStorage['KG_GameLog_lastLogItemId'];
         while(currentLogItemId) {
             var currentLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + currentLogItemId]);
             var game = JSON.parse(currentLogItem.game);
             games.push(game);
-            currentLogItemId = currentLogItem.prev;
-        }
-        return games;
-    },
-
-    getGamesDictionary: function() {
-        var games = {};
-        currentLogItemId = localStorage['KG_GameLog_lastLogItemId'];
-        while(currentLogItemId) {
-            var currentLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + currentLogItemId]);
-            var game = JSON.parse(currentLogItem.game);
-            var date = currentLogItem.date;
-            if(!games[date]) {
-                games[date] = [];
-            }
-            games[date].push(game);
             currentLogItemId = currentLogItem.prev;
         }
         return games;
@@ -255,23 +260,22 @@ var GameLog = {
     },
 
     pushGame: function(gameData) {
-        var maxDaysCount = 7;
+        var maxLength = 2000;
     
         var newLogItem = {
             'id': gameData.id + '_' + gameData.beginTime,
-            'date': (new Date(gameData.beginTime)).setHours(0,0,0,0),
             'game': JSON.stringify(gameData),
             'prev': null,
             'next': null
         };
-        
-        var daysCount = this.getDaysCount();
-        
-        if(daysCount == 0) {
+
+        var logLength = this.getLength();
+
+        if(logLength == 0) {
             localStorage['KG_GameLog_logItem_' + newLogItem.id] = JSON.stringify(newLogItem);
             localStorage['KG_GameLog_firstLogItemId'] = newLogItem.id;
             localStorage['KG_GameLog_lastLogItemId'] = newLogItem.id;
-            localStorage['KG_GameLog_daysCount'] = 1;
+            localStorage['KG_GameLog_length'] = 1;
             return;
         }
 
@@ -283,35 +287,48 @@ var GameLog = {
         localStorage['KG_GameLog_logItem_' + lastLogItemId] = JSON.stringify(lastLogItem);
         localStorage['KG_GameLog_logItem_' + newLogItem.id] = JSON.stringify(newLogItem);
         localStorage['KG_GameLog_lastLogItemId'] = newLogItem.id;
+        logLength++;
 
-        if(newLogItem.date == lastLogItem.date) {
-            return;
-        }
-        if(daysCount < maxDaysCount) {
-            localStorage['KG_GameLog_daysCount'] = daysCount + 1;
-            return;
+        if(logLength > maxLength) {
+            var firstLogItemId = localStorage['KG_GameLog_firstLogItemId'];
+            var firstLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + firstLogItemId]);
+
+            while(logLength > maxLength) {
+                var secondLogItemId = firstLogItem.next;
+                localStorage.removeItem('KG_GameLog_logItem_' + firstLogItemId);
+                firstLogItemId = secondLogItemId;
+                firstLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + firstLogItemId]);
+                logLength--;
+            }
+
+            firstLogItem.prev = null;
+            localStorage['KG_GameLog_logItem_' + firstLogItemId] = JSON.stringify(firstLogItem);
+            localStorage['KG_GameLog_firstLogItemId'] = firstLogItem.id;
         }
 
-        var firstLogItemId = localStorage['KG_GameLog_firstLogItemId'];
-        var firstLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + firstLogItemId]);
-        var secondLogItemId = firstLogItem.next;
-        var secondLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + secondLogItemId]);
-
-        while(firstLogItem.date == secondLogItem.date) {
-            localStorage.removeItem('KG_GameLog_logItem_' + firstLogItemId);
-            firstLogItemId = secondLogItemId;
-            firstLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + firstLogItemId]);
-            secondLogItemId = firstLogItem.next;
-            secondLogItem = JSON.parse(localStorage['KG_GameLog_logItem_' + secondLogItemId]);
-        }
-        localStorage.removeItem('KG_GameLog_logItem_' + firstLogItemId);
-        localStorage['KG_GameLog_firstLogItemId'] = secondLogItemId;
+        localStorage['KG_GameLog_length'] = logLength;
     }
 };
 
 
-function getGameName(gameType, isPremiumAbra, vocName)
-{
+var Settings = {
+    defaultSettings: { showNotFinished: true, klavodayStartTime: 0 },
+    load: function() {
+        var settingsString = localStorage['KG_GameLog_settings'];
+        if(settingsString) {
+            return JSON.parse(settingsString);
+        }
+        localStorage['KG_GameLog_settings'] = JSON.stringify(this.defaultSettings);
+        return this.defaultSettings;
+    },
+    save: function(options) {
+        var settings = $$$.extend(this.defaultSettings, options);
+        localStorage['KG_GameLog_settings'] = JSON.stringify(settings);
+    }
+};
+
+
+function getGameName(gameType, isPremiumAbra, vocName) {
     if(gameType == 'normal') {
         return 'Обычный';
     }
@@ -346,8 +363,7 @@ function getGameName(gameType, isPremiumAbra, vocName)
 }
 
 
-function getGameHtml(gameType, isPremiumAbra, vocId, vocName)
-{
+function getGameHtml(gameType, isPremiumAbra, vocId, vocName) {
     if(gameType == 'normal') {
         return '<span class=gametype-normal>Обычный</span>';
     }
@@ -394,7 +410,7 @@ function getGameDescriptionHtml(gameData) {
     }
 
     if(gameData.gameInfo.isQualification) {
-        descstr += ", квалификация";
+        descstr += ', квалификация';
     }
 
     if(gameData.gameInfo.mode == 'normal') {
@@ -402,12 +418,12 @@ function getGameDescriptionHtml(gameData) {
         if(gameData.gameInfo.levelFrom != 1 || gameData.gameInfo.levelTo != 9)
         {
             descstr += ' для ';
-            var levelNames = new Array('', 'новичков', 'любителей', 'таксистов', 'профи', 'гонщиков', 'маньяков', 'суперменов', 'кибергонщиков', 'экстракиберов');
+            var levelNames = ['', 'новичков', 'любителей', 'таксистов', 'профи', 'гонщиков', 'маньяков', 'суперменов', 'кибергонщиков', 'экстракиберов'];
             descstr += levelNames[gameData.gameInfo.levelFrom] + '&ndash;' + levelNames[gameData.gameInfo.levelTo];
         }
     }
     else if(gameData.gameInfo.mode == 'private') {
-        descstr += ', игра c&nbsp;друзьями'
+        descstr += ', игра c&nbsp;друзьями';
     }
     else if(gameData.gameInfo.mode == 'practice') {
         descstr += ', одиночный заезд';
@@ -431,7 +447,7 @@ function showGameDataModal(gameData) {
     angular.element('body').injector().invoke(function($modal2, $sce) {
         $modal2.open({
             template: gameDataModalTemplate,
-            controller: function ($scope,$modalInstance) {
+            controller: function($scope, $modalInstance) {
                 $scope.close = function() {
                     $modalInstance.dismiss();
                 };
@@ -440,7 +456,7 @@ function showGameDataModal(gameData) {
                 $scope.timeFromMilliseconds = function(val) {
                     var min = Math.floor(val / 60000);
                     var sec = (val - 60000*min)/1000;
-                    return 10 > sec && (sec = "0" + sec), 10 > min && (min = "0" + min), min + ":" + sec;
+                    return 10 > sec && (sec = '0' + sec), 10 > min && (min = '0' + min), min + ':' + sec;
                 };
                 $scope.gameDescriptionHtml = $sce.trustAsHtml(getGameDescriptionHtml(gameData));
                 $scope.formatDateTimeValue = function(val) {
@@ -453,8 +469,7 @@ function showGameDataModal(gameData) {
 }
 
 
-function getSliceColor(gameType, isFinished, isPremiumAbra)
-{
+function getSliceColor(gameType, isFinished, isPremiumAbra) {
     var hue;
     if(gameType == 'normal') {
         hue = 85;
@@ -495,19 +510,42 @@ function getSliceColor(gameType, isFinished, isPremiumAbra)
     
     var saturation = isFinished ? 75 : 20;
     var value = 80;
-    
+
     return tinycolor({ h: hue, s: saturation, v: value }).toHexString();
 }
 
-function createAndShowGameLog() {
-    $$$('.profile-stats-overview').hide().after(gameLogHtml);
-    
-    $$$('.back').click(function() {
-        showGameLog(false);
-    });
-    
-    var games = GameLog.getGamesDictionary();
-        
+
+function getGamesDictionary(games, klavodayStartTime) {
+    var gamesDic = {};
+    for(var i = 0; i < games.length; i++) {
+        var date = new Date(games[i].beginTime - klavodayStartTime).setHours(0,0,0,0);
+        if(!gamesDic[date]) {
+            gamesDic[date] = [];
+        }
+        gamesDic[date].push(games[i]);
+    }
+    return gamesDic;
+}
+
+
+function parseTime(value) {
+    if(!/^\d+:\d+$/.test(value)) {
+        return null;
+    }
+    var lexems = value.split(':'),
+        h = parseInt(lexems[0], 10)%24,
+        m = parseInt(lexems[1], 10)%60;
+    return (h*60 + m)*60*1000;
+}
+
+
+function timeToString(time) {
+    var timezoneOffset = (new Date()).getTimezoneOffset()*60000;
+    return (new Date(time + timezoneOffset)).format('HH:MM');
+}
+
+
+function createDataTable() {
     var data = new google.visualization.DataTable();
     data.addColumn('datetime', 'Время старта');
     data.addColumn('string', 'Режим');
@@ -520,54 +558,49 @@ function createAndShowGameLog() {
     data.addColumn('number', '% ошибок');
     data.addColumn('datetime', 'Время');
 
+    return data;
+}
+
+
+function createAndShowGameLog() {
+    $$$('.profile-stats-overview').hide().after(gameLogHtml);
+
+    $$$('.back').click(function() {
+        showGameLog(false);
+    });
+
+    var settings = Settings.load();
+
+    var games = GameLog.getGames();
+    var gamesDic = getGamesDictionary(games, settings.klavodayStartTime);
+    var currentDateGames = [];
+    
+    var data = createDataTable();
+
     var table = new google.visualization.Table(document.getElementById('gameLogTable'));
     google.visualization.events.addListener(table, 'select', function() {
         var gameIndex = table.getSelection()[0].row;
         table.setSelection([]);
         showGameDataModal(currentDateGames[gameIndex]);
     });
-    
+
     var errorsPercentFormatter = new google.visualization.NumberFormat({fractionDigits: 2, suffix: '%'});
     var timeFormatter = new google.visualization.DateFormat({pattern: 'HH:mm:ss'});
     var gameTimeFormatter = new google.visualization.DateFormat({pattern: 'mm:ss.SSS'});
-    
+
     var chart = new google.visualization.PieChart(document.getElementById('piechart'));
     google.visualization.events.addListener(chart, 'select', function() {
         chart.setSelection([]);
     });
 
-    function redraw() {
-        $$$('#emptyGameLog').hide();
-        $$$('#gameLog').show();
-        
-        chart.clearChart();
-        table.clearChart();
+    function updateData() {
         data.removeRows(0, data.getNumberOfRows());
-        
+
         var date = $$$('#datepicker').datepicker('getDate');
-        currentDateGames = games[date.getTime()];
+        currentDateGames = gamesDic[date.getTime()];
         if(!currentDateGames) {
-            $$$('#gameLog').hide();
-            $$$('#emptyGameLog').show();
             return;
         }
-
-        var totalTime = 0;
-        var gamesCount = 0;
-        var totalScores = 0;
-        for(var i = 0; i < currentDateGames.length; i++) {
-            if(currentDateGames[i].finishTime) {
-                gamesCount++;
-                totalTime += currentDateGames[i].finishTime - currentDateGames[i].beginTime;
-                totalScores += currentDateGames[i].scoresGained;
-            }
-        }
-
-        $$$('#gamesCounter .value span').text(gamesCount);
-        var notFinishedCount = currentDateGames.length - gamesCount;
-        $$$('#notFinishedCounter .value span').text(notFinishedCount + ' (' + (notFinishedCount/currentDateGames.length*100).toFixed(1) + '%)');
-        $$$('#totalTimeCounter .value span').text((new Date(totalTime + (new Date()).getTimezoneOffset()*60000)).format('HH:MM:ss'));
-        $$$('#scoresGainedCounter .value span').text(totalScores);
 
         data.addRows(currentDateGames.map(function(g) {
             return [
@@ -587,28 +620,10 @@ function createAndShowGameLog() {
         timeFormatter.format(data, 0);
         errorsPercentFormatter.format(data, 8);
         gameTimeFormatter.format(data, 9);
-        
-        var tableDataView = new google.visualization.DataView(data);
-        tableDataView.setColumns([0, {
-            calc: function(dataTable, rowIndex) {
-                var gameHtml = getGameHtml(dataTable.getValue(rowIndex, 1), dataTable.getValue(rowIndex, 3), dataTable.getValue(rowIndex, 4), dataTable.getValue(rowIndex, 5));
-                if(dataTable.getValue(rowIndex, 2)) {
-                    gameHtml += ' <span>(к)</span>';
-                }
-                return gameHtml;
-            },
-            type: 'string',
-            label: 'Режим'
-        }, 6, 7, 8, 9]);
-        if(!$$$('#showNotFinished').is(':checked')) {
-            tableDataView.setRows(data.getFilteredRows([{column: 6, minValue: 0}]));
-        }
+    }
 
-        table.draw(tableDataView, {
-            allowHtml: true,
-            sortColumn: 0,
-            sortAscending: false
-        });
+    function updateChart() {
+        chart.clearChart();
 
         var groupedData = google.visualization.data.group(
             data,
@@ -629,7 +644,7 @@ function createAndShowGameLog() {
                 type: 'string',
                 label:'Режим'
             }, 4, 0, 1, 3]);
-        if(!$$$('#showNotFinished').is(':checked')) {
+        if(!settings.showNotFinished) {
             chartDataView.setRows(groupedData.getFilteredRows([{column: 3, value: true}]));
         }
 
@@ -648,21 +663,86 @@ function createAndShowGameLog() {
         });
     }
 
+    function updateTable() {
+        table.clearChart();
+
+        var tableDataView = new google.visualization.DataView(data);
+        tableDataView.setColumns([0, {
+            calc: function(dataTable, rowIndex) {
+                var gameHtml = getGameHtml(dataTable.getValue(rowIndex, 1), dataTable.getValue(rowIndex, 3), dataTable.getValue(rowIndex, 4), dataTable.getValue(rowIndex, 5));
+                if(dataTable.getValue(rowIndex, 2)) {
+                    gameHtml += ' <span>(к)</span>';
+                }
+                return gameHtml;
+            },
+            type: 'string',
+            label: 'Режим'
+        }, 6, 7, 8, 9]);
+        if(!settings.showNotFinished) {
+            tableDataView.setRows(data.getFilteredRows([{column: 6, minValue: 0}]));
+        }
+
+        table.draw(tableDataView, {
+            allowHtml: true,
+            sortColumn: 0,
+            sortAscending: false
+        });
+    }
+
+    function updateStatsPanel() {
+        var totalTime = 0;
+        var gamesCount = 0;
+        var totalScores = 0;
+        for(var i = 0; i < currentDateGames.length; i++) {
+            if(currentDateGames[i].finishTime) {
+                gamesCount++;
+                totalTime += currentDateGames[i].finishTime - currentDateGames[i].beginTime;
+                totalScores += currentDateGames[i].scoresGained;
+            }
+        }
+
+        $$$('#gamesCounter .value span').text(gamesCount);
+        var notFinishedCount = currentDateGames.length - gamesCount;
+        $$$('#notFinishedCounter .value span').text(notFinishedCount + ' (' + (notFinishedCount/currentDateGames.length*100).toFixed(1) + '%)');
+        $$$('#totalTimeCounter .value span').text((new Date(totalTime + (new Date()).getTimezoneOffset()*60000)).format('HH:MM:ss'));
+        $$$('#scoresGainedCounter .value span').text(totalScores);
+    }
+
+    function update() {
+        $$$('#emptyGameLog').hide();
+        $$$('#gameLog').show();
+
+        updateData();
+        if(data.getNumberOfRows() == 0)  {
+            $$$('#gameLog').hide();
+            $$$('#emptyGameLog').show();
+            return;
+        }
+
+        updateStatsPanel();
+        updateTable();
+        updateChart();
+    }
+
     $$$('#datepicker').datepicker({
         onSelect: function() {
-            redraw();
+            update();
         },
         beforeShowDay: function(date) {
-            return [typeof games[date.getTime()] !== 'undefined', ''];
+            return [gamesDic[date.getTime()] !== undefined, ''];
         }
     });
 
+    $$$('#showNotFinished').prop('checked', settings.showNotFinished);
     $$$('#showNotFinished').change(function(event) {
-        redraw();
+        settings.showNotFinished = $$$('#showNotFinished').is(':checked');
+        Settings.save(settings);
+        updateTable();
+        updateChart();
     });
 
-    $$$("#datepicker").datepicker("setDate", Date.now());
-    redraw();
+    $$$('#datepicker').datepicker('setDate', new Date(Date.now() - settings.klavodayStartTime));
+    update();
 }
 
 
@@ -714,7 +794,7 @@ function getGameData(game) {
                 'description': game.params.voc.description,
                 'type': game.params.voc.type,
                 'authorId': game.params.voc.user_id,
-                'public': game.params.voc.public == "public",
+                'public': game.params.voc.public == 'public',
                 'rating': game.params.voc.rating,
                 'rows': game.params.voc.rows
             } : null
@@ -761,9 +841,33 @@ function onGamePage() {
 function onProfilePage() {
     var rootScope = angular.element('body').scope();
     rootScope.$on('routeSegmentChange', function(e, obj) {
+        var scope = e.targetScope;
         if(obj.segment && obj.segment.name == 'overview' && obj.segment.locals.data.summary.user.id == rootScope.Me.id) {
             obj.segment.locals.$template = statsOverviewTemplate;
-            e.targetScope.showGameLog = showGameLog;
+            if(!scope.KG_GameLog) {
+                scope.KG_GameLog = {};
+            }
+            scope.KG_GameLog.showGameLog = showGameLog;
+            return;
+        }
+        if(obj.segment && obj.segment.name == 'prefs' && obj.segment.locals.data.summary.user.id == rootScope.Me.id) {
+            var prefsTemplate = obj.segment.locals.$template;
+            var beginIndex = prefsTemplate.indexOf('<h4>Статистика</h4>');
+            var endIndex = prefsTemplate.indexOf('</form>', beginIndex);
+            prefsTemplate = prefsTemplate.substring(0, endIndex) + gameLogSettingsTemplate + prefsTemplate.substring(endIndex, prefsTemplate.length);
+            obj.segment.locals.$template = prefsTemplate;
+            if(!scope.KG_GameLog) {
+                scope.KG_GameLog = {};
+            }
+            scope.KG_GameLog.settings = Settings.load();
+            scope.KG_GameLog.klavodayStartTimeString = timeToString(scope.KG_GameLog.settings.klavodayStartTime);
+            scope.KG_GameLog.onKlavodayStartTimeChanged = function() {
+                var time = parseTime(scope.KG_GameLog.klavodayStartTimeString);
+                if(time >= 0) {
+                    scope.KG_GameLog.settings.klavodayStartTime = time;
+                    Settings.save(scope.KG_GameLog.settings);
+                }
+            };
         }
     });
 }
@@ -786,13 +890,13 @@ else if (window.location.href.match(/http:\/\/klavogonki\.ru\/u\//)) {
 
 function exec(fn) {
     var script = document.createElement('script');
-    script.setAttribute("type", "application/javascript");
+    script.setAttribute('type', 'application/javascript');
     script.textContent = '(' + fn + ')();';
     document.body.appendChild(script);
     document.body.removeChild(script);
 }
 
 
-window.addEventListener("load", function() {
+window.addEventListener('load', function() {
     exec(main);
 }, false);
