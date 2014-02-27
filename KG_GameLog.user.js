@@ -80,19 +80,24 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 <td ng:if='gameData.finishTime'>{{timeFromMilliseconds(gameData.finishTime - gameData.beginTime)}}</td>\n\
 <td ng:if='!gameData.finishTime'>&mdash;</td>\n\
 </tr>\n\
-</table>\n\
-</div>\n\
-<div class='stats-col'>\n\
-<table>\n\
 <tr>\n\
 <th>Ошибки:</th>\n\
 <td ng:if='gameData.finishTime'>{{gameData.errorsCount}} <span>({{gameData.errorsPercent | number:2}}%)</span></td>\n\
 <td ng:if='!gameData.finishTime'>&mdash;</td>\n\
 </tr>\n\
+</table>\n\
+</div>\n\
+<div class='stats-col'>\n\
+<table>\n\
 <tr>\n\
 <th>Длина текста:</th>\n\
 <td ng:if='gameData.text'>{{gameData.charsTotal}} зн</td>\n\
 <td ng:if='!gameData.text'>&mdash;</td>\n\
+</tr>\n\
+<tr>\n\
+<th>Очков получено:</th>\n\
+<td ng:if='gameData.finishTime'>{{gameData.scoresGained}}</td>\n\
+<td ng:if='!gameData.finishTime'>&mdash;</td>\n\
 </tr>\n\
 </table>\n\
 </div>\n\
