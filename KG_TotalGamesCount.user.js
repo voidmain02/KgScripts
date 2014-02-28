@@ -22,13 +22,13 @@ function exec(fn) {
 
 function main() {
     var totalGamesCountTemplate = '\n<style>\
-.counter { width: 100%; padding: 1px 0 5px 0; background-color: #f5f5f5; border-radius: 3px; margin-bottom: 20px; }\
-.counter .title { padding: 5px; margin-left: 5px; font-size: 12px; font-weight: bold; color: #aaa; text-transform: uppercase; text-align: center; }\
-.counter .value { position: relative; padding: 3px 0 3px 10px; margin: 0 5px; font-size: 18px; font-weight: bold; color: #666; background-color: #f9f9f9; border-top: 1px solid #ccc; border-bottom: 1px solid white; border-radius: 3px; }\
-.counter .value .icon-icomoon { margin-right: 2px; font-size: 16px; vertical-align: middle; }\
-.counter .value span { vertical-align: middle; }\
+#totalGamesCounter { width: 100%; padding: 1px 0 5px 0; background-color: #f5f5f5; border-radius: 3px; margin-bottom: 20px; }\
+#totalGamesCounter .title { padding: 5px; margin-left: 5px; font-size: 12px; font-weight: bold; color: #aaa; text-transform: uppercase; text-align: center; }\
+#totalGamesCounter .value { position: relative; padding: 3px 0 3px 10px; margin: 0 5px; font-size: 18px; font-weight: bold; color: #666; background-color: #f9f9f9; border-top: 1px solid #ccc; border-bottom: 1px solid white; border-radius: 3px; }\
+#totalGamesCounter .value .icon-icomoon { margin-right: 2px; font-size: 16px; vertical-align: middle; }\
+#totalGamesCounter .value span { vertical-align: middle; }\
 </style>\n\
-<div class="counter">\n\
+<div id="totalGamesCounter">\n\
 <div class="title">Общий пробег</div>\n\
 <div class="value">\n\
 <div class="icon-icomoon icon-road"></div>\n\
