@@ -560,9 +560,25 @@ function createAndShowGameLog() {
 
     var table = new google.visualization.Table(document.getElementById('gameLogTable'));
     google.visualization.events.addListener(table, 'select', function() {
-        var gameIndex = table.getSelection()[0].row;
+        var rowIndex = table.getSelection()[0].row;
         table.setSelection([]);
-        showGameDataModal(currentDateGames[gameIndex]);
+        var gameData = null;
+        if(settings.showNotFinished) {
+            gameData = currentDateGames[rowIndex];
+        }
+        else {
+            var finished = 0;
+            for(var i = 0; i < currentDateGames.length; i++) {
+                if(currentDateGames[i].finishTime) {
+                    finished++;
+                }
+                if(rowIndex == finished - 1) {
+                    gameData = currentDateGames[i];
+                    break;
+                }
+            }
+        }
+        showGameDataModal(gameData);
     });
 
     var errorsPercentFormatter = new google.visualization.NumberFormat({fractionDigits: 2, suffix: '%'});
