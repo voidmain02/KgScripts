@@ -387,7 +387,10 @@ function getGameDescriptionHtml(gameData) {
     }
 
     if(gameData.gameInfo.competition) {
-        descstr += ', соревнование (x' + gameData.gameInfo.competition + ')';
+        descstr += ', соревнование';
+        if(gameData.gameInfo.competition > 1) {
+        	descstr += ' (x' + gameData.gameInfo.competition + ')';
+        }
     }
 
     if(gameData.gameInfo.isQualification) {
@@ -783,7 +786,7 @@ function getGameData(game) {
             'isPremiumAbra': game.params.premium_abra == true,
             'isQualification': game.params.qual == 'on',
             'mode': game.params.type,
-            'competition': game.params.competition,
+            'competition': game.params.competition ? (game.params.regular_competition || 1) : null,
             'bookPart': game.textinfo.part,
             'vocInfo': game.params.voc ? {
                 'id': game.params.voc.id,
