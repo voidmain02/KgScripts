@@ -99,8 +99,8 @@ var gameDataModalTemplate = "<style>.game-dlg {padding: 10px 25px 10px 25px;}\
 <table>\n\
 <tr>\n\
 <th>Длина текста:</th>\n\
-<td ng:if='gameData.text'>{{gameData.charsTotal}} зн</td>\n\
-<td ng:if='!gameData.text'>&mdash;</td>\n\
+<td ng:if='gameData.charsTotal'>{{gameData.charsTotal}} зн</td>\n\
+<td ng:if='!gameData.charsTotal'>&mdash;</td>\n\
 </tr>\n\
 <tr>\n\
 <th>Очков получено:</th>\n\
@@ -806,8 +806,8 @@ function getGameData(game) {
         'errorsPercent': player.info.finished ? Math.round(player.info.errors*10000/charsTotal)/100 : null,
         'charsTotal': charsTotal,
         'scoresGained': (player.info.record && game.params.type == 'normal') ? Math.round(player.info.record.scores_gained) : 0,
-        'text': game.text,
-        'errorsText': game.errors_text_bbcode,
+        'text': game.params.qual == 'on' ? game.correctText : game.text,
+        'errorsText': game.params.qual == 'on' ? null : game.errors_text_bbcode,
         'bookInfo': game.textinfo.author && game.textinfo.name ? {
             author: game.textinfo.author,
             name: game.textinfo.name
@@ -817,28 +817,29 @@ function getGameData(game) {
 
 
 function onGamePage() {
-    var handler = function() {
-        GameLog.pushGame(getGameData(game));
-        $$$('#inputtext').unbind('keypress', handler);
-    };
-    $$$('#inputtext').bind('keypress', handler);
-
-    Game.prototype.kg_gamelog_updateRaceRating = Game.prototype.updateRaceRating;
-    Game.prototype.updateRaceRating = function() {
-        this.kg_gamelog_updateRaceRating();
+    function newUpdateCallback(transport) {
+        this.kg_gamelog_updateCallback(transport);
         
         if(!this.finished) {
             return;
         }
 
         var gameData = GameLog.getGameById(this.id + '_' + this.begintimeServer * 1000);
-
         if(!gameData || gameData.finishTime) {
             return;
         }
 
         GameLog.updateGame(getGameData(this));
+        Game.prototype.updateCallback = Game.prototype.kg_gamelog_updateCallback;
+    }
+    
+    var handler = function() {
+        GameLog.pushGame(getGameData(game));
+        Game.prototype.kg_gamelog_updateCallback = Game.prototype.updateCallback;
+        Game.prototype.updateCallback = newUpdateCallback;
+        $$$('#inputtext').unbind('keypress', handler);
     };
+    $$$('#inputtext').bind('keypress', handler);
 }
 
 
