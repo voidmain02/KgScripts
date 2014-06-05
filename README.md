@@ -8,7 +8,8 @@
 * **[KG_ExactSpeed](docs/KG_ExactSpeed.md)** - _Выводит в результатах заезда скорость с точностью до сотых_
 * **[klavogonki: Sort results](docs/sortresults.md)** - _Сортировка участников в заезде по местам, количеству и проценту ошибок, нику, рейтингу. Счётчик игроков в заезде_
 * **[DelGameButton](docs/DelGameButton.md)** - _Кнопка удаления результата в соревнованиях (работает только для Премиум-аккаунтов)_
-* **KG_CancelRaceShortcut** - _Добавляет сочетание клавиш для отмены результатов заезда_
+* **[KG_CancelRaceShortcut](docs/KG_CancelRaceShortcut.md)** - _Добавляет сочетание клавиш для отмены результатов заезда_
+* **[KG_AccurateSpeedo](docs/KG_AccurateSpeedo.md)** - _Спидометр в режиме "средней скорости" показывает актуальную скорость_
 * **[KG_SaveGameResult](docs/KG_SaveGameResult.md)** - _Добавляет ссылку на сохранение результатов заезда в JSON формате_
 * **klavagonki** - _Экранная клавивиатура с раскладкой Dvorak_
 * **[Klavogonki: save race in logbook](docs/save_race_in_blog.md)** - _Добавляет кнопку для сохранения результата любого заезда в бортжурнале_
