@@ -3,7 +3,7 @@
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/g*
 // @author         Fenex
-// @version        4.0
+// @version        4.0.1
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
@@ -92,6 +92,8 @@ function removeOlderMessages() {
 
 /* monitoring */
 setInterval(function() {
+    if(!BlackList.length) { return; }
+    
     var messages = document.querySelectorAll('.chat .messages-content p');
     for(var i=0; i<messages.length; i++) {
         if(messages[i].hasAttribute('checked')) { continue; }
