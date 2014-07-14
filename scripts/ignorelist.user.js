@@ -3,89 +3,121 @@
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/g*
 // @author         Fenex
-// @version        3.1.4 KTS
+// @version        4.0
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
-var ILC = {};
+var BlackList = [];
+var logins = [];
+var ids = [];
 
-ILC.init = function() {
-	var ch = document.getElementsByClassName('chat');
-	for(var i=0; i<ch.length; i++) {
-		this.chats[ch[i].id.split('-')[1]] = {
-			timer: false,
-			count: 0
-		};
-	}
-	
-	var _this = this;
-	
-	setInterval(function() {
-		for(var key in _this.chats) {
-			var msgs = document.getElementById('chat-'+key).getElementsByTagName('p');
-			if(msgs.length==_this.chats[key].count)
-				continue;
-			
-			var start = _this.chats[key].count;
-			_this.chats[key].count = msgs.length;
-			
-			for(var i=start; i<_this.chats[key].count; i++) {
-				var user_elem = msgs[i].getElementsByClassName('username')[0];
-				if(!user_elem)
-					continue;
-				var user_id = parseInt(user_elem.getElementsByTagName('span')[0].getAttribute('data-user'));
-				if(_this.list.indexOf(user_id) != -1)
-					msgs[i].style.display = 'none';
-			}
-		}
-	}, 10);
+function updateCache() {
+    logins = [];
+    ids = [];
+    
+    for(var i=0; i<BlackList.length; i++) {
+        logins.push(BlackList[i].login);
+        ids.push(BlackList[i].id);
+    }
 }
 
-ILC.openWin = function() {
-	var a = prompt('Введите через запятую ID пользователей для добавления в чёрный список:', this.list);
+if(localStorage['KG_BlackList']) {
+    BlackList = JSON.parse(localStorage['KG_BlackList']);
+    updateCache();
+}
+
+function getLoginFromMem(id) {
+    for(var i=0; i<BlackList.length; i++)
+        if(BlackList[i].id == id)
+            return BlackList[i].login;
+    
+    return null;
+}
+
+function editBlackList() {
+    var now = []
+    for(var i=0; i<BlackList.length; i++) {
+        now.push(BlackList[i].id);
+    }
+    
+    var a = prompt('Введите через запятую ID пользователей для добавления в чёрный список:', now.toString());
 	if(typeof a == 'object')
 		return;
-		
-	a = a.split(',');
-	for(var i=0; i<a.length; i++)
-		a[i] = parseInt(a[i]);
-	
-	this.list = a;
-	localStorage['ignoreList'] = JSON.stringify(a);		
+
+    var tmp_BlackList = [];
+        
+    a = a.split(',');
+    
+    for(var i=0; i<a.length; i++) {
+        a[i] = a[i].trim();
+        if(!/^\d+$/.test(a[i])) { continue }
+        
+        var userdata = document.querySelector('span[data-user="'+a[i]+'"]');
+        if(userdata) {
+            userdata = userdata.innerHTML;
+        } else {
+            userdata = getLoginFromMem(a[i]);
+        }
+        
+        tmp_BlackList.push({
+            id: a[i],
+            login: userdata
+        });
+    }
+    
+    localStorage['KG_BlackList'] = JSON.stringify(tmp_BlackList);
+    BlackList = tmp_BlackList;
+    updateCache();
 }
 
-ILC.__constructor = function() {
-	this.list = localStorage['ignoreList'] ? JSON.parse(localStorage['ignoreList']) : '';
-	this.chats = {};
+/* adding UI */
+(function() {
+    var mm = document.querySelectorAll('#chat-content .messages');
+    for(var i=0; i<mm.length; i++) {
+        var th = mm[i].getElementsByTagName('td')[1];
+        var td = document.createElement('td');
+        var img = document.createElement('img');
+        img.setAttribute('style', 'cursor:pointer;');
+        img.setAttribute('src', 'http://klavogonki.ru/img/exclamation.gif');
+        img.setAttribute('title', 'Чёрный список');
+        td.appendChild(img);
+        th.parentNode.insertBefore(td, th);
+        img.addEventListener('click', editBlackList);
+    }
+})();
+
+function removeOlderMessages() {
+    
 }
 
-var INNERHTML = 'var IgnoreListClass = '+ILC.__constructor;
-for(var key in ILC) {
-	if(key!='__constructor')
-		INNERHTML += ';\r\n IgnoreListClass.prototype.' + key + ' = ' + ILC[key];
-}
-INNERHTML += '\r\n var IgnoreList = new IgnoreListClass; \r\n IgnoreList.init();';
-
-if(!document.getElementById('KTS_IgnoreList')) {
-	(function() {
-		if(!document.getElementById('chat-content'))
-			return;
-
-		var m_c = document.getElementById('chat-content').getElementsByClassName('messages-content');
-
-		var mm = document.getElementById('chat-content').getElementsByClassName('messages');
-		for(var i=0; i<mm.length; i++) {
-			var th = mm[i].getElementsByTagName('td')[1];
-			var td = document.createElement('td');
-			td.innerHTML = '<img style="cursor:pointer;" src="http://klavogonki.ru/img/exclamation.gif" title="Чёрный список" onclick="IgnoreList.openWin();" />';
-				
-			th.parentNode.insertBefore(td, th);
-		}
-
-		var s = document.createElement('script');
-		s.innerHTML = INNERHTML;
-		s.id = 'KTS_IgnoreList';
-		document.body.appendChild(s);		
-
-	})();
-}
+/* monitoring */
+setInterval(function() {
+    var messages = document.querySelectorAll('.chat .messages-content p');
+    for(var i=0; i<messages.length; i++) {
+        if(messages[i].hasAttribute('checked')) { continue; }
+        
+        var username = messages[i].getElementsByClassName('username');
+        if(username.length) {
+            console.log(username[0]);
+            var id = username[0].getElementsByTagName('span')[0].getAttribute('data-user');
+            if(~ids.indexOf(id))
+                messages[i].style.display = 'none';
+        } else {
+            var sm = messages[i].getElementsByClassName('system-message');
+            if(sm.length) {
+                var login = sm[0].innerHTML.match(/^([^ ]+)/);
+                if(login)
+                    login = login[0];
+                else
+                    login = {};
+                if(~logins.indexOf(login))
+                    messages[i].style.display = 'none';
+            }
+        }
+        
+        messages[i].setAttribute('checked', 'BlackList');
+    }
+    
+    // TODO
+    // removeOlderMessages();    
+}, 10);
