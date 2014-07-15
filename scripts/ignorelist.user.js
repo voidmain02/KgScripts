@@ -3,7 +3,7 @@
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/g*
 // @author         Fenex
-// @version        4.0.1
+// @version        4.0.2
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
@@ -100,7 +100,6 @@ setInterval(function() {
         
         var username = messages[i].getElementsByClassName('username');
         if(username.length) {
-            console.log(username[0]);
             var id = username[0].getElementsByTagName('span')[0].getAttribute('data-user');
             if(~ids.indexOf(id))
                 messages[i].style.display = 'none';
