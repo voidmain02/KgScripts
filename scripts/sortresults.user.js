@@ -190,14 +190,14 @@ if(!document.getElementById('KTS_sortresults') && document.getElementById("invit
 	elem.innerHTML =
 		'<style type="text/css">' +
 			'#players { clear: left; }' +
-			'div.sort-button { float: left; padding-top: 8px; }' +
+			'div.sort-button { float: left; padding-top: 20px; }' +
 			'div.sort-button span:hover { text-decoration: underline; cursor: pointer; }' +
 			'div.sort-button span.active-sort { font-weight: bold; }' +
 		'</style>' +
 		'<div style="padding-left: 10px; width: 60px;" class="sort-button"><span id="position" onclick="sortClick(this)">место</span></div>' +
-		'<div style="float: left; width: 220px; padding-top: 8px;">' +
+		'<div style="float: left; width: 220px; padding-top: 20px;">' +
 			'<input type="checkbox" id="autosort" onclick="autoSort(this)">' +
-			'<label for="autosort" style="position: relative; top: -3px">обновлять автоматически</label>' +
+			'<label for="autosort" style="font-weight: normal">&nbsp;обновлять автоматически</label>' +
 			'<input type="hidden" id="intervalId">' +
 		'</div>' +
 		'<div style="width: 60px;" class="sort-button"><span id="nickname" onclick="sortClick(this)">ник</span></div>' +
