@@ -121,10 +121,8 @@ function sort(sortKey)
 			return comp;
 		}
 	);
-	while (players.childNodes.length > 0)
-		players.removeChild(players.firstChild);
 	for (var i = 0; i < arr.length; ++i)
-		players.appendChild(arr[i], players.childNodes[i]);
+		players.appendChild(arr[i]);
 }
 
 function autoSort(sender)
