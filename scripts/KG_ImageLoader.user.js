@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           ImageLoader
+// @name           KG_ImageLoader
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/u/*
 // @author         agile
