@@ -97,7 +97,8 @@ function main(){
                 return;
             if( self.responseText.length && self.responseText[ 0 ] != '<' )
                 try{
-                    if( 'posts' in JSON.parse( self.responseText ) )
+                    var json = JSON.parse( self.responseText );
+                    if( 'posts' in json || 'updatedExisting' in json )
                         update();
                 }catch( e ){}
             window.clearInterval( check_response );
