@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    Отображает изображения вместо текстовых ссылок в записях разделов «Сводка», «Бортжурнал» и «Друзья».
-// @version        1.1.9
+// @version        1.2.0
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -97,7 +97,8 @@ function main(){
                 return;
             if( self.responseText.length && self.responseText[ 0 ] != '<' )
                 try{
-                    if( 'posts' in JSON.parse( self.responseText ) )
+                    var json = JSON.parse( self.responseText );
+                    if( 'posts' in json || 'updatedExisting' in json )
                         update();
                 }catch( e ){}
             window.clearInterval( check_response );
