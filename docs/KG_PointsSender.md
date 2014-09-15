@@ -1,4 +1,4 @@
-## KG_PointsSender [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](../scripts/KG_PointsSender.user.js)
+## KG_PointsSender [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/KG_PointsSender.user.js)
 **Авторы:** [agile](http://klavogonki.ru/u/#/226580/)
 
 В разделе «Сообщения» позволяет сделать множественную отправку очков нескольким пользователям.
