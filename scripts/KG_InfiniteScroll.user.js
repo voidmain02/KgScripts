@@ -12,19 +12,18 @@ function main(){
     var scroll_down_btn_sel = '.full-btn:not(.ng-hide)', // Button in the logbook
         scroll_up_btn_sel = '.loadmore', // Button in the dialog
         scrollable_win_sel = '.dialog-content', // Scrollable container in the dialog
-        dlg_segment_name = 'respondent', // AngularJS segment name for the dialog page
         win_cache = null, // A scrollable element cache
         old_hash = null,  // The window.location.hash old value
         pre_dy = 200,     // Minimal distance for autoload in px
         busy = false;
 
     window.addEventListener( 'scroll', function( event ){
+        if( busy )  // FireFox generates too many onscroll events — prevent several simultaneous clicks with this global flag
+            return;
         if( window.location.hash != old_hash ){
             old_hash = window.location.hash;
             return; // The content may be isn't fully loaded — skip the first onscroll event
         }
-        if( busy )  // FireFox generates too many onscroll events — prevent several simultaneous clicks with this global flag
-            return;
 
         var button;
         if( ! event.target.tagName && ( window.pageYOffset >= document.body.clientHeight - window.innerHeight - pre_dy ) ){
