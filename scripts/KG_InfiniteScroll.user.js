@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделах «Бортжурнал», «Друзья» и «Сообщения» автоматически подгружает старые записи при скроллинге колесом мыши
-// @version        1.0.3
+// @version        1.0.7
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -13,39 +13,42 @@ function main(){
         scroll_up_btn_sel = '.loadmore', // Button in the dialog
         scrollable_win_sel = '.dialog-content', // Scrollable container in the dialog
         dlg_segment_name = 'respondent', // AngularJS segment name for the dialog page
-        dlg_page = false, // Current page is dialog
-        pre_dy = 300,     // Minimal distance for autoload in px
-        btn_cache = null, // Button element cache
-        win_cache = null; // Scrollable element cache
+        win_cache = null, // A scrollable element cache
+        old_hash = null,  // The window.location.hash old value
+        pre_dy = 200,     // Minimal distance for autoload in px
+        busy = false;
 
-    function check_load( dir_down ){
-        var sel = dir_down ? scroll_down_btn_sel : scroll_up_btn_sel;
-        if( ! btn_cache || ! document.contains( btn_cache ) ){
-            btn_cache = document.querySelector( sel );
-            btn_cache = btn_cache && btn_cache.innerHTML.indexOf( 'Перейти' ) > 0 ? null : btn_cache; // Prevent auto-redirect to the logbook
+    window.addEventListener( 'scroll', function( event ){
+        if( window.location.hash != old_hash ){
+            old_hash = window.location.hash;
+            return; // The content may be isn't fully loaded — skip the first onscroll event
         }
-        if( ! btn_cache )
+        if( busy )  // FireFox generates too many onscroll events — prevent several simultaneous clicks with this global flag
             return;
-        if( dir_down && ! dlg_page && ( window.pageYOffset >= document.body.clientHeight - window.innerHeight - pre_dy ) )
-            btn_cache.click();
-        else if( ! dir_down && dlg_page ){
+
+        var button;
+        if( ! event.target.tagName && ( window.pageYOffset >= document.body.clientHeight - window.innerHeight - pre_dy ) ){
+            button = document.querySelector( scroll_down_btn_sel );
+            if( button && button.innerHTML.indexOf( 'Перейти' ) < 0 ){
+                button.click();
+                busy = true;
+            }
+        }else if( event.target.tagName ){
             if( ! win_cache || ! document.contains( win_cache ) )
                 win_cache = document.querySelector( scrollable_win_sel );
-            if( win_cache && win_cache.scrollTop <= pre_dy )
-                btn_cache.click();
+            if( win_cache && win_cache.scrollTop <= pre_dy ){
+                button = document.querySelector( scroll_up_btn_sel );
+                if( button ){
+                    button.click();
+                    busy = true;
+                }
+            }
         }
-    }
-
-    window.addEventListener( 'wheel', function( event ){
-        check_load( event.deltaY > 0 ? true : false );
-    });
-    // Fix for the old browsers like CoolNovo:
-    window.addEventListener( 'mousewheel', function( event ){
-        check_load( event.wheelDelta < 0 ? true : false );
-    });
-    angular.element( 'body' ).scope().$on( 'routeSegmentChange', function( e, obj ){
-        dlg_page = obj.segment && obj.segment.name == dlg_segment_name ? true : false;
-    });
+        if( busy )
+            window.setTimeout(function(){
+                busy = false;
+            }, 500 );
+    }, true );
 }
 
 window.addEventListener( 'load', function(){
