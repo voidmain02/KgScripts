@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сообщения» позволяет сделать множественную отправку очков нескольким пользователям
-// @version        1.0.9
+// @version        1.1.0
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -45,6 +45,14 @@ function main(){
                     window.location.reload();
             }
         }
+        function show_error( row, text ){
+            row.addClass( 'has-error' );
+            var error_text = document.createElement( 'div' );
+            error_text.addClass( 'help-block' );
+            error_text.innerHTML = text; ;
+            row.appendChild( error_text );
+            all_successed = false;
+        }
 
         angular.element( 'body' ).injector().invoke(function( $http ){
             for( var i = 0; i < rows.length; i++ ){
@@ -73,12 +81,7 @@ function main(){
                     window.setTimeout(function(){
                         $http.get( get_id_url + username ).success(function( data ){
                             if( ! data || ! data.id ){
-                                row.addClass( 'has-error' );
-                                var error_text = document.createElement( 'div' );
-                                error_text.addClass( 'help-block' );
-                                error_text.innerHTML = 'Невозможно отправить очки — пользователь не найден.';
-                                row.appendChild( error_text );
-                                all_successed = false;
+                                show_error( row, 'Невозможно отправить очки — пользователь не найден.' );
                                 check_complete( ++processed_rows );
                             }else
                                 $http.post( send_points_url, {
@@ -86,17 +89,19 @@ function main(){
                                     respondentId: data.id,
                                     message: message
                                 }).success(function( data ){
-                                    console.info( i, data );
+                                    if( data && data.err == 'permission blocked' )
+                                        show_error( row, 'Невозможно отправить очки — пользователь заблокировал отправку личных сообщений.' );
+                                    else
+                                        row.parentNode.removeChild( row );
                                     check_complete( ++processed_rows );
-                                    row.parentNode.removeChild( row );
                                 }).error(function( data ){
+                                    show_error( row, 'Неизвестная ошибка при отправке очков пользователю.' );
                                     console.error( data );
-                                    all_successed = false;
                                     check_complete( ++processed_rows );
                                 });
                         }).error(function( data ){
+                            show_error( row, 'Ошибка при получении id пользователя.' );
                             console.error( data );
-                            all_successed = false;
                             check_complete( ++processed_rows );
                         });
                     }, i * requests_delay );
