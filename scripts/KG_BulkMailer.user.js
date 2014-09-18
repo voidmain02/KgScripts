@@ -48,11 +48,7 @@ top: 10px; right: 4px; width: 14px; height: 14px; font-size: 12px; color: #aaa; 
 
 var angularRootElement = angular.element('body'),
     rootScope = angularRootElement.scope(),
-    injector = angularRootElement.injector(),
-    api = injector.get('Api'),
-    profile = injector.get('Profile'),
-    profileMessagesContactsLoader = injector.get('ProfileMessagesContactsLoader'),
-    dialogs = injector.get('Dialogs');
+    injector = angularRootElement.injector();
 
 Array.prototype.getUnique = function(){
    var u = {}, a = [];
@@ -67,7 +63,7 @@ Array.prototype.getUnique = function(){
 };
 
 var showBulkMailerModal = function() {
-    injector.invoke(function($modal2, $sce, $q) {
+    injector.invoke(function($modal2, $q, Dialogs, ProfileMessagesContactsLoader, Api, Profile) {
         $modal2.open({
             template: bulkMailerModalTemplate,
             controller: function($scope, $modalInstance) {
@@ -88,10 +84,10 @@ var showBulkMailerModal = function() {
                     }
                     
                     var sendMessagePromises = respondents.map(function(respondent) {
-                        return $q.when(!/{user\.(name|rank)}/i.test(message) ? message : profile.getSummary(respondent).then(function(summary) {
+                        return $q.when(!/{user\.(name|rank)}/i.test(message) ? message : Profile.getSummary(respondent).then(function(summary) {
                             return message.replace(/{user\.name}/gi, summary.user.login).replace(/{user\.rank}/gi, summary.title);
                         })).then(function(message) {
-                            return api.post("profile/send-message", {
+                            return Api.post("profile/send-message", {
                                 respondentId: respondent,
                                 text: message
                             });
@@ -101,7 +97,7 @@ var showBulkMailerModal = function() {
                     });
                     
                     $q.all(sendMessagePromises).then(function(results) {
-                        return profileMessagesContactsLoader.load().then(function() {
+                        return ProfileMessagesContactsLoader.load().then(function() {
                             return results;
                         });
                     }).then(function(results) {
@@ -115,14 +111,14 @@ var showBulkMailerModal = function() {
                         }
                         
                         if(errorRespondents.length > 0) {
-                            dialogs.alert('Ой!', 'Не удалось отправить сообщение следующим пользователям: ' + errorRespondents.join(', '));
+                            Dialogs.alert('Ой!', 'Не удалось отправить сообщение следующим пользователям: ' + errorRespondents.join(', '));
                         }
                     }, function(error) {
-                        dialogs.alert('Ой!', 'Не удалось обновить список сообщений: "' + error + '"');
+                        Dialogs.alert('Ой!', 'Не удалось обновить список сообщений: "' + error + '"');
                     });
                 };
                 $scope.appendFriends = function() {
-                    profile.getFriends(rootScope.Me.id).then(function(result) {
+                    Profile.getFriends(rootScope.Me.id).then(function(result) {
                         for(var i = 0; i < result.users.length; i++) {
                             if(i > 0 || !/^\s*$/.test($scope.KG_BulkMailer.respondentsString)) {
                                 $scope.KG_BulkMailer.respondentsString += ', ';
