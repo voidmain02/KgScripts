@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           Complexity Panel
+// @name           KG_ComplexityPanel
 // @version        1.4
 // @namespace      klavogonki
 // @author         Silly_Sergio
