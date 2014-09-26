@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделах «Бортжурнал», «Друзья» и «Сообщения» автоматически подгружает старые записи при скроллинге колесом мыши
-// @version        1.0.7
+// @version        1.1.0
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -13,23 +13,29 @@ function main(){
         scroll_up_btn_sel = '.loadmore', // Button in the dialog
         scrollable_win_sel = '.dialog-content', // Scrollable container in the dialog
         win_cache = null, // A scrollable element cache
-        old_hash = null,  // The window.location.hash old value
         pre_dy = 200,     // Minimal distance for autoload in px
+        timer,            // A global timer for the $includeContentLoaded event
         busy = false;
 
     window.addEventListener( 'scroll', function( event ){
-        if( busy )  // FireFox generates too many onscroll events — prevent several simultaneous clicks with this global flag
+        if( busy )  // Check if the DOM is ready
             return;
-        if( window.location.hash != old_hash ){
-            old_hash = window.location.hash;
-            return; // The content may be isn't fully loaded — skip the first onscroll event
-        }
-
         var button;
         if( ! event.target.tagName && ( window.pageYOffset >= document.body.clientHeight - window.innerHeight - pre_dy ) ){
             button = document.querySelector( scroll_down_btn_sel );
-            if( button && button.innerHTML.indexOf( 'Перейти' ) < 0 ){
-                button.click();
+            if( button ){
+                if( button.hasAttribute( 'href' ) ){
+                    // We have a link to the logbook, not a button:
+                    button.innerHTML = 'Загрузить еще';
+                    button.setAttribute( 'disabled', 'disabled' );
+                    var old_class = button.className;
+                    button.className += ' striped';
+                    angular.element( button.parentNode ).scope().Journal.onLoadMore().then(function(){
+                        button.className = old_class;
+                        button.removeAttribute( 'disabled' );
+                    });
+                }else
+                    button.click();
                 busy = true;
             }
         }else if( event.target.tagName ){
@@ -48,6 +54,18 @@ function main(){
                 busy = false;
             }, 500 );
     }, true );
+
+    // We need to wait for the ng-include in the logbook — otherwise ngRepeat:dupes error may occur
+    var root = angular.element( document.body ).scope();
+    root.$on( '$includeContentLoaded', function(){
+        window.clearTimeout( timer );
+        timer = window.setTimeout(function(){
+            busy = false;
+        }, 500 );
+    });
+    root.$on( '$includeContentRequested', function(){
+        busy = true;
+    });
 }
 
 window.addEventListener( 'load', function(){
