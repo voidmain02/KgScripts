@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.0.2
+// @version        1.0.3
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -175,9 +175,9 @@ function main(){
     function game_route(){
         Game.KG_ChatHotkey = new KG_ChatHotkey( default_combination );
         Game.KG_ChatHotkey.bind(function( event ){
-            event.preventDefault();
             if( event.target.tagName.toLowerCase() == 'input' )
                 return;
+            event.preventDefault();
             var minimize_btn = document.querySelector( minimize_btn_sel );
             if( minimize_btn )
                 minimize_btn.click();
