@@ -175,9 +175,11 @@ function main(){
     function game_route(){
         Game.KG_ChatHotkey = new KG_ChatHotkey( default_combination );
         Game.KG_ChatHotkey.bind(function( event ){
+            event.preventDefault();
             if( event.target.tagName.toLowerCase() == 'input' )
                 return;
             document.querySelector( minimize_btn_sel ).click();
+            return false;
         });
     }
     function profile_route(){
