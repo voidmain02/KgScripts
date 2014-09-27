@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.0.0
+// @version        1.0.2
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -178,7 +178,9 @@ function main(){
             event.preventDefault();
             if( event.target.tagName.toLowerCase() == 'input' )
                 return;
-            document.querySelector( minimize_btn_sel ).click();
+            var minimize_btn = document.querySelector( minimize_btn_sel );
+            if( minimize_btn )
+                minimize_btn.click();
             return false;
         });
     }
