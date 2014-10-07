@@ -4,177 +4,134 @@
 // @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.0.3
+// @version        1.0.4
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){
-    var default_combination = 'Shift + C',
+    var default_combination = [ 'Shift', 'C' ],
         minimize_btn_sel = '#chat-content td.mostright',
         script_template =
     '<form class="journal-prefs prefs-block">' +
         '<h4>Пользовательский скрипт <span style="text-transform: none">KG_ChatHotkey</span></h4>' +
         '<label class="drop-pref" style="display: block; font-weight: 400">' +
             'Комбинация клавиш для сворачивания чата в заезде:' +
-            '<input type="text" class="form-control" ng-model="KG_ChatHotkey.combination" ng-change="KG_ChatHotkey.save_settings()">' +
+            '<input type="text" class="form-control" ng-model="chathotkey.combination_text" ng-keyup="chathotkey.save_settings()" ng-keydown="chathotkey.update($event)">' +
         '</label>' +
     '</form>';
 
     function KG_ChatHotkey( default_combination ){
-        this.callback = function(){};
         this.combination = default_combination;
+        this.temp_combination = [];
+        this.pressed = [];
+        this.combination_text = default_combination.join( ' + ' );
         this.store = window.localStorage;
         this.prefix = 'KG_ChatHotkey';
         this.load_settings();
-        // Map for the localization specific characters
-        this.keycode_map = {
-            186: ';',
-            187: '=',
-            188: ',',
-            189: '-',
-            190: '.',
-            191: '/',
-            192: '`',
-            219: '[',
-            220: '\\',
-            221: ']',
-            222: '\''
-        };
-        // Map for the US keyboards
-        this.shift_map = {
-             '`' : '~',
-             '1' : '!',
-             '2' : '@',
-             '3' : '#',
-             '4' : '$',
-             '5' : '%',
-             '6' : '^',
-             '7' : '&',
-             '8' : '*',
-             '9' : '(',
-             '0' : ')',
-             '-' : '_',
-             '=' : '+',
-             ';' : ':',
-            '\'' : '"',
-             ',' : '<',
-             '.' : '>',
-             '/' : '?',
-            '\\' : '|'
-        };
-        this.special_map = {
-            'esc' : 27,
-            'escape' : 27,
-            'tab' : 9,
-            'space' : 32,
-            'return' : 13,
-            'enter' : 13,
-            'backspace' : 8,
-            'meta' : 91,
-            'win' : 91,
-            'win_left' : 91,
-            'winleft' : 91,
-            'win_right' : 92,
-            'winright' : 92,
-            'context' : 93,
-            'context_menu' : 93,
-            'menu' : 93,
-            'alt_gr' : 93,
-            'altgr' : 93,
-
-            'scrolllock' : 145,
-            'scroll' : 145,
-            'capslock' : 20,
-            'caps_lock' : 20,
-            'caps' : 20,
-            'numlock' : 144,
-            'num_lock' : 144,
-            'num' : 144,
-
-            'pause' : 19,
-            'break' : 19,
-
-            'insert' : 45,
-            'home' : 36,
-            'delete' : 46,
-            'end' : 35,
-
-            'pageup' : 33,
-            'page_up' : 33,
-            'pu' : 33,
-
-            'pagedown' : 34,
-            'page_down' : 34,
-            'pd' : 34,
-
-            'left' : 37,
-            'up' : 38,
-            'right' : 39,
-            'down' : 40,
-
-            'f1' : 112,
-            'f2' : 113,
-            'f3' : 114,
-            'f4' : 115,
-            'f5' : 116,
-            'f6' : 117,
-            'f7' : 118,
-            'f8' : 119,
-            'f9' : 120,
-            'f10' : 121,
-            'f11' : 122,
-            'f12' : 123
+        this.shift_map = { // Is used only for the visual "correctness" of the hotkey combination
+            '~' : '`',
+            '!' : '1',
+            '@' : '2',
+            '#' : '3',
+            '$' : '4',
+            '%' : '5',
+            '^' : '6',
+            '&' : '7',
+            '*' : '8',
+            '(' : '9',
+            ')' : '0',
+            '_' : '-',
+            '+' : '=',
+            ':' : ';',
+            '"' : '\'',
+            '<' : ',',
+            '>' : '.',
+            '?' : '/',
+            '|' : '\\'
         };
     }
 
     KG_ChatHotkey.prototype.load_settings = function(){
         var stored = this.store.getItem( this.prefix + '_combination' );
-        if( stored )
+        if( stored ){
+            try{
+                stored = JSON.parse( stored );
+            }catch( error ){
+                stored = this.combination; // Falling back to the default combination
+                console.error( error );
+            }
             this.combination = stored;
+            this.combination_text = stored.join( ' + ' );
+        }
     };
 
+    /*
+     * A keyup event handler for the text field in settings. Saves the new hotkey combination to the LocalStorage.
+     */
     KG_ChatHotkey.prototype.save_settings = function(){
-        this.store.setItem( this.prefix + '_combination', this.combination );
+        if( ! this.temp_combination.length )
+            return;
+        this.store.setItem( this.prefix + '_combination', JSON.stringify( this.temp_combination ) );
+        this.combination = this.temp_combination;
+        this.temp_combination = [];
     };
 
-    KG_ChatHotkey.prototype.handler = function( event ){
-        var character = String.fromCharCode( event.keyCode ).toLowerCase(),
-            keys = this.combination.replace( /\s/g, '' ).toLowerCase().split( '+' ),
-            valid_pressed = 0;
+    /*
+     * A keydown event handler for the text field in settings. Constructs the new hotkey combination without saving.
+     */
+    KG_ChatHotkey.prototype.update = function( event ){
+        event.key = event.originalEvent.key || event.originalEvent.keyIdentifier;
+        event.preventDefault();
+        var key = this.code2sym( event.key );
 
-        for( var i = 0; k = keys[ i ], i < keys.length; i++ )
-            if( k == 'ctrl' || k == 'control' ){
-                if( event.ctrlKey ) valid_pressed++;
+        if( ! event.which || this.temp_combination.indexOf( key ) > -1 )
+            return false;
 
-            }else if( k == 'shift'){
-                if( event.shiftKey ) valid_pressed++;
-
-            }else if( k == 'alt' ){
-                if( event.altKey ) valid_pressed++;
-
-            }else if( k.length > 1 ){
-                if( this.special_map[ k ] == event.keyCode ) valid_pressed++;
-
-            }else
-                if( character == k )
-                    valid_pressed++;
-                else if( this.keycode_map[ event.keyCode ] && ( this.keycode_map[ event.keyCode ] == k ||
-                         event.shiftKey && this.shift_map[ this.keycode_map[ event.keyCode ] ] == k ) )
-                    valid_pressed++;
-                else if( this.shift_map[ character ] && event.shiftKey && this.shift_map[ character ] == k )
-                    valid_pressed++;
-        if( valid_pressed === keys.length )
-            this.callback( event );
+        this.temp_combination.push( key );
+        var arr = this.temp_combination.slice();
+        for( var i = 0; i < arr.length; i++ ){
+            if( arr[ i ] in this.shift_map )
+                arr[ i ] = this.shift_map[ arr[ i ] ];
+        }
+        this.combination_text = arr.join( ' + ' );
+        return false;
     };
 
+    /*
+     * Returns a symbol by the unicode 'U+NNNN' string, if the last is present.
+     */
+    KG_ChatHotkey.prototype.code2sym = function( code ){
+        if( code.length != 6 || code.indexOf( 'U+' ) < 0 )
+            return code;
+        return String.fromCharCode( parseInt( code.split( '+' )[ 1 ], 16 ) );
+    };
+
+    /*
+     * Binds the hotkey combination to some function.
+     */
     KG_ChatHotkey.prototype.bind = function( func ){
-        this.callback = func;
-        window.addEventListener( 'keydown', this.handler.bind( this ), true );
+        var self = this;
+        window.addEventListener( 'keydown', function( event ){
+            event.key = event.key || event.keyIdentifier;
+            var key = self.code2sym( event.key );
+
+            if( ! event.which || self.pressed.indexOf( key ) > -1 )
+                return;
+
+            self.pressed.push( key );
+            if( self.pressed.toString() === self.combination.toString() ){
+                func( event, self.combination );
+                self.pressed = [];
+            }
+        }, true );
+        window.addEventListener( 'keyup', function(){
+            self.pressed = [];
+        }, true );
     };
 
     function game_route(){
-        Game.KG_ChatHotkey = new KG_ChatHotkey( default_combination );
-        Game.KG_ChatHotkey.bind(function( event ){
+        Game.chathotkey = new KG_ChatHotkey( default_combination );
+        Game.chathotkey.bind(function( event ){
             if( event.target.tagName.toLowerCase() == 'input' )
                 return;
             event.preventDefault();
@@ -191,7 +148,7 @@ function main(){
                     template = route.segment.locals.$template,
                     index = template.lastIndexOf( '</div>' );
                 route.segment.locals.$template = template.substring( 0, index ) + script_template + template.substring( index );
-                scope.KG_ChatHotkey = new KG_ChatHotkey( default_combination );
+                scope.chathotkey = new KG_ChatHotkey( default_combination );
             }
         });
     }
