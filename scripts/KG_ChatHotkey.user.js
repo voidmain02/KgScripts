@@ -4,12 +4,12 @@
 // @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.0.5
+// @version        1.0.6
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){
-    var default_combination = [ 'Shift', 'C' ],
+    var default_combination = [ { key: 'Shift', code: 16 }, { key: 'C', code: 67 } ], // keyCode is used to make the combination independent to layout changes
         minimize_btn_sel = '#chat-content td.mostright',
         script_template =
     '<form class="journal-prefs prefs-block">' +
@@ -56,12 +56,14 @@ function main(){
         if( stored ){
             try{
                 stored = JSON.parse( stored );
+                if( typeof stored[ 0 ] != 'object' )
+                    stored = this.combination;
             }catch( error ){
                 stored = this.combination; // Falling back to the default combination
                 console.error( error );
             }
             this.combination = stored;
-            this.combination_text = stored.join( ' + ' );
+            this.combination_text = stored.map(function( obj ){ return obj.key }).join( ' + ' );
         }
     };
 
@@ -80,20 +82,21 @@ function main(){
      * A keydown event handler for the text field in settings. Constructs the new hotkey combination without saving.
      */
     KG_ChatHotkey.prototype.update = function( event ){
-        event.key = event.originalEvent.key || event.originalEvent.keyIdentifier;
+        event.key = this.code2sym( event.originalEvent.key || event.originalEvent.keyIdentifier );
         event.preventDefault();
-        var key = this.code2sym( event.key );
 
-        if( ! event.which || this.temp_combination.indexOf( key ) > -1 )
+        // Prevent adding unidentified key or already existing key:
+        if( ! event.which || this.temp_combination.some(function( obj ){ return obj.key === event.key }) )
             return false;
 
-        this.temp_combination.push( key );
+        this.temp_combination.push( { key: event.key, code: event.keyCode } );
         var arr = this.temp_combination.slice();
+
         for( var i = 0; i < arr.length; i++ ){
             if( arr[ i ] in this.shift_map )
                 arr[ i ] = this.shift_map[ arr[ i ] ];
         }
-        this.combination_text = arr.join( ' + ' );
+        this.combination_text = arr.map(function( obj ){ return obj.key }).join( ' + ' );
         return false;
     };
 
@@ -112,20 +115,17 @@ function main(){
     KG_ChatHotkey.prototype.bind = function( func ){
         var self = this;
         window.addEventListener( 'keydown', function( event ){
-            event.key = event.key || event.keyIdentifier;
-            var key = self.code2sym( event.key );
+            event.key = self.code2sym( event.key || event.keyIdentifier );
+            self.pressed.push( { key: event.key, code: event.keyCode } );
 
-            if( ! event.which || self.pressed.indexOf( key ) > -1 )
-                return;
-
-            self.pressed.push( key );
-            if( self.pressed.toString() === self.combination.toString() ){
+            if( self.pressed.map(function( obj ){ return obj.code }).toString() === self.combination.map(function( obj ){ return obj.code }).toString() )
                 func( event, self.combination );
-                self.pressed = [];
-            }
         }, true );
-        window.addEventListener( 'keyup', function(){
-            self.pressed = [];
+        window.addEventListener( 'keyup', function( event ){
+            if( event.shiftKey || event.altKey || event.ctrlKey )
+                self.pressed.pop();
+            else
+                self.pressed = [];
         }, true );
     };
 
