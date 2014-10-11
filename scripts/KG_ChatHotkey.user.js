@@ -4,13 +4,14 @@
 // @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.0.6
+// @version        1.0.9
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){
-    var default_combination = [ { key: 'Shift', code: 16 }, { key: 'C', code: 67 } ], // keyCode is used to make the combination independent to layout changes
+    var default_combination = [ { key: 'Control', code: 17 }, { key: 'Shift', code: 16 }, { key: 'D', code: 68 } ], // keyCode is used to make the combination independent to layout changes
         minimize_btn_sel = '#chat-content td.mostright',
+        chat_input_sel = '#chat-content input.text',
         script_template =
     '<form class="journal-prefs prefs-block">' +
         '<h4>Пользовательский скрипт <span style="text-transform: none">KG_ChatHotkey</span></h4>' +
@@ -93,8 +94,8 @@ function main(){
         var arr = this.temp_combination.slice();
 
         for( var i = 0; i < arr.length; i++ ){
-            if( arr[ i ] in this.shift_map )
-                arr[ i ] = this.shift_map[ arr[ i ] ];
+            if( arr[ i ].key in this.shift_map )
+                arr[ i ].key = this.shift_map[ arr[ i ].key ];
         }
         this.combination_text = arr.map(function( obj ){ return obj.key }).join( ' + ' );
         return false;
@@ -117,8 +118,8 @@ function main(){
         window.addEventListener( 'keydown', function( event ){
             event.key = self.code2sym( event.key || event.keyIdentifier );
             self.pressed.push( { key: event.key, code: event.keyCode } );
-
-            if( self.pressed.map(function( obj ){ return obj.code }).toString() === self.combination.map(function( obj ){ return obj.code }).toString() )
+            if( self.pressed.length === self.combination.length &&
+                self.pressed.map(function( obj ){ return obj.code }).toString() === self.combination.map(function( obj ){ return obj.code }).toString() )
                 func( event, self.combination );
         }, true );
         window.addEventListener( 'keyup', function( event ){
@@ -134,14 +135,20 @@ function main(){
         Game.chathotkey.bind(function( event ){
             if( ! event.ctrlKey && ! event.metaKey && ! event.altKey && event.which != 8 ){
                 // Our hotkey combination will produce printable character when the text field is focused on — avoid chat minimization in that case:
-                var target = event.target.tagName.toLowerCase();
+                var target = event.target.tagName.toLowerCase(),
+                    char_event = true;
                 if( target == 'input' || target == 'textarea' )
                     return;
             }
             event.preventDefault();
-            var minimize_btn = document.querySelector( minimize_btn_sel );
+            var minimize_btn = document.querySelector( minimize_btn_sel ),
+                chat_inputs = document.querySelectorAll( chat_input_sel );
             if( minimize_btn )
                 minimize_btn.click();
+            if( ! char_event )
+                for( var i = 0; i < chat_inputs.length; i++ )
+                    if( chat_inputs[ i ].offsetParent )
+                        chat_inputs[ i ].focus();
             return false;
         });
     }
