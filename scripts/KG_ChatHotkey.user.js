@@ -9,7 +9,7 @@
 // ==/UserScript==
 
 function main(){
-    var default_combination = [ { key: 'Control', code: 17 }, { key: 'Shift', code: 16 }, { key: 'D', code: 68 } ], // keyCode is used to make the combination independent to layout changes
+    var default_combination = { ctrl: true, shift: true, alt: false, keys: [ { key: 'D', code: 68 } ] }, // keyCode is used to make the combination independent to layout changes
         minimize_btn_sel = '#chat-content td.mostright',
         chat_input_sel = '#chat-content input.text',
         script_template =
@@ -23,12 +23,10 @@ function main(){
 
     function KG_ChatHotkey( default_combination ){
         this.combination = default_combination;
-        this.temp_combination = [];
+        this.temp_combination = { ctrl: false, shift: false, alt: false, keys: [] };
         this.pressed = [];
-        this.combination_text = default_combination.join( ' + ' );
         this.store = window.localStorage;
         this.prefix = 'KG_ChatHotkey';
-        this.load_settings();
         this.shift_map = { // Is used only for the visual "correctness" of the hotkey combination
             '~' : '`',
             '!' : '1',
@@ -50,6 +48,7 @@ function main(){
             '?' : '/',
             '|' : '\\'
         };
+        this.load_settings();
     }
 
     KG_ChatHotkey.prototype.load_settings = function(){
@@ -57,26 +56,42 @@ function main(){
         if( stored ){
             try{
                 stored = JSON.parse( stored );
-                if( typeof stored[ 0 ] != 'object' )
+                if( typeof stored !== 'object' || typeof stored.keys !== 'object' )
                     stored = this.combination;
             }catch( error ){
                 stored = this.combination; // Falling back to the default combination
                 console.error( error );
             }
             this.combination = stored;
-            this.combination_text = stored.map(function( obj ){ return obj.key }).join( ' + ' );
+            this.combination_text = this.get_combination_string( stored );
         }
+    };
+
+    KG_ChatHotkey.prototype.get_combination_string = function( combination ){
+        var keys = combination.keys,
+            arr = [];
+
+        for( var i = 0; i < keys.length; i++ )
+            arr.push( keys[ i ].key in this.shift_map ? this.shift_map[ keys[ i ].key ] : keys[ i ].key );
+        if( combination.alt )
+            arr.unshift( 'Alt' );
+        if( combination.ctrl )
+            arr.unshift( 'Control' );
+        if( combination.shift )
+            arr.unshift( 'Shift' );
+
+        return arr.join( ' + ' );
     };
 
     /*
      * A keyup event handler for the text field in settings. Saves the new hotkey combination to the LocalStorage.
      */
     KG_ChatHotkey.prototype.save_settings = function(){
-        if( ! this.temp_combination.length )
+        if( ! this.temp_combination.shift && ! this.temp_combination.ctrl && ! this.temp_combination.alt && ! this.temp_combination.keys.length )
             return;
         this.store.setItem( this.prefix + '_combination', JSON.stringify( this.temp_combination ) );
         this.combination = this.temp_combination;
-        this.temp_combination = [];
+        this.temp_combination = { ctrl: false, shift: false, alt: false, keys: [] };
     };
 
     /*
@@ -87,17 +102,15 @@ function main(){
         event.preventDefault();
 
         // Prevent adding unidentified key or already existing key:
-        if( ! event.which || this.temp_combination.some(function( obj ){ return obj.key === event.key }) )
+        if( ! event.which || this.temp_combination.keys.some(function( obj ){ return obj.key === event.key }) )
             return false;
 
-        this.temp_combination.push( { key: event.key, code: event.keyCode } );
-        var arr = this.temp_combination.slice();
-
-        for( var i = 0; i < arr.length; i++ ){
-            if( arr[ i ].key in this.shift_map )
-                arr[ i ].key = this.shift_map[ arr[ i ].key ];
-        }
-        this.combination_text = arr.map(function( obj ){ return obj.key }).join( ' + ' );
+        this.temp_combination.shift = event.shiftKey || event.key === 'Shift';
+        this.temp_combination.ctrl = event.ctrlKey || event.key === 'Control';
+        this.temp_combination.alt = event.altKey || event.key === 'Alt';
+        if( event.key !== 'Shift' && event.key !== 'Control' && event.key !== 'Alt' )
+            this.temp_combination.keys.push( { key: event.key, code: event.keyCode } );
+        this.combination_text = this.get_combination_string( this.temp_combination );
         return false;
     };
 
@@ -105,7 +118,7 @@ function main(){
      * Returns a symbol by the unicode 'U+NNNN' string, if the last is present.
      */
     KG_ChatHotkey.prototype.code2sym = function( code ){
-        if( code.length != 6 || code.indexOf( 'U+' ) < 0 )
+        if( code.length !== 6 || code.indexOf( 'U+' ) < 0 )
             return code;
         return String.fromCharCode( parseInt( code.split( '+' )[ 1 ], 16 ) );
     };
@@ -117,16 +130,18 @@ function main(){
         var self = this;
         window.addEventListener( 'keydown', function( event ){
             event.key = self.code2sym( event.key || event.keyIdentifier );
-            self.pressed.push( { key: event.key, code: event.keyCode } );
-            if( self.pressed.length === self.combination.length &&
-                self.pressed.map(function( obj ){ return obj.code }).toString() === self.combination.map(function( obj ){ return obj.code }).toString() )
+            if( event.shiftKey !== self.combination.shift && ! ( event.key === 'Shift' && self.combination.shift ) ||
+                event.ctrlKey !== self.combination.ctrl || event.altKey !== self.combination.alt )
+            {
+                return;
+            }
+            if( event.key !== 'Shift' && event.key !== 'Control' && event.key !== 'Alt' )
+                self.pressed.push( event.keyCode );
+            if( self.pressed.toString() === self.combination.keys.map(function( obj ){ return obj.code }).toString() )
                 func( event, self.combination );
         }, true );
         window.addEventListener( 'keyup', function( event ){
-            if( event.shiftKey || event.altKey || event.ctrlKey )
-                self.pressed.pop();
-            else
-                self.pressed = [];
+            self.pressed = [];
         }, true );
     };
 
