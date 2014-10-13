@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           StatisticsAvgResults
-// @version        1.0
+// @version        1.1
 // @namespace      klavogonki
 // @author         Fenex
 // @include        http://klavogonki.ru/u/*
@@ -12,16 +12,16 @@
 
 function main () {
     var injector = angular.element('body').injector();
-  
+
     injector.invoke(function($rootScope, $compile) {
         var $scope = $rootScope.$new();
-        
+
         $scope.$watch(function() {
             return angular.element('.google-visualization-table-table tr').length;
         }, function(a, b) {
             var scope = angular.element('.table-controls').parent().scope();
-            if(!scope) { return; }
-            
+            if(!scope || !scope.Plain) { return; }
+
             var speed = 0;
             var errors = 0;
             var results = scope.Plain.dataTables.table.tf;
@@ -29,16 +29,16 @@ function main () {
                 speed += results[i]['c'][4].v;
                 errors += results[i]['c'][7].v;
             }
-            
+
             $scope.avg_speed = (speed / results.length).toFixed(2);
             $scope.avg_errors = (errors / results.length).toFixed(2);
             $scope.count = results.length;
-            
+
             if(!angular.element('.table-controls > span').length) {
                 var element = angular
                     .element('<span>Заездов: {{count}}. Средняя скорость: {{avg_speed}}. Ошибки: {{avg_errors}}%</span>')
-                    .prependTo(angular.element('.table-controls'));            
-                
+                    .prependTo(angular.element('.table-controls'));
+
                 $compile(element)($scope);
                 $rootScope.$apply();
             }
@@ -46,12 +46,14 @@ function main () {
     });
 }
 
-var script = document.createElement('script');
-script.setAttribute("type", "application/javascript");
-script.textContent = '(' + main + ')();';
-document.body.appendChild(script);
-document.body.removeChild(script);
+window.addEventListener( 'load', function(){
+    var script = document.createElement('script');
+    script.setAttribute("type", "application/javascript");
+    script.textContent = '(' + main + ')();';
+    document.body.appendChild(script);
+    document.body.removeChild(script);
 
-var style = document.createElement('style');
-style.innerHTML = '.table-controls > span{color: black; float: left;} .table-controls > span:hover{color: black;}';
-document.head.appendChild(style);
+    var style = document.createElement('style');
+    style.innerHTML = '.table-controls > span{color: black; float: left;} .table-controls > span:hover{color: black;}';
+    document.head.appendChild(style);
+});
