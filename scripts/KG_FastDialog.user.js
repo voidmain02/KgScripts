@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сообщения» добавляет текстовое поле для быстрого открытия диалога по нику пользователя
-// @version        1.0.0
+// @version        1.0.1
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -39,7 +39,6 @@ function main(){
         var form = document.createElement( 'form' ),
             input = document.createElement( 'input' );
         form.className = 'open-dialog';
-        form.style.marginTop = '20px';
         input.placeholder = 'Введите ник игрока и нажмите Enter для перехода к диалогу';
         input.className = 'form-control';
         form.appendChild( input );
@@ -65,4 +64,10 @@ window.addEventListener( 'load', function(){
     inject.setAttribute( 'type', 'application/javascript' );
     inject.appendChild( document.createTextNode( '(' + main.toString() + ')()' ) );
     document.body.appendChild( inject );
+    var style = document.createElement( 'style' );
+    style.setAttribute( 'type', 'text/css' );
+    document.head.appendChild( style );
+    var sheet = style.sheet;
+    sheet.insertRule( 'form.open-dialog{ margin: 1em 0 }', sheet.cssRules.length );
+    sheet.insertRule( 'form.open-dialog > input.form-control:focus{ border-color: #9bc7e9 }', sheet.cssRules.length );
 }, false );
