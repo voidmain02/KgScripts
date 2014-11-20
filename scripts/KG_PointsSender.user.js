@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сообщения» позволяет сделать множественную отправку очков нескольким пользователям
-// @version        1.1.0
+// @version        1.1.1
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -114,7 +114,6 @@ function main(){
         var wrapper = document.createElement( 'div' ),
             username = document.createElement( 'input' );
         username.type = 'text';
-        username.setAttribute( 'style', 'display: inline-block; width: 20%; margin-right: 5%' );
         username.addClass( 'form-control' );
         var points = username.cloneNode(),
             message = username.cloneNode();
@@ -125,13 +124,10 @@ function main(){
             this.value = ! isNaN( v ) && parseInt( Number( v ) ) == v && ! isNaN( parseInt( v, 10 ) ) ? v : v.slice( 0, -1 );
         };
         message.placeholder = 'Введите текст сообщения';
-        message.style.width = '40%';
-        message.style.marginRight = 0;
         wrapper.appendChild( username );
         wrapper.appendChild( points );
         wrapper.appendChild( message );
         wrapper.appendChild( create_button({ text: 'X',
-            style: 'width: 5%; margin-left: 5%',
             title: 'Удалить получателя',
             tabindex: -1,
             click: function(){
@@ -162,7 +158,6 @@ function main(){
         observer.observe( form, { childList: true } );
 
         form.id = points_form_id.slice( 1 );
-        form.style.marginBottom = '15px';
         form.appendChild( create_row() );
         form.appendChild( create_button({ text: 'Добавить получателя',
             click: function(){
@@ -170,13 +165,11 @@ function main(){
             }
         }) );
         form.appendChild( create_button({ text: 'Отправить очки',
-            style: 'margin-left: 15px',
             click: function(){
                 send_points( this, form.querySelectorAll( 'div.form-group' ), common_text.value );
             }
         }) );
 
-        common_text.setAttribute( 'style', 'display: inline-block; float: right; width: 50%' );
         common_text.placeholder = 'Общий текст всем (опционально)';
         common_text.addClass( 'form-control' );
         form.appendChild( common_text );
@@ -245,4 +238,20 @@ window.addEventListener( 'load', function(){
     inject.setAttribute( 'type', 'application/javascript' );
     inject.appendChild( document.createTextNode( '(' + main.toString() + ')()' ) );
     document.body.appendChild( inject );
+    var style = document.createElement( 'style' );
+    style.setAttribute( 'type', 'text/css' );
+    style.appendChild(
+        document.createTextNode(
+            '#send_points{ margin-bottom: 15px; display: block }' +
+            '#send_points input.form-control{ color: #000 }' +
+            '#send_points input.form-control::-webkit-input-placeholder { color: #bbb }' +
+            '#send_points input.form-control::-moz-placeholder { color: #bbb }' +
+            '#send_points > div.form-group > input{ display: inline-block; width: 20%; margin-right: 5% }' +
+            '#send_points > div.form-group > input:nth-child(3){ width: 40%; margin-right: 0 }' +
+            '#send_points > div.form-group > button{ display: inline-block; width: 5%; margin-left: 5% }' +
+            '#send_points > button.btn:nth-of-type(2){ margin-left: 15px }' +
+            '#send_points > input.form-control{ display: inline-block; float: right; width: 50% }'
+        )
+    );
+    document.head.appendChild( style );
 }, false );
