@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/gamelist*
 // @include        http://klavogonki.ru/g*
 // @author         Fenex
-// @version        2.1.3
+// @version        2.1.4
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
@@ -45,7 +45,7 @@ function create_BBcode(mode) {
                 txt += ' [/color] ';
         }
     }
-    txt = txt.replace(/<a(.*?)>/ig, '').replace(/<\/a>/ig, '');
+    txt = txt.replace(/<a (.*?)>/ig, '').replace(/<\/a>/ig, '');
     while (true) {
         var regexp = /<img .+src="\/img\/smilies\/([A-Za-z0-9]+)\.gif" .+>/;
         sm = txt.match(regexp);
