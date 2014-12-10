@@ -1,6 +1,6 @@
-## chat2BBcode [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/chat2BBCode.user.js)
-**Авторы:** [Fenex](http://klavogonki.ru/u/#/82885/)
+## chat2BBcode [![РЈСЃС‚Р°РЅРѕРІРёС‚СЊ](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/chat2BBCode.user.js)
+**РђРІС‚РѕСЂС‹:** [Fenex](http://klavogonki.ru/u/#/82885/)
 
-Позволяет получить переписку в чате с форматированием BB-кодов.
+РџРѕР·РІРѕР»СЏРµС‚ РїРѕР»СѓС‡РёС‚СЊ РїРµСЂРµРїРёСЃРєСѓ РІ С‡Р°С‚Рµ СЃ С„РѕСЂРјР°С‚РёСЂРѕРІР°РЅРёРµРј BB-РєРѕРґРѕРІ.
 
-Скрипт входит в состав [KlavoTools](https://chrome.google.com/webstore/detail/klavotools/gjfkpldhfcknofacejmlahofmcmhgpic).
+РЎРєСЂРёРїС‚ РІС…РѕРґРёС‚ РІ СЃРѕСЃС‚Р°РІ [KlavoTools](https://chrome.google.com/webstore/detail/klavotools/gjfkpldhfcknofacejmlahofmcmhgpic).
