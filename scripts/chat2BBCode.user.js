@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/gamelist*
 // @include        http://klavogonki.ru/g*
 // @author         Fenex
-// @version        2.1.4
+// @version        2.1.5
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
@@ -15,7 +15,7 @@ function create_BBcode(mode) {
     for(var i=0; i<e.length; i++) {
         var m = new Array();
         if(e[i].getElementsByTagName('span')[1].className == "system-message") {
-            m[1] = e[i].getElementsByClassName('time')[0].innerText.replace(/[\[\]]/g, '');
+            m[1] = e[i].getElementsByClassName('time')[0].textContent.replace(/[\[\]]/g, '');
             m[2] = 'gray';
             m[3] = 'Клавобот';
             m[4] = e[i].getElementsByTagName('span')[1].innerHTML;
