@@ -23,7 +23,7 @@ function create_BBcode(mode) {
         } else {
             m = e[i].innerHTML.match(/([\d]{2}\:[\d]{2}\:[\d]{2}).+style="color\:([#\d\w]+).+data-user="[\d]+">(.+)<\/span>&gt;<\/span>(.+)/);
         }
-        //console.log(m);
+        
         if(mode)
             txt += ' [color=gray] ';
         txt += '[' + m[1] + ']';
@@ -32,7 +32,6 @@ function create_BBcode(mode) {
         if(!m[5]){
             if(mode)
                 txt += ' [color=' + m[2] + ']';
-            console.log(1/0, m[3]);
             txt += ' <' + m[3] + '> ';
             if(mode)
                 txt += ' [/color] ';
