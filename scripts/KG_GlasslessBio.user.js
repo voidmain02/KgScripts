@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сводка» изменяет вид блока «Био»
-// @version        1.0.4
+// @version        1.0.6
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -25,8 +25,8 @@ function main(){
 
         var bio = angular.element( bio_sel ),
             content = angular.element( bio_content_sel ),
-            readmore = angular.element( document.createElement( 'a' ) ).text( 'Дозагрузить' ),
-            openfull = angular.element( document.createElement( 'a' ) ).text( 'Открыть полностью' ),
+            readmore = angular.element( document.createElement( 'a' ) ).text( 'Показать полностью' ),
+            openfull = angular.element( document.createElement( 'a' ) ).text( 'Открыть в модальном окне' ),
             scroll_pos = 0;
 
         readmore.click(function(){
@@ -34,7 +34,7 @@ function main(){
                 scroll_pos = window.pageYOffset || document.documentElement.scrollTop;
                 readmore.text( 'Скрыть' );
             }else{
-                readmore.text( 'Дозагрузить' );
+                readmore.text( 'Показать полностью' );
                 window.scrollTo( 0, scroll_pos );
                 angular.element( bio_spoilers_sel ).click();
             }
@@ -44,24 +44,25 @@ function main(){
         if( scope.Me && scope.Me.id == scope.$routeSegment.$routeParams.user )
             openfull.after( angular.element( document.createElement( 'a' ) ).attr( 'href', window.location.hash + 'editbio' ).text( 'Редактировать' ) );
 
-        if( typeof initBBWidgets === 'function' )
-            // Dirty fix for deprecated spoilers:
-            scope.$watch( '$$childTail', function(){
-                var observer = new MutationObserver(function( mut ){
-                    observer.disconnect();
+        scope.$watch( '$$childTail', function( $scope ){
+            $scope.$watch( '$$childTail', function(){
+                // Dirty fix for deprecated spoilers:
+                if( typeof initBBWidgets === 'function' )
                     initBBWidgets();
-                });
-                observer.observe( content.find( 'div' )[ 0 ], { subtree: true, attributes: true, attriubteFilter: [ 'class' ] } );
-            });
-    }
-
-    function wait_for_bio(){
-        var root_listener = angular.element( profile_root_sel ).scope().$watch( '$$childTail', function( scope ){
-            scope.$watch( bio_text_path, function(){
-                var listener = angular.element( bio_sel ).scope().$watch( '$$childTail', init );
-                root_listener(); // clear profile root $watch
             });
         });
+    }
+
+
+    function wait_for_bio(){
+        var profile = angular.element( profile_root_sel );
+        if( profile.length )
+            var root_listener = profile.scope().$watch( '$$childTail', function( scope ){
+                scope.$watch( bio_text_path, function(){
+                    var listener = angular.element( bio_sel ).scope().$watch( '$$childTail', init );
+                    root_listener(); // clear profile root $watch
+                });
+            });
     }
 
     angular.element( 'body' ).scope().$on( 'routeSegmentChange', function( e, obj ){
