@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сообщения» позволяет сделать множественную отправку очков нескольким пользователям
-// @version        1.1.1
+// @version        1.1.2
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -14,7 +14,7 @@ function main(){
         points_form_id = '#send_points',
         get_id_url = '/.fetchuser?login=',
         send_points_url = '/api/profile/send-scores',
-        requests_delay = 500; // delay between two requests to API (in ms)
+        requests_delay = 1000; // delay between two requests to API (in ms)
 
     function send_points( button, rows, common_text ){
         var sum = 0;
