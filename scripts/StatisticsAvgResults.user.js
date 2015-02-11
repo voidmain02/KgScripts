@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           StatisticsAvgResults
-// @version        1.1
+// @version        1.2
 // @namespace      klavogonki
 // @author         Fenex
 // @include        http://klavogonki.ru/u/*
@@ -24,7 +24,7 @@ function main () {
 
             var speed = 0;
             var errors = 0;
-            var results = scope.Plain.dataTables.table.tf;
+            var results = scope.Plain.dataTables.table.Nf;
             for(var i=0; i<results.length; i++) {
                 speed += results[i]['c'][4].v;
                 errors += results[i]['c'][7].v;
