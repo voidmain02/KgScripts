@@ -1,17 +1,16 @@
 // ==UserScript==
 // @name Автоматический перевод текстов Klavogonki.ru
-// @version 1.0
+// @version 1.1
 // @description Выводит перевод текста в словаре «Обычный in English»
 // @author Дмитрий Соболев (manok)
-// @include klavogonki.ru/*
-// @include http://klavogonki.ru/*
+// @include klavogonki.ru/g/*
 // ==/UserScript==
 
-(function(window, undefined) 
+(function(window) 
 {
 	var w;
 	  
-	if (typeof unsafeWindow != undefined) 
+	if (typeof unsafeWindow != 'undefined') 
 	{ 
 		w = unsafeWindow;
 	} 
