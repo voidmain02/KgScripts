@@ -53,8 +53,7 @@ function main(){
     function getCurrentLevelRating() {
         var s = $('userpanel-level').getAttribute('original-title');
         var re = /\d+/g; 
-        var value = re.exec(s); 
-        value = re.exec(s); 
+        var value = re.exec(s);
 
         return parseInt(value, 10);
     }
