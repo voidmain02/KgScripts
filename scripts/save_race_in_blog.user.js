@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 // @name          Klavogonki: save race in logbook
 // @namespace     klavogonki
-// @version       1.0 KTS
+// @version       1.1 KTS
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http://klavogonki.ru/g/?gmid=*
 // @author        Lexin
@@ -39,7 +39,9 @@ function main(){
 
         var e = document.getElementById('again');
         if (e) {
-            e = e.getElementsByTagName('td')[0];
+            if(e.tagName == 'TABLE') {
+                e = e.getElementsByTagName('td')[0];
+            }
             e.insertBefore(saveButton, e.firstChild);
         }
     }
