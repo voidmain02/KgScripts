@@ -39,7 +39,9 @@ function main(){
 
         var e = document.getElementById('again');
         if (e) {
-            e = e.getElementsByTagName('td')[0];
+            if(e.tagName == 'TABLE') {
+                e = e.getElementsByTagName('td')[0];
+            }
             e.insertBefore(saveButton, e.firstChild);
         }
     }
