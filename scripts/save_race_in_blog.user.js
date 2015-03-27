@@ -1,7 +1,7 @@
 ﻿// ==UserScript==
 // @name          Klavogonki: save race in logbook
 // @namespace     klavogonki
-// @version       1.0 KTS
+// @version       1.1 KTS
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http://klavogonki.ru/g/?gmid=*
 // @author        Lexin
