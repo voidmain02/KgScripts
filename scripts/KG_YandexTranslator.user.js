@@ -48,7 +48,7 @@ function main(){
         this.addContainer();
     };
 
-    if( /[A-Za-z]+/.test( game.text ) ){
+    if( /\b(\w*(\w)\w*(?!\2)\w+)\b/.test( game.text ) ){
         var observer = new MutationObserver(function( mutations ){
             observer.disconnect();
             game.translator = new KG_YandexTranslator( 'game.translator.showTranslation' );
