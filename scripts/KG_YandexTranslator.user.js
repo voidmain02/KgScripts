@@ -3,8 +3,8 @@
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/g/*
 // @author         agile
-// @description    Выводит перевод английских текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.0.5
+// @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
+// @version        0.0.6
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
