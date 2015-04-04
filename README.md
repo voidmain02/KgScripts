@@ -1,4 +1,4 @@
-![Логотип](http://klavogonki.ru/img/logo-5.gif)
+[![Логотип](http://klavogonki.ru/img/logo-5.gif)](http://klavogonki.ru)
 
 ## Реестр юзерскриптов для [Клавогонок](http://klavogonki.ru)
 
