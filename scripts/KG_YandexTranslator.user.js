@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/g/*
 // @author         agile
 // @description    Выводит перевод английских текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.0.4
+// @version        0.0.5
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -18,6 +18,54 @@ function main(){
         this.apiKey = 'trnsl.1.1.20150403T084848Z.4e5190c8dafcd485.02e5d0d8055b490d68398cb06508d30e906898b0';
         this.yandexText = 'Переведено сервисом «<a href="http://translate.yandex.ru/">Яндекс.Перевод</a>»';
         this.container = null;
+        this.translatedFrom = {
+            sq: 'албанского',
+            en: 'английского',
+            ar: 'арабского',
+            hy: 'армянского',
+            az: 'азербайджанского',
+            be: 'белорусского',
+            bg: 'болгарского',
+            bs: 'боснийского',
+            vi: 'вьетнамского',
+            hu: 'венгерского',
+            nl: 'голландского',
+            el: 'греческого',
+            ka: 'грузинского',
+            da: 'датского',
+            he: 'иврита',
+            id: 'индонезийского',
+            it: 'итальянского',
+            is: 'исландского',
+            es: 'испанского',
+            ca: 'каталанского',
+            zh: 'китайского',
+            ko: 'корейского',
+            lv: 'латышского',
+            lt: 'литовского',
+            ms: 'малайского',
+            mt: 'мальтийского',
+            mk: 'македонского',
+            de: 'немецкого',
+            no: 'норвежского',
+            pl: 'польского',
+            pt: 'португальского',
+            ro: 'румынского',
+            ru: 'русского',
+            sr: 'сербского',
+            sk: 'словацкого',
+            sl: 'словенского',
+            th: 'тайского',
+            tr: 'турецкого',
+            uk: 'украинского',
+            fi: 'финского',
+            fr: 'французского',
+            hr: 'хорватского',
+            cs: 'чешского',
+            sv: 'шведского',
+            et: 'эстонского',
+            ja: 'японского'
+        };
     }
 
     KG_YandexTranslator.prototype.addContainer = function(){
@@ -33,7 +81,10 @@ function main(){
             console.error( result );
             return;
         }
-        this.container.innerHTML = '<p>Машинный перевод текста заезда:</p>' +
+        var fromLang = result.lang.split( '-' )[ 0 ],
+            fromText = '<b>' + this.translatedFrom[ fromLang ] + '</b> ';
+        fromText += fromLang != 'he' ? 'языка' : '';
+        this.container.innerHTML = '<p>Машинный перевод текста заезда с ' + fromText + ':</p>' +
             '<p>' + result.text.join( ';' ) + '</p>' +
             '<p class="yandex">' + this.yandexText + '</p>';
     };
