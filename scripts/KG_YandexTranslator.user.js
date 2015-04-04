@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/g/*
 // @author         agile
 // @description    Выводит перевод английских текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.0.2
+// @version        0.0.3
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -48,7 +48,7 @@ function main(){
         this.addContainer();
     };
 
-    if( /[A-Za-z]+/.test( game.text ) ){
+    if( /\b(\w*(\w)\w*(?!\2)\w+)\b/.test( game.text ) ){
         var observer = new MutationObserver(function( mutations ){
             observer.disconnect();
             game.translator = new KG_YandexTranslator( 'game.translator.showTranslation' );
