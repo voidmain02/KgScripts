@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/g/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.0.7
+// @version        0.0.8
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -76,17 +76,27 @@ function main(){
         mainBlock.parentNode.insertBefore( this.container, mainBlock.nextSibling );
     };
 
+    KG_YandexTranslator.prototype.removeContainer = function(){
+        if( this.container )
+            this.container.parentNode.removeChild( this.container );
+    };
+
     KG_YandexTranslator.prototype.showTranslation = function( result ){
         if( result.code != 200 ){
             this.container.innerHTML = '<p>Произошла ошибка при переводе текста заезда.</p>';
             console.error( result );
             return;
         }
+        var text = result.text.join( ';' );
+        if( this.textsSimilarity( this.text, text ) > 0.5 ){
+            this.removeContainer();
+            return;
+        }
         var fromLang = result.lang.split( '-' )[ 0 ],
             fromText = '<b>' + this.translatedFrom[ fromLang ] + '</b> ';
         fromText += fromLang != 'he' ? 'языка' : '';
         this.container.innerHTML = '<p>Машинный перевод текста заезда с ' + fromText + ':</p>' +
-            '<p>' + result.text.join( ';' ) + '</p>' +
+            '<p>' + text + '</p>' +
             '<p class="yandex">' + this.yandexText + '</p>';
     };
 
@@ -99,6 +109,16 @@ function main(){
 
     KG_YandexTranslator.prototype.prepareTextURL = function(){
         return '&text=' + this.text.split( ';' ).join( '&text=' );
+    };
+
+    KG_YandexTranslator.prototype.textsSimilarity = function( a, b ){
+        var equivalency = 0,
+            minLen = ( a.length > b.length ) ? b.length : a.length,
+            maxLen = ( a.length < b.length ) ? b.length : a.length;
+        for( var i = 0; i < minLen; i++ )
+            if( a[ i ] == b[ i ] )
+                equivalency++;
+        return weight = equivalency / maxLen;
     };
 
     KG_YandexTranslator.prototype.detectForeign = function( callbackOrResult ){
