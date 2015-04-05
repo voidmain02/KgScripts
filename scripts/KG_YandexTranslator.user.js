@@ -4,13 +4,53 @@
 // @include        http://klavogonki.ru/g/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.0.8
+// @version        0.0.9
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){
     var mainBlock = document.getElementById( 'main-block' ),
         scores = document.getElementById( 'userpanel-scores-container' );
+
+    /*
+     * Compares similarity of two strings and returns amount of equal letters
+     */
+    function similarity( a, b ){
+        var pos1 = 0,
+            pos2 = 0,
+            max = 0;
+
+        for( var p = 0; p < a.length; p++)
+            for( var q = 0; q < b.length; q++){
+                for( l = 0; ( p + l < a.length ) &&
+                            ( q + l < b.length ) &&
+                            ( a.charAt( p + l ) === b.charAt( q + l ) ); l++ );
+                if( l > max ){
+                    max = l;
+                    pos1 = p;
+                    pos2 = q;
+                }
+            }
+        var sum = max;
+
+        if( sum ){
+            if( pos1 && pos2 )
+                sum += similarity( a.substr( 0, pos1 ), b.substr( 0, pos2 ) );
+            if( ( pos1 + max < a.length ) && ( pos2 + max < b.length ) )
+                sum += similarity(
+                    a.substr( pos1 + max, a.length - pos1 - max ),
+                    b.substr( pos2 + max, b.length - pos2 - max )
+                );
+        }
+        return sum;
+    };
+
+    /*
+     * Removes all whitespaces and frequently used punctuation from the string
+     */
+    function stripPunct( str ){
+        return str.replace( /[\s\-=_!"#%&'*{},.\/:;?\(\)\[\]@\\$\^*+<>~`]/g, '' );
+    }
 
     function KG_YandexTranslator( text, jsonpCallback ){
         this.text = text;
@@ -88,7 +128,7 @@ function main(){
             return;
         }
         var text = result.text.join( ';' );
-        if( this.textsSimilarity( this.text, text ) > 0.5 ){
+        if( similarity( stripPunct( this.text ), stripPunct( text ) ) > 20 ){
             this.removeContainer();
             return;
         }
@@ -109,16 +149,6 @@ function main(){
 
     KG_YandexTranslator.prototype.prepareTextURL = function(){
         return '&text=' + this.text.split( ';' ).join( '&text=' );
-    };
-
-    KG_YandexTranslator.prototype.textsSimilarity = function( a, b ){
-        var equivalency = 0,
-            minLen = ( a.length > b.length ) ? b.length : a.length,
-            maxLen = ( a.length < b.length ) ? b.length : a.length;
-        for( var i = 0; i < minLen; i++ )
-            if( a[ i ] == b[ i ] )
-                equivalency++;
-        return weight = equivalency / maxLen;
     };
 
     KG_YandexTranslator.prototype.detectForeign = function( callbackOrResult ){
