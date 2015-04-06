@@ -1,16 +1,21 @@
 // ==UserScript==
 // @name           KG_YandexTranslator
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/g/*
+// @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.0.7
+// @version        0.1.2
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){
     var mainBlock = document.getElementById( 'main-block' ),
-        scores = document.getElementById( 'userpanel-scores-container' );
+        vocBlock = document.querySelector( '.vocview-block tr' ),
+        vocLink = document.querySelector( '#gamedesc .gametype-voc > a' ),
+        scores = document.getElementById( 'userpanel-scores-container' ),
+        vocRE = /klavogonki.ru\/vocs\/(\d+)/,
+        gamePageRE = /klavogonki.ru\/g\//,
+        prefix = 'KG_YandexTranslator';
 
     function KG_YandexTranslator( text, jsonpCallback ){
         this.text = text;
@@ -76,17 +81,23 @@ function main(){
         mainBlock.parentNode.insertBefore( this.container, mainBlock.nextSibling );
     };
 
+    KG_YandexTranslator.prototype.removeContainer = function(){
+        if( this.container )
+            this.container.parentNode.removeChild( this.container );
+    };
+
     KG_YandexTranslator.prototype.showTranslation = function( result ){
         if( result.code != 200 ){
             this.container.innerHTML = '<p>Произошла ошибка при переводе текста заезда.</p>';
             console.error( result );
             return;
         }
+        var text = result.text.join( ';' );
         var fromLang = result.lang.split( '-' )[ 0 ],
             fromText = '<b>' + this.translatedFrom[ fromLang ] + '</b> ';
         fromText += fromLang != 'he' ? 'языка' : '';
         this.container.innerHTML = '<p>Машинный перевод текста заезда с ' + fromText + ':</p>' +
-            '<p>' + result.text.join( ';' ) + '</p>' +
+            '<p>' + text + '</p>' +
             '<p class="yandex">' + this.yandexText + '</p>';
     };
 
@@ -97,13 +108,13 @@ function main(){
         document.body.appendChild( inject );
     };
 
-    KG_YandexTranslator.prototype.prepareTextURL = function(){
+    KG_YandexTranslator.prototype.textURLParams = function(){
         return '&text=' + this.text.split( ';' ).join( '&text=' );
     };
 
     KG_YandexTranslator.prototype.detectForeign = function( callbackOrResult ){
         if( typeof callbackOrResult == 'string' ){
-            var url = this.apiURL + 'detect?key=' + this.apiKey + this.prepareTextURL();
+            var url = this.apiURL + 'detect?key=' + this.apiKey + this.textURLParams();
             this.jsonp( url, callbackOrResult );
         }else{
             var result = callbackOrResult;
@@ -111,23 +122,63 @@ function main(){
                 console.error( result );
                 return;
             }
-            if( result.lang != 'ru' )
-                this.translate()
+            if( result.lang != 'ru' && result.lang != '' )
+                this.translate( result.lang )
         }
     };
 
-    KG_YandexTranslator.prototype.translate = function(){
-        var url = this.apiURL + 'translate?key=' + this.apiKey + '&lang=ru' + this.prepareTextURL();
+    KG_YandexTranslator.prototype.translate = function( fromLang ){
+        var url = this.apiURL + 'translate?key=' + this.apiKey + '&lang=' + fromLang + '-ru' + this.textURLParams();
         this.jsonp( url, this.jsonpCallback );
         this.addContainer();
     };
 
-    var observer = new MutationObserver(function( mutations ){
-        observer.disconnect();
-        game.translator = new KG_YandexTranslator( game.text, 'game.translator.showTranslation' );
-        game.translator.detectForeign( 'game.translator.detectForeign' );
-    });
-    observer.observe( scores, { childList: true, subtree: true, characterData: true });
+
+    try{
+        var foreignVocs = JSON.parse( localStorage[ prefix + '_vocs' ] );
+    }catch( error ){
+        var foreignVocs = {};
+        console.error( error );
+    }
+
+    var vocPage = window.location.href.match( vocRE );
+
+    if( vocPage ){
+        var vocId = vocPage.pop(),
+            td = document.createElement( 'td' ),
+            checkbox = document.createElement( 'input' ),
+            label = document.createElement( 'label' );
+        td.className = 'links';
+        checkbox.id = 'translation-checkbox';
+        checkbox.type = 'checkbox';
+        checkbox.checked = foreignVocs[ vocId ] ? true : false;
+        label.setAttribute( 'for', 'translation-checkbox' );
+        label.appendChild( checkbox );
+        label.appendChild( document.createTextNode( ' Перевод текстов словаря' ) );
+        vocBlock.appendChild( td.appendChild( label ) );
+        checkbox.onchange = function(){
+            if( this.checked )
+                foreignVocs[ vocId ] = true;
+            else
+                delete foreignVocs[ vocId ];
+            localStorage[ prefix + '_vocs' ] = JSON.stringify( foreignVocs );
+        }
+        return;
+    }
+
+    if( window.location.href.match( gamePageRE ) ){
+        var forceTranslate = false;
+        if( vocLink )
+            forceTranslate = foreignVocs[ vocRE.exec( vocLink.href ).pop() ] ? true : false;
+        if( ( game.text.match( /[A-Za-z]+/g ) || [] ).join( '' ).length > 20 || forceTranslate ){
+            var observer = new MutationObserver(function( mutations ){
+                observer.disconnect();
+                game.translator = new KG_YandexTranslator( game.text, 'game.translator.showTranslation' );
+                game.translator.detectForeign( 'game.translator.detectForeign' );
+            });
+            observer.observe( scores, { childList: true, subtree: true, characterData: true });
+        }
+    }
 }
 
 window.addEventListener( 'load', function(){
@@ -144,7 +195,9 @@ window.addEventListener( 'load', function(){
                 'padding: 15px 15px 5px; margin: 15px 0; max-width: 740px' +
             '}' +
             '#text-translation .yandex{ text-align: right }' +
-            '#text-translation .yandex > a{ color: #000 !important }'
+            '#text-translation .yandex > a{ color: #000 !important }' +
+            'label[for="translation-checkbox"]{ padding-left: 20% }' +
+            '#translation-checkbox{ vertical-align: text-bottom }'
         )
     );
     document.head.appendChild( style );
