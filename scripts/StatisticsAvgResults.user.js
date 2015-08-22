@@ -24,7 +24,19 @@ function main () {
 
             var speed = 0;
             var errors = 0;
-            var results = scope.Plain.dataTables.table.Lf;
+            var table = scope.Plain.dataTables.table;
+            var results = null;
+            
+            for(var key in table) {
+                if(table[key] && table[key][0] && table[key][0]['c']) {
+                    results = table[key];
+                    break;
+                }
+            }
+            
+            if(!results)
+                return;
+            
             for(var i=0; i<results.length; i++) {
                 speed += results[i]['c'][4].v;
                 errors += results[i]['c'][7].v;
