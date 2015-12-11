@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    Изменяет вид списка друзей, делая последний более компактным
-// @version        1.0.0
+// @version        1.0.2
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -58,22 +58,36 @@ window.addEventListener( 'load', function() {
             'color': '#b20 !important',
         },
         '.profile-friends .friends-content .friends-list .list ul.users > li div.actions': {
-            'position': 'relative',
-            'float': 'right',
-            'top': '2px',
-            'left': '3px',
+            'position': 'static',
             'width': 'auto',
+            'margin-top': '2px',
+            'margin-left': '-1px',
         }, 
+        '.profile-friends .friends-content .friends-list .ng-scope .list ul.users > li div.actions': {
+            'display': 'none',
+        },
         '.profile-friends .friends-content .friends-list .list ul.users > li .await': {
             'position': 'static',
             'display': 'inline',
             'vertical-align': 'middle',
             'float': 'none !important',
         },
+        '.profile-friends .friends-content .friends-list .list ul.users > li .await + span': {
+            'display': 'inline-block',
+            'vertical-align': 'middle',
+        },
+        '.profile-friends .friends-content .friends-list .list ul.users > li .await + span:before': {
+            'display': 'table',
+            'content': ' ',
+        },
+        '.profile-friends .friends-content .friends-list .list ul.users > li .await + span:after': {
+            'display': 'table',
+            'clear': 'both',
+            'content': ' ',
+        },
         '.profile-friends .friends-content .friends-list .list ul.users > li .btn': {
             'position': 'static',
-            'float': 'none !important',
-            'margin': '0 2px',
+            'margin': '0 0 0 6px',
             'padding': '2px 6px',
         },
         '.profile-friends .friends-content .friends-list .list ul.users > li div.actions > .dropdown-toggle': {
@@ -86,12 +100,6 @@ window.addEventListener( 'load', function() {
         },
         '.profile-friends .friends-content .friends-list .list ul.users > li div.actions > .dropdown-toggle:hover > .caret': {
             'border-width': '4px 3.8px 0 3.8px !important',
-        },
-        '.profile-friends .friends-content .friends-list .list ul.users > li .online': {
-            'display': 'none',
-        },
-        '.profile-friends .friends-content .friends-list .list ul.users > li .online': {
-            'display': 'none',
         },
         '.profile-friends .friends-content .friends-list .list ul.users > li .online': {
             'display': 'none',
