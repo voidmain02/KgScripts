@@ -49,6 +49,7 @@
 [ColoredChatlog](docs/ColoredChatlog.md) | Окрашивает ники на странице лога чата |
 [KG_InlineFriendsList](docs/KG_InlineFriendsList.md) | Изменяет вид списка друзей, делая последний более компактным |
 [KG_AntiBackspace](docs/KG_AntiBackspace) | Отключает действие «Назад» браузера по нажатию на Backspace в заездах | ![][i]
+[KG_TimeoutAlert](docs/KG_TimeoutAlert) | Звуковое оповещение о старте игры | ![][i]
 
 Условные обозначения:
 
