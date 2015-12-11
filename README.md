@@ -47,6 +47,7 @@
 [chat2BBCode](docs/chat2BBCode.md) | Кнопка, показывающая окно с логом текущего разговора в чате, возможность экспорта лога с форматированием BB-кодов | ![][i]
 [KG_YandexTranslator](docs/KG_YandexTranslator.md) | Выводит перевод английских текстов в заездах при помощи сервиса «Яндекс.Перевод» |
 [ColoredChatlog](docs/ColoredChatlog.md) | Окрашивает ники на странице лога чата |
+[KG_InlineFriendsList](docs/KG_InlineFriendsList.md) | Изменяет вид списка друзей, делая последний более компактным |
 
 Условные обозначения:
 
