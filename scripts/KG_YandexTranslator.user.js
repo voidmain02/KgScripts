@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.1.2
+// @version        0.1.3
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -192,11 +192,15 @@ window.addEventListener( 'load', function(){
         document.createTextNode(
             '#text-translation{' +
                 'background: #ebebeb; border-radius: 15px; text-align: left;' +
-                'padding: 15px 15px 5px; margin: 15px 0; max-width: 740px' +
+                'padding: 15px; margin: 15px 0; max-width: 740px' +
             '}' +
-            '#text-translation .yandex{ text-align: right }' +
-            '#text-translation .yandex > a{ color: #000 !important }' +
-            'label[for="translation-checkbox"]{ padding-left: 20% }' +
+            '#text-translation :last-child{ margin: 0 }' +
+            '#text-translation .yandex{' +
+                'text-align: right; font-size: 0.8em;' +
+                'color: #888; margin-top: 1.6em' +
+            '}' +
+            '#text-translation .yandex > a{ color: #888 !important }' +
+            'label[for="translation-checkbox"]{ padding-left: 20%; font-weight: 400 }' +
             '#translation-checkbox{ vertical-align: text-bottom }'
         )
     );
