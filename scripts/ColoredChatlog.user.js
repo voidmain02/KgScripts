@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name         ColoredChatlog
-// @namespace    http://klavogonki.ru/
-// @version      0.1
-// @description  Colored nicknames in chatlogs
+// @namespace    klavogonki
+// @version      0.1.1
+// @description  Окрашивает ники на странице лога чата, а также добавляет счётчик сообщений
 // @author       Fenex
-// @match        http://klavogonki.ru/chatlogs/*
+// @include      http://klavogonki.ru/chatlogs/*
 // @grant        none
 // ==/UserScript==
 (function() {
