@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           StatisticsAvgResults
-// @version        1.3
+// @version        1.3.1
 // @namespace      klavogonki
 // @author         Fenex
 // @include        http://klavogonki.ru/u/*
@@ -10,12 +10,26 @@
 // @license        MIT
 // ==/UserScript==
 
-function main () {
+var ANGULAR_USERJS_ID = 'StatisticsAvgResults';
+var USERJS_INSTANCE_ID = Math.random().toString(36).substring(2);
+
+function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
     var injector = angular.element('body').injector();
 
     injector.invoke(function($rootScope, $compile) {
+        if(!$rootScope.userjs)
+            $rootScope.userjs = {};
+        
+        if($rootScope.userjs[ANGULAR_USERJS_ID])
+            return false;
+        
+        $rootScope.userjs[ANGULAR_USERJS_ID] = USERJS_INSTANCE_ID;
+        
         var $scope = $rootScope.$new();
-
+        $scope.$on('$destroy', function() {
+            delete $rootScope.userjs[ANGULAR_USERJS_ID];
+        });
+        
         $scope.$watch(function() {
             return angular.element('.google-visualization-table-table tr').length;
         }, function(a, b) {
@@ -58,10 +72,10 @@ function main () {
     });
 }
 
-window.addEventListener( 'load', function(){
+window.addEventListener('load', function() {
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
-    script.textContent = '(' + main + ')();';
+    script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';
     document.body.appendChild(script);
     document.body.removeChild(script);
 
