@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           StatisticsAvgResults
-// @version        1.3.1
+// @version        1.4.0
 // @namespace      klavogonki
 // @author         Fenex
 // @include        http://klavogonki.ru/u/*
@@ -36,10 +36,9 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
             var scope = angular.element('.table-controls').parent().scope();
             if(!scope || !scope.Plain) { return; }
 
-            var speed = 0;
-            var errors = 0;
-            var table = scope.Plain.dataTables.table;
-            var results = null;
+            var symbols = 0, speed = 0, errors = 0, time = 0,
+                table = scope.Plain.dataTables.table,
+                results = null;
             
             for(var key in table) {
                 if(table[key] && table[key][0] && table[key][0]['c']) {
@@ -52,17 +51,22 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 return;
             
             for(var i=0; i<results.length; i++) {
-                speed += results[i]['c'][4].v;
-                errors += results[i]['c'][7].v;
+                //time in minutes
+                symbols += (results[i]['c'][5].v / 60) * results[i]['c'][4].v;
+                time += results[i]['c'][5].v / 60;
+                errors += (results[i]['c'][6].v);
             }
 
-            $scope.avg_speed = (speed / results.length).toFixed(2);
-            $scope.avg_errors = (errors / results.length).toFixed(2);
+            $scope.symbols = symbols.toFixed();
+            $scope.time = time.toFixed();
             $scope.count = results.length;
-
+            
+            $scope.avg_speed = ($scope.symbols / $scope.time).toFixed(2);
+            $scope.avg_errors = (errors / $scope.symbols * 100).toFixed(2);
+            
             if(!angular.element('.table-controls > span').length) {
                 var element = angular
-                    .element('<span>Заездов: {{count}}. Средняя скорость: {{avg_speed}}. Ошибки: {{avg_errors}}%</span>')
+                    .element('<span>Заездов: {{count}}. Символов: {{symbols}}. Время: {{time}} мин. Средняя скорость: {{avg_speed}}. Ошибки: {{avg_errors}}%</span>')
                     .prependTo(angular.element('.table-controls'));
 
                 $compile(element)($scope);
