@@ -51,6 +51,7 @@
 [KG_TimeoutAlert](docs/KG_TimeoutAlert.md) | Звуковое оповещение о старте игры | ![][i]
 [KG_HideAllGamesInGamelist](docs/KG_HideAllGamesInGamelist.md) | Добавляет возможность скрытия всех игр в общем списке | ![][i]
 [RecordsLine](docs/RecordsLine.md) | Создаёт линейки рекордов |
+[KG_SeparateGameLink](docs/KG_SeparateGameLink.md) | Добавляет ссылку на создание нового заезда по текущему режиму (исключает возможность попадания в заезды других игроков) |
 
 Условные обозначения:
 
