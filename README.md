@@ -50,6 +50,7 @@
 [KG_AntiBackspace](docs/KG_AntiBackspace.md) | Отключает действие «Назад» браузера по нажатию на Backspace в заездах | ![][i]
 [KG_TimeoutAlert](docs/KG_TimeoutAlert.md) | Звуковое оповещение о старте игры | ![][i]
 [KG_HideAllGamesInGamelist](docs/KG_HideAllGamesInGamelist.md) | Добавляет возможность скрытия всех игр в общем списке | ![][i]
+[RecordsLine](docs/RecordsLine.md) | Создаёт линейки рекордов | ![][]
 
 Условные обозначения:
 
