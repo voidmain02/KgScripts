@@ -110,7 +110,6 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
 }
 
 document.addEventListener('load', function() {
-    console.log('loaded');
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
     script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';
