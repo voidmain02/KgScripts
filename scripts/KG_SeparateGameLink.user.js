@@ -36,8 +36,8 @@ function main () {
 
   SeparateGame.prototype.bindGlobalHandlers = function () {
     window.addEventListener('keydown', function (event) {
-      // [Shift] + [Ctrl] + [N]:
-      if (event.shiftKey && event.ctrlKey && event.keyCode == 78) {
+      // [Shift] + [Alt] + [N]:
+      if (event.shiftKey && event.altKey && event.keyCode == 78) {
         event.preventDefault();
         event.stopPropagation();
         this.createGame();
@@ -50,7 +50,7 @@ function main () {
     var link = document.createElement('a');
     link.href = this.url;
     link.innerHTML = 'Создать новый заезд';
-    link.title = 'Горячая клавиша: Shift + Ctrl + N';
+    link.title = 'Горячая клавиша: Shift + Alt + N';
     link.style.display = 'inline-block';
     link.style.marginTop = '10px';
     node.parentNode.appendChild(link);
