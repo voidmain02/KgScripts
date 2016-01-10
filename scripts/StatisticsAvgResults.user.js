@@ -54,15 +54,16 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 //time in minutes
                 symbols += (results[i]['c'][5].v / 60) * results[i]['c'][4].v;
                 time += results[i]['c'][5].v / 60;
-                errors += (results[i]['c'][6].v);
+                errors += results[i]['c'][7].v;
+				speed += results[i]['c'][4].v;
             }
 
             $scope.symbols = symbols.toFixed();
             $scope.time = time.toFixed();
             $scope.count = results.length;
             
-            $scope.avg_speed = ($scope.symbols / $scope.time).toFixed(2);
-            $scope.avg_errors = (errors / $scope.symbols * 100).toFixed(2);
+            $scope.avg_speed = (speed / $scope.count).toFixed(2);
+            $scope.avg_errors = (errors / $scope.count).toFixed(2);
             
             if(!angular.element('.table-controls > span').length) {
                 var element = angular
