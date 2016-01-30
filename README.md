@@ -52,6 +52,7 @@
 [KG_HideAllGamesInGamelist](docs/KG_HideAllGamesInGamelist.md) | Добавляет возможность скрытия всех игр в общем списке | ![][i]
 [RecordsLine](docs/RecordsLine.md) | Создаёт линейки рекордов |
 [KG_SeparateGameLink](docs/KG_SeparateGameLink.md) | Добавляет ссылку на создание нового заезда по текущему режиму (исключает возможность попадания в заезды других игроков) |
+[KG_PrivateChatLink](docs/KG_PrivateChatLink.md) | Приватный диалог в чате по Shift + клик ЛКМ по нику пользователя в окне сообщений |
 
 Условные обозначения:
 
