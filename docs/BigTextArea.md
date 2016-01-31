@@ -1,4 +1,4 @@
-## klavogonki: BigTextarea [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/BigTextArea.user.js)
+## BigTextArea [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/BigTextArea.user.js)
 **Авторы:** [Fenex](http://klavogonki.ru/u/#/82885/)
 
 Увеличивает область для ввода текста на форуме. Добавляет кнопки «Стереть» и «Отмена».
