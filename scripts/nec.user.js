@@ -1,6 +1,6 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name			NEC (no-error counter)
-// @version			1.0.5 KTS
+// @version			1.0.5+kts
 // @namespace		klavogonki.ru
 // @author			Fenex
 // @respect			rgall

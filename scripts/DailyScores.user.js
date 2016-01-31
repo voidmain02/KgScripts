@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          Klavogonki: daily scores
 // @namespace     klavogonki
-// @version       2.1 KTS
+// @version       2.1.0+kts
 // @description   displays the gained daily scores on the user panel
 // @include       http://klavogonki.ru/*
 // @author        Lexin

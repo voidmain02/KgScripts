@@ -1,6 +1,6 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           klavogonki: Sort results
-// @version        0.19.4 KTS
+// @version        0.19.4+kts
 // @namespace      klavogonki
 // @author         novkostya
 // @description    Adds "Sort" button to klavogonki site

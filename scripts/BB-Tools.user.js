@@ -1,6 +1,6 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           BB-Tools
-// @version        2.6.0 KTS
+// @version        2.6.0+kts
 // @namespace      klavogonki
 // @author         Fenex
 // @description    BB-Tools in forum and comments.

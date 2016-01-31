@@ -1,7 +1,7 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           Error Control Mode
 // @namespace      klavogonki.ru
-// @version        1.2.2 KTS
+// @version        1.2.2+kts
 // @author         Fenex
 // @description    No-Error Mode for Users Ditionaries
 // @include        http://klavogonki.ru/g/*

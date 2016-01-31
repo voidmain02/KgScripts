@@ -1,6 +1,6 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           klavogonki - hide cars
-// @version        0.7.1 KTS
+// @version        0.7.1+kts
 // @namespace      2klavogonki.ru
 // @description    hide card while typing
 // @include        http://klavogonki.ru/g/*

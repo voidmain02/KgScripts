@@ -1,10 +1,10 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           klavogonki: hide text
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/play/*
 // @include        http://www.klavogonki.ru/play/*
 // @include        http://klavogonki.ru/g/*
-// @version        1.2
+// @version        1.2.0
 // ==/UserScript==
 
 function init()

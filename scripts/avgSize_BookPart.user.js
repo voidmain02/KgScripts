@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name           Klavogonki: average size of the books part
 // @namespace      klavogonki
-// @version        1.1 KTS
+// @version        1.1.0+kts
 // @include        http://klavogonki.ru/vocs/*
 // @author         Lexin
 // ==/UserScript== 

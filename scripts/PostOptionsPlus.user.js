@@ -1,4 +1,4 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           klavogonki: PostOptions+
 // @description    Allows to insert poster's nickname or quote selected text with poster's nickname
 // @version        2.1.4

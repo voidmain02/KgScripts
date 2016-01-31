@@ -1,9 +1,9 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           klavogonki: tag "hide"
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/*
 // @author         Fenex
-// @version	   	   2.1 KTS
+// @version        2.1.0+kts
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 if(!document.getElementById('TKS_taghide')) {

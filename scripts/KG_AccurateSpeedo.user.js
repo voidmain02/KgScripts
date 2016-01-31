@@ -4,7 +4,7 @@
 // @description Спидометр в режиме "средней скорости" показывает актуальную скорость
 // @author      voidmain, unnamed777, novkostya
 // @license     MIT
-// @version     1.0
+// @version     1.0.0
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end

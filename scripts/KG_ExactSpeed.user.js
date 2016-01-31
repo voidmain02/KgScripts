@@ -4,7 +4,7 @@
 // @description Выводит в результатах заезда скорость с точностью до сотых
 // @author      voidmain
 // @license     MIT
-// @version     1.2
+// @version     1.2.0
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end 

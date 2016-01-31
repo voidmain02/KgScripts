@@ -4,7 +4,7 @@
 // @description Позволяет проводить работу над ошибками до тех пор, пока все ошибки не будут исправлены
 // @author      voidmain
 // @license     MIT
-// @version     1.1
+// @version     1.1.0
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end 

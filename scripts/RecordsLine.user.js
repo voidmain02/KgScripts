@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           RecordsLine
-// @version        1.0
+// @version        1.0.0
 // @namespace      klavogonki
 // @author         Fenex
 // @include        http://klavogonki.ru/u/*
