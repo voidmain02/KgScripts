@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_ErrorWork
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Позволяет проводить работу над ошибками до тех пор, пока все ошибки не будут исправлены
 // @author      voidmain
 // @license     MIT

@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_AccurateSpeedo
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Спидометр в режиме "средней скорости" показывает актуальную скорость
 // @author      voidmain, unnamed777, novkostya
 // @license     MIT

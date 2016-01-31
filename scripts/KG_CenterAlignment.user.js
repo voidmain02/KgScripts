@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        KG_CenterAlignment
-// @namespace   http://klavogonki.alexzh.ru
-// @description Выравнивает игровое поле по центру
+// @namespace   klavogonki
+// @description Меняет стилевое оформление страницы заезда: поле ввода по центру, настройки скрыты
 // @author      voidmain
 // @license     MIT
 // @version     1.0.0

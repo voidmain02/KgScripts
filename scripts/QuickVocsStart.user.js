@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           QuickVocsStart
-// @namespace      fnx
+// @namespace      klavogonki
 // @include        http://klavogonki.ru/vocs/*
 // @author         Fenex
 // @author-page    http://klavogonki.ru/profile/82885/

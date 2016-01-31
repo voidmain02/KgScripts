@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name           MCE Viewer
-// @description    MarkdownColorExtension Viewer
+// @name           MceViewer
+// @description    Расширение для markdown, позволяет делать в бортжурнале цветные надписи 
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/u/*
 // @author         Fenex

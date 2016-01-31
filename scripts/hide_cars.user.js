@@ -1,11 +1,10 @@
 // ==UserScript==
-// @name           klavogonki - hide cars
+// @name           hide_cars
 // @version        0.7.1+kts
-// @namespace      2klavogonki.ru
-// @description    hide card while typing
+// @namespace      klavogonki
+// @description    Скрытие машинок во время набора текста
 // @include        http://klavogonki.ru/g/*
-// @author         rgall
-// (r)             Fenex
+// @author         rgall, Fenex
 // ==/UserScript==
 
 function HideCars() {

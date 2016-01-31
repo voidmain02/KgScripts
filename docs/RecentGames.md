@@ -1,4 +1,4 @@
-## Klavogonki: recent games [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/RecentGames.user.js)
+## RecentGames [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/RecentGames.user.js)
 **Авторы:** [Lexin13](http://klavogonki.ru/u/#/148447/)
 
 Кнопки на главной странице и на странице списка игр для создания заездов. Список кнопок формируется на основе ранее пройденных заездов с учётом параметров игры.

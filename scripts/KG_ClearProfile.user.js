@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_ClearProfile
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Изменяет стилевое оформление профиля
 // @author      voidmain
 // @license     MIT

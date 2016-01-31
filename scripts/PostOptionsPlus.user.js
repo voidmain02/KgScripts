@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name           klavogonki: PostOptions+
-// @description    Allows to insert poster's nickname or quote selected text with poster's nickname
+// @name           PostOptionsPlus
+// @description    Добавляет ссылки для быстрого обращения по имени и цитаты выделенного текста на форуме
 // @version        2.1.4
-// @author         olimo & Fenex
-// @namespace      klavogonki.ru
+// @author         olimo, Fenex
+// @namespace      klavogonki
 // @include        http://klavogonki.ru/forum/*
 // ==/UserScript==
 function remember_sel() {

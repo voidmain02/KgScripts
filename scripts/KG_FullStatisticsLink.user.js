@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_FullStatisticsLink
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Добавляет ссылку на скачивание полной статистики
 // @author      voidmain
 // @license     MIT

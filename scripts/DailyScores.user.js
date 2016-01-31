@@ -1,12 +1,10 @@
 // ==UserScript==
-// @name          Klavogonki: daily scores
+// @name          DailyScores
 // @namespace     klavogonki
 // @version       2.1.0+kts
-// @description   displays the gained daily scores on the user panel
+// @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
 // @include       http://klavogonki.ru/*
 // @author        Lexin
-// @updateURL     https://userscripts.org/scripts/source/141981.meta.js
-// @downloadURL   https://userscripts.org/scripts/source/141981.user.js
 // ==/UserScript==
 
 function main(){

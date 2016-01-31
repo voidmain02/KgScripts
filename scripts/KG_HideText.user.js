@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name           klavogonki: hide text
+// @name           KG_HideText
+// @author         novkostya
+// @description    Скрывает набираемый текст, хоткей Ctrl+. Предназначен для тренировки памяти
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/play/*
-// @include        http://www.klavogonki.ru/play/*
 // @include        http://klavogonki.ru/g/*
 // @version        1.2.0
 // ==/UserScript==

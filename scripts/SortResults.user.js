@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name           klavogonki: Sort results
+// @name           SortResults
 // @version        0.19.4+kts
 // @namespace      klavogonki
 // @author         novkostya
-// @description    Adds "Sort" button to klavogonki site
+// @description    Сортировка участников в заезде по местам, количеству и проценту ошибок, нику, рейтингу. Счётчик игроков в заезде
 // @include        http://klavogonki.ru/g/*
 // ==/UserScript==
 function sort(sortKey)

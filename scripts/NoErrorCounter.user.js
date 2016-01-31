@@ -1,10 +1,9 @@
 // ==UserScript==
-// @name			NEC (no-error counter)
+// @name			NoErrorCounter
 // @version			1.0.5+kts
-// @namespace		klavogonki.ru
-// @author			Fenex
-// @respect			rgall
-// @description		add additional stats to the no-error games
+// @namespace		klavogonki
+// @author			Fenex, rgall
+// @description		Счётчик для безошибочного режима
 // @include			http://klavogonki.ru/g/*
 // ==/UserScript==
 

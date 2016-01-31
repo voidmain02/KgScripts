@@ -1,9 +1,9 @@
 // ==UserScript==
-// @name           Error Control Mode
-// @namespace      klavogonki.ru
+// @name           control_error_mode
+// @namespace      klavogonki
 // @version        1.2.2+kts
 // @author         Fenex
-// @description    No-Error Mode for Users Ditionaries
+// @description    Скрипт позволяет установить допустимый лимит ошибок для любых заездов. При «сходе с трассы» возможен автостарт следующего заезда
 // @include        http://klavogonki.ru/g/*
 // ==/UserScript==
 

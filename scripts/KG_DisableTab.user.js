@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_DisableTab
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Отключает кнопку Tab в поле ввода текста во время заезда
 // @author      voidmain
 // @license     MIT

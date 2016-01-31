@@ -3,7 +3,7 @@
 // @version        1.4.0
 // @namespace      klavogonki
 // @author         Silly_Sergio
-// @description    Shows text complexity rating for Russian races.
+// @description    Добавляет панель прогноза сложности текста в заездах
 // @include        http://klavogonki.ru/g/*
 // @grant          none
 // ==/UserScript==

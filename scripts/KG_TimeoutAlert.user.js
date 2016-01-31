@@ -4,7 +4,6 @@
 // @version     3.0.2
 // @description Звуковое оповещение о старте игры
 // @include     http://klavogonki.ru/g/*
-// @include     http://www.klavogonki.ru/g/*
 // ==/UserScript==
 
 function main() {

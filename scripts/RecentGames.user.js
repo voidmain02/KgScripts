@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name          Klavogonki: recent games
+// @name          RecentGames
 // @namespace     klavogonki
 // @version       1.3.1
 // @description   Кнопки на главной странице и на странице списка игр для создания заездов

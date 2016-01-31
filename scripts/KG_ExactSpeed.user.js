@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_ExactSpeed
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Выводит в результатах заезда скорость с точностью до сотых
 // @author      voidmain
 // @license     MIT

@@ -1,4 +1,4 @@
-## Klavogonki: klavostats links [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/klavostats_links.user.js)
+## klavostats_links [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/klavostats_links.user.js)
 **Авторы:** [Lexin13](http://klavogonki.ru/u/#/148447/)
 
 Добавляет прямые ссылки на профиль игрока в ![КлавоСтатистике](http://stat.klavogonki.ru/).

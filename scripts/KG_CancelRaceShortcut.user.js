@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_CancelRaceShortcut
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Добавляет сочетание клавиш для отмены результатов заезда
 // @author      voidmain, unnamed777, novkostya
 // @license     MIT
