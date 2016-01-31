@@ -1,10 +1,10 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           QuickVocsStart
-// @namespace      fnx
+// @namespace      klavogonki
 // @include        http://klavogonki.ru/vocs/*
 // @author         Fenex
-// @author-page    http://klavogonki.ru/profile/82885/
-// @version        5.0 KTS
+// @version        5.0.0+kts
+// @description    Добавляет на страницу словаря три ссылки для быстрого старта игры. Параметры заездов для ссылок можно настроить
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 if(!document.getElementById('KTS_QuickVocsStart')) {

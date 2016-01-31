@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        KG_SaveGameResult
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Добавляет ссылку на сохранение результатов заезда в JSON формате
 // @author      voidmain
 // @license     MIT
-// @version     1.9
+// @version     1.9.0
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end

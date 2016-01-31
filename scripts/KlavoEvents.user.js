@@ -1,9 +1,10 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           KlavoEvents
-// @namespace      fnx
+// @namespace      klavogonki
 // @include        http://klavogonki.ru*
 // @author         Fenex, DIgorevich
-// @version        2.0 KTS
+// @description    Лента событий — список предстоящих и прошедших мероприятий в хронологическом порядке
+// @version        2.0.0+kts
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 if(!document.getElementById('KTS_KlavoEvents')) {

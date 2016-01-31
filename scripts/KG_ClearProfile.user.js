@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        KG_ClearProfile
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Изменяет стилевое оформление профиля
 // @author      voidmain
 // @license     MIT
-// @version     1.2
+// @version     1.2.0
 // @include     http://klavogonki.ru/u/*
 // @grant       none
 // @run-at      document-end 

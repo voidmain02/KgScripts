@@ -1,0 +1,616 @@
+[
+  {
+    "name": "BB-Tools",
+    "version": "2.6.0+kts",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Форум",
+      "Словари"
+    ],
+    "description": "Добавляет дополнительные bb-кнопки для форматирования сообщений на форуме, описания и комментариев словарей"
+  },
+  {
+    "name": "BigTextArea",
+    "version": "1.1.0+kts",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Форум"
+    ],
+    "description": "Увеличивает область для ввода текста на форуме. Добавляет кнопки «Стереть» и «Отмена»"
+  },
+  {
+    "name": "ColoredChatlog",
+    "version": "0.1.1",
+    "authors": [
+      "Fenex"
+    ],
+    "tags": [
+      "Чат"
+    ],
+    "description": "Окрашивает ники на странице лога чата, а также добавляет счётчик сообщений"
+  },
+  {
+    "name": "DailyScores",
+    "version": "2.1.0+kts",
+    "authors": [
+      "Lexin"
+    ],
+    "integrated": true,
+    "tags": [
+      "Сайт",
+      "Заезд",
+      "Соревнование"
+    ],
+    "description": "Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга"
+  },
+  {
+    "name": "DelGameButton",
+    "version": "2.1.1",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Кнопка удаления результата в соревнованиях (работает только для Премиум-аккаунтов)"
+  },
+  {
+    "name": "IgnoreList",
+    "version": "4.0.2",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Чат"
+    ],
+    "description": "Чёрный список в чате"
+  },
+  {
+    "name": "KG_AccurateSpeedo",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain",
+      "unnamed777",
+      "novkostya"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Спидометр в режиме \"средней скорости\" показывает актуальную скорость"
+  },
+  {
+    "name": "KG_AntiBackspace",
+    "version": "1.0.1",
+    "authors": [
+      "Fenex",
+      "agile"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Отключает действие «Назад» браузера по нажатию на Backspace в заездах"
+  },
+  {
+    "name": "KG_CancelRaceShortcut",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain",
+      "unnamed777",
+      "novkostya"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Добавляет сочетание клавиш для отмены результатов заезда"
+  },
+  {
+    "name": "KG_CenterAlignment",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Меняет стилевое оформление страницы заезда: поле ввода по центру, настройки скрыты"
+  },
+  {
+    "name": "KG_ChatHotkey",
+    "version": "1.1.0",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд",
+      "Чат"
+    ],
+    "description": "Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш."
+  },
+  {
+    "name": "KG_ClearProfile",
+    "version": "1.2.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Сводка"
+    ],
+    "description": "Изменяет стилевое оформление профиля"
+  },
+  {
+    "name": "KG_ComplexityPanel",
+    "version": "1.4.0",
+    "authors": [
+      "Silly_Sergio"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Добавляет панель прогноза сложности текста в заездах"
+  },
+  {
+    "name": "KG_DialogLink",
+    "version": "1.0.4",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Сообщения"
+    ],
+    "description": "В разделе «Сообщения» добавляет текстовые ссылки для возможности открытия диалогов в новых вкладках браузера"
+  },
+  {
+    "name": "KG_DisableTab",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Отключает кнопку Tab в поле ввода текста во время заезда"
+  },
+  {
+    "name": "KG_EnterToSpace",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Заменяет нажатия клавиши Enter клавишей Space (пробел) во время заезда"
+  },
+  {
+    "name": "KG_ErrorWork",
+    "version": "1.1.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Позволяет проводить работу над ошибками до тех пор, пока все ошибки не будут исправлены"
+  },
+  {
+    "name": "KG_ExactSpeed",
+    "version": "1.2.0",
+    "authors": [
+      "voidmain"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Выводит в результатах заезда скорость с точностью до сотых"
+  },
+  {
+    "name": "KG_FastDialog",
+    "version": "1.0.1",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Сообщения"
+    ],
+    "description": "В разделе «Сообщения» добавляет текстовое поле для быстрого открытия диалога по нику пользователя"
+  },
+  {
+    "name": "KG_FullStatisticsLink",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain"
+    ],
+    "tags": [
+      "Профиль",
+      "Статистика"
+    ],
+    "description": "Добавляет ссылку на скачивание полной статистики"
+  },
+  {
+    "name": "KG_GameLog",
+    "version": "0.7.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд",
+      "Профиль",
+      "Статистика"
+    ],
+    "description": "Позволяет вести журнал всех заездов"
+  },
+  {
+    "name": "KG_HideAllGamesInGamelist",
+    "version": "1.1.0",
+    "authors": [
+      "Fenex"
+    ],
+    "tags": [
+      "Сайт",
+      "Заезд"
+    ],
+    "description": "Добавляет возможность скрытия всех игр в общем списке"
+  },
+  {
+    "name": "KG_HideText",
+    "version": "1.2.0",
+    "authors": [
+      "novkostya"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Скрывает набираемый текст, хоткей Ctrl+. Предназначен для тренировки памяти"
+  },
+  {
+    "name": "KG_ImageLoader",
+    "version": "1.2.0",
+    "authors": [
+      "agile"
+    ],
+    "tags": [
+      "Профиль",
+      "Сводка",
+      "Бортжурнал",
+      "Друзья"
+    ],
+    "description": "Отображает изображения вместо текстовых ссылок в записях разделов «Сводка», «Бортжурнал» и «Друзья»."
+  },
+  {
+    "name": "KG_InfiniteScroll",
+    "version": "1.1.0",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Бортжурнал",
+      "Друзья",
+      "Сообщения"
+    ],
+    "description": "В разделах «Бортжурнал», «Друзья» и «Сообщения» автоматически подгружает старые записи при скроллинге колесом мыши"
+  },
+  {
+    "name": "KG_InlineFriendsList",
+    "version": "1.0.2",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Друзья"
+    ],
+    "description": "Изменяет вид списка друзей, делая последний более компактным"
+  },
+  {
+    "name": "KG_PointsSender",
+    "version": "1.1.2",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Сообщения"
+    ],
+    "description": "В разделе «Сообщения» позволяет сделать множественную отправку очков нескольким пользователям"
+  },
+  {
+    "name": "KG_PrivateChatLink",
+    "version": "1.0.1",
+    "authors": [
+      "agile"
+    ],
+    "tags": [
+      "Чат"
+    ],
+    "description": "Приватный диалог в чате по Shift + клик ЛКМ по нику пользователя в окне сообщений"
+  },
+  {
+    "name": "KG_SaveGameResult",
+    "version": "1.9.0",
+    "authors": [
+      "voidmain"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Добавляет ссылку на сохранение результатов заезда в JSON формате"
+  },
+  {
+    "name": "KG_SeparateGameLink",
+    "version": "1.0.1",
+    "authors": [
+      "agile"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Добавляет ссылку на создание нового заезда по текущему режиму (исключает возможность попадания в заезды других игроков)."
+  },
+  {
+    "name": "KG_TimeoutAlert",
+    "version": "3.0.2",
+    "authors": [
+      "Andre_Macareno",
+      "Fenex",
+      "un4given",
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Звуковое оповещение о старте игры"
+  },
+  {
+    "name": "KG_TotalGamesCount",
+    "version": "1.0.0",
+    "authors": [
+      "voidmain"
+    ],
+    "tags": [
+      "Профиль",
+      "Статистика"
+    ],
+    "description": "Добавляет отображение общего количества заездов на страницу статистики"
+  },
+  {
+    "name": "KG_YandexTranslator",
+    "version": "0.1.3",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»"
+  },
+  {
+    "name": "KlavoEvents",
+    "version": "2.0.0+kts",
+    "authors": [
+      "Fenex",
+      "DIgorevich"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд",
+      "Событие"
+    ],
+    "description": "Лента событий — список предстоящих и прошедших мероприятий в хронологическом порядке"
+  },
+  {
+    "name": "MceViewer",
+    "version": "1.5.0",
+    "authors": [
+      "Fenex"
+    ],
+    "tags": [
+      "Профиль",
+      "Бортжурнал"
+    ],
+    "description": "Расширение для markdown, позволяет делать в бортжурнале цветные надписи"
+  },
+  {
+    "name": "NoErrorCounter",
+    "version": "1.0.5+kts",
+    "authors": [
+      "Fenex",
+      "rgall"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Счётчик для безошибочного режима"
+  },
+  {
+    "name": "PostOptionsPlus",
+    "version": "2.1.4",
+    "authors": [
+      "olimo",
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Форум"
+    ],
+    "description": "Добавляет ссылки для быстрого обращения по имени и цитаты выделенного текста на форуме"
+  },
+  {
+    "name": "QuickVocsStart",
+    "version": "5.0.0+kts",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Словари"
+    ],
+    "description": "Добавляет на страницу словаря три ссылки для быстрого старта игры. Параметры заездов для ссылок можно настроить"
+  },
+  {
+    "name": "RecentGames",
+    "version": "1.3.1",
+    "authors": [
+      "Lexin"
+    ],
+    "integrated": true,
+    "tags": [
+      "Сайт",
+      "Заезд"
+    ],
+    "description": "Кнопки на главной странице и на странице списка игр для создания заездов"
+  },
+  {
+    "name": "RecordsLine",
+    "version": "1.0.0",
+    "authors": [
+      "Fenex"
+    ],
+    "tags": [
+      "Профиль",
+      "Статистика"
+    ],
+    "description": "Создаёт линейки рекордов"
+  },
+  {
+    "name": "SortResults",
+    "version": "0.19.4+kts",
+    "authors": [
+      "novkostya"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Сортировка участников в заезде по местам, количеству и проценту ошибок, нику, рейтингу. Счётчик игроков в заезде"
+  },
+  {
+    "name": "StatisticsAvgResults",
+    "version": "1.4.0",
+    "authors": [
+      "Fenex"
+    ],
+    "tags": [
+      "Профиль",
+      "Статистика"
+    ],
+    "description": "В статистике показывает среднее арифметическое по результатам скорости и процента ошибок за отображаемый день"
+  },
+  {
+    "name": "avgSize_BookPart",
+    "version": "1.1.0+kts",
+    "authors": [
+      "Lexin"
+    ],
+    "integrated": true,
+    "tags": [
+      "Словари"
+    ],
+    "description": "Показывает для словарей-книг примерное количество символов на отрывок"
+  },
+  {
+    "name": "chat2BBcode",
+    "version": "2.1.5",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Чат"
+    ],
+    "description": "Кнопка, показывающая окно с логом текущего разговора в чате, возможность экспорта лога с форматированием BB-кодов"
+  },
+  {
+    "name": "control_error_mode",
+    "version": "1.2.2+kts",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Скрипт позволяет установить допустимый лимит ошибок для любых заездов. При «сходе с трассы» возможен автостарт следующего заезда"
+  },
+  {
+    "name": "hide_cars",
+    "version": "0.7.1+kts",
+    "authors": [
+      "rgall",
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Скрытие машинок во время набора текста"
+  },
+  {
+    "name": "klavostats_links",
+    "version": "2.2.0",
+    "authors": [
+      "Lexin",
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Профиль"
+    ],
+    "description": "Добавляет прямые ссылки на профиль игрока в КлавоСтатистике"
+  },
+  {
+    "name": "save_race_in_blog",
+    "version": "1.1.0+kts",
+    "authors": [
+      "Lexin"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд",
+      "Профиль",
+      "Бортжурнал"
+    ],
+    "description": "добавляет кнопку для сохранения результата любого заезда в бортжурнале"
+  },
+  {
+    "name": "tagHide",
+    "version": "2.1.0+kts",
+    "authors": [
+      "Fenex"
+    ],
+    "integrated": true,
+    "tags": [
+      "Форум"
+    ],
+    "description": "Позволяет делать на форуме хайды с подзаголовками. Подзаголовок должен быть помещён внутри хайда между знаками равно"
+  }
+]
