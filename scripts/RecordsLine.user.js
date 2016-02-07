@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           RecordsLine
-// @version        1.0.0
+// @version        1.0.1
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Создаёт линейки рекордов
@@ -110,7 +110,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
     });
 }
 
-document.addEventListener('load', function() {
+window.addEventListener('load', function() {
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
     script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';
