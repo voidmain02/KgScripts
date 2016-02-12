@@ -37,9 +37,10 @@
   },
   {
     "name": "DailyScores",
-    "version": "2.1.0+kts",
+    "version": "2.1.2",
     "authors": [
-      "Lexin"
+      "Lexin",
+      "agile"
     ],
     "integrated": true,
     "tags": [
