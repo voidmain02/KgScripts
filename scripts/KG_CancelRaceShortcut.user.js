@@ -4,7 +4,7 @@
 // @description Добавляет сочетание клавиш для отмены результатов заезда
 // @author      voidmain, unnamed777, novkostya
 // @license     MIT
-// @version     1.0.0
+// @version     1.1.0
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end 
@@ -28,7 +28,7 @@ function main() {
         }
     }
     document.addEventListener('keydown', function(e) {
-        if(e.shiftKey && e.keyCode == 90 && game.players[playerIndex].info.finished) {
+        if(e.shiftKey && e.ctrlKey && e.keyCode == 90 && game.players[playerIndex].info.finished) {
             game.delresult();
         }
     }, false);

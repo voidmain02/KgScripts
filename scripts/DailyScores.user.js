@@ -4,7 +4,7 @@
 // @version       2.1.0+kts
 // @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
 // @include       http://klavogonki.ru/*
-// @author        Lexin
+// @author        Lexin13
 // ==/UserScript==
 
 function main(){

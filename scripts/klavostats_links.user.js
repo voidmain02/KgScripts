@@ -4,7 +4,7 @@
 // @version       2.2.0
 // @description   Добавляет прямые ссылки на профиль игрока в КлавоСтатистике
 // @include       http://klavogonki.ru/u/*
-// @author        Lexin, Fenex
+// @author        Lexin13, Fenex
 // ==/UserScript==
 
 function main() {

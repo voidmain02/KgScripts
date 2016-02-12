@@ -3,7 +3,7 @@
 // @namespace      klavogonki
 // @version        1.1.0+kts
 // @include        http://klavogonki.ru/vocs/*
-// @author         Lexin
+// @author         Lexin13
 // @description    Показывает для словарей-книг примерное количество символов на отрывок
 // ==/UserScript== 
 
