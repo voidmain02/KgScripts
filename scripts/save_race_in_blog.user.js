@@ -4,7 +4,7 @@
 // @version       1.1.0+kts
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http://klavogonki.ru/g/?gmid=*
-// @author        Lexin
+// @author        Lexin13
 // ==/UserScript==
 
 function main(){
