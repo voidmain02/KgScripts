@@ -6,7 +6,7 @@
 // @include       http://klavogonki.ru/
 // @include       http://klavogonki.ru/gamelist/
 // @include       http://klavogonki.ru/g/*
-// @author        Lexin
+// @author        Lexin13
 // ==/UserScript==
 
 function main(){

@@ -39,7 +39,7 @@
     "name": "DailyScores",
     "version": "2.1.2",
     "authors": [
-      "Lexin",
+      "Lexin13",
       "agile"
     ],
     "integrated": true,
@@ -101,7 +101,7 @@
   },
   {
     "name": "KG_CancelRaceShortcut",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "voidmain",
       "unnamed777",
@@ -127,7 +127,7 @@
   },
   {
     "name": "KG_ChatHotkey",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "authors": [
       "agile"
     ],
@@ -403,13 +403,14 @@
   },
   {
     "name": "KG_YandexTranslator",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "authors": [
       "agile"
     ],
     "disabled": true,
     "tags": [
-      "Заезд"
+      "Заезд",
+      "Словари"
     ],
     "description": "Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»"
   },
@@ -481,7 +482,7 @@
     "name": "RecentGames",
     "version": "1.3.1",
     "authors": [
-      "Lexin"
+      "Lexin13"
     ],
     "integrated": true,
     "tags": [
@@ -492,7 +493,7 @@
   },
   {
     "name": "RecordsLine",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "authors": [
       "Fenex"
     ],
@@ -530,7 +531,7 @@
     "name": "avgSize_BookPart",
     "version": "1.1.0+kts",
     "authors": [
-      "Lexin"
+      "Lexin13"
     ],
     "integrated": true,
     "tags": [
@@ -579,7 +580,7 @@
     "name": "klavostats_links",
     "version": "2.2.0",
     "authors": [
-      "Lexin",
+      "Lexin13",
       "Fenex"
     ],
     "integrated": true,
@@ -592,7 +593,7 @@
     "name": "save_race_in_blog",
     "version": "1.1.0+kts",
     "authors": [
-      "Lexin"
+      "Lexin13"
     ],
     "integrated": true,
     "tags": [

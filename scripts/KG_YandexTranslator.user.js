@@ -1,10 +1,11 @@
 // ==UserScript==
 // @name           KG_YandexTranslator
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/*
+// @include        http://klavogonki.ru/g/*
+// @include        http://klavogonki.ru/vocs/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.1.3
+// @version        0.1.4
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
