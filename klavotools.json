@@ -578,10 +578,11 @@
   },
   {
     "name": "klavostats_links",
-    "version": "2.2.0",
+    "version": "2.2.1",
     "authors": [
       "Lexin13",
-      "Fenex"
+      "Fenex",
+      "agile"
     ],
     "integrated": true,
     "tags": [
