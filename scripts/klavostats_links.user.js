@@ -1,26 +1,14 @@
 // ==UserScript==
 // @name          klavostats_links
 // @namespace     klavogonki
-// @version       2.2.1
+// @version       2.2.2
 // @description   Добавляет прямые ссылки на профиль игрока в КлавоСтатистике
 // @include       http://klavogonki.ru/u/*
 // @author        Lexin13, Fenex, agile
 // ==/UserScript==
 
 function main () {
-  var sidebarObserver = window.setInterval(function () {
-    var sidebarNode = document.querySelector('.sidebar');
-    if (!sidebarNode) {
-      return;
-    }
-
-    window.clearInterval(sidebarObserver);
-    var loginNode = document.querySelector('.profile-header .name');
-    if (!loginNode || !loginNode.firstChild) {
-      return;
-    }
-
-    var login = loginNode.firstChild.textContent.trim();
+  function createMenu (sidebarNode, login) {
     var menuStructure = [
       {
         text: 'КлавоСтатистика',
@@ -47,7 +35,40 @@ function main () {
       li.appendChild(a);
       menu.appendChild(li);
     });
-    sidebarNode.appendChild(menu);
+    return sidebarNode.appendChild(menu);
+  }
+
+  function initMenu () {
+    var sidebarNode = document.querySelector('.sidebar');
+    if (!sidebarNode) {
+      return false;
+    }
+
+    var loginNode = document.querySelector('.profile-header .name');
+    if (!loginNode || !loginNode.firstChild) {
+      return false;
+    }
+
+    var login = loginNode.firstChild.textContent.trim();
+    return createMenu(sidebarNode, login);
+  }
+
+  var observer = window.setInterval(function () {
+    if (!initMenu()) {
+      return;
+    }
+    window.clearInterval(observer);
+    var injector = angular.element('body').injector();
+    injector.invoke(function ($routeParams, $rootScope, $timeout) {
+      var id = $routeParams.user;
+      $rootScope.$on('routeSegmentChange', function () {
+        if (id !== $routeParams.user) {
+          id = $routeParams.user;
+          // Wait for the digest cycle:
+          $timeout(initMenu);
+        }
+      })
+    });
   }, 500);
 }
 
