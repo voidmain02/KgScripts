@@ -103,7 +103,7 @@ function main() {
 
     var $gameResultLink = $$$('<a href="#" title="Сохранить результаты заезда"></a>').appendTo('body').on('click', function() {
         $$$(this).attr( {
-            'href': 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(getGameData())),
+            'href': 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(getGameData(), null, 4)),
             'download': 'game_' + game.begintimeServer + '.json'
         });
     });
