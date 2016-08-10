@@ -57,7 +57,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                     <td ng:bind="$index + 1"></td>\
                     <td class="tddate" ng:bind="topic.date"></td>\
                     <td class="title">\
-                        <a ng:href="{{topic.href}}"><noindex ng:bind="topic.title"></noindex></a>\
+                        <a ng:href="{{topic.href}}" ng:bind="topic.title"></a>\
                         <a class="go" ng:href="{{topic.last_post}}" title="Перейти"><img alt="Перейти" src="/img/bullet_go.gif"></a>\
                     </td>\
                     <td>\
