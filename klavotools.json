@@ -540,7 +540,7 @@
     "description": "Показывает для словарей-книг примерное количество символов на отрывок"
   },
   {
-    "name": "chat2BBcode",
+    "name": "chat2BBCode",
     "version": "2.1.5",
     "authors": [
       "Fenex"
