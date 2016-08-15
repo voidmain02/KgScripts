@@ -149,6 +149,9 @@
       "Профиль",
       "Сводка"
     ],
+    "conflicts": [
+      "KG_GlasslessBio"
+    ],
     "description": "Изменяет стилевое оформление профиля"
   },
   {
@@ -260,6 +263,22 @@
       "Статистика"
     ],
     "description": "Позволяет вести журнал всех заездов"
+  },
+  {
+    "name": "KG_GlasslessBio",
+    "version": "1.0.6",
+    "authors": [
+      "agile"
+    ],
+    "disabled": true,
+    "tags": [
+      "Профиль",
+      "Сводка"
+    ],
+    "conflicts": [
+      "KG_ClearProfile"
+    ],
+    "description": "В разделе «Сводка» изменяет вид блока «Био»"
   },
   {
     "name": "KG_HideAllGamesInGamelist",
