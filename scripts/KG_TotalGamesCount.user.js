@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        KG_TotalGamesCount
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Добавляет отображение общего количества заездов на страницу статистики
 // @author      voidmain
 // @license     MIT
-// @version     1.0
+// @version     1.0.0
 // @include     http://klavogonki.ru/u/*
 // @grant       none
 // @run-at      document-end 

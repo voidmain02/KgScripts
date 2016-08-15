@@ -1,8 +1,9 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           DelGameButton
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/g/*
 // @author         Fenex
+// @description    Кнопка удаления результата в соревнованиях (работает только для Премиум-аккаунтов)
 // @version        2.1.1
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==

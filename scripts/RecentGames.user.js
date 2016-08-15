@@ -1,14 +1,12 @@
 // ==UserScript==
-// @name          Klavogonki: recent games
+// @name          RecentGames
 // @namespace     klavogonki
-// @version       1.3 KTS
-// @description   list of recent games
+// @version       1.3.1
+// @description   Кнопки на главной странице и на странице списка игр для создания заездов
 // @include       http://klavogonki.ru/
 // @include       http://klavogonki.ru/gamelist/
 // @include       http://klavogonki.ru/g/*
-// @author        Lexin
-// @updateURL     https://userscripts.org/scripts/source/147928.meta.js
-// @downloadURL   https://userscripts.org/scripts/source/147928.user.js
+// @author        Lexin13
 // ==/UserScript==
 
 function main(){
@@ -46,11 +44,10 @@ function main(){
         var visibility = visibilities[aGame.params.type];
         var levelFrom = ranks[aGame.params.level_from - 1];
         var levelTo = ranks[aGame.params.level_to - 1];
-        var qual = (aGame.params.qual == 'on' ? 1 : 0);
         
         return '<span class="recent-game-name gametype-' + aGame.params.gametype + '">' + ((vocName == '') ? gameType : '«' + vocName + '»') + '</span>'
             + '<span class="recent-game-description">' + visibility + ', ' + timeout
-            + '<span class="recent-game-qual">' + (qual? ' (к)': '') + '</span>'
+            + '<span class="recent-game-qual">' + (aGame.params.qual ? ' (к)': '') + '</span>'
             + (aGame.params.level_from != 1 || aGame.params.level_to != 9 ? ' <span class="recent-game-levels">' + levelFrom + ' - ' + levelTo + '</span>' : '')
             + '</span>';
     }
@@ -63,7 +60,7 @@ function main(){
             + '&level_from=' + aGame.params.level_from
             + '&level_to=' + aGame.params.level_to
             + '&timeout=' + aGame.params.timeout
-            + (aGame.params.qual == 'on' ? '&qual=on' : '')
+            + (aGame.params.qual ? '&qual=1' : '')
             + '&submit=1';
     }
     
@@ -125,7 +122,7 @@ function main(){
                 level_from: parseInt(game.params.level_from),
                 level_to: parseInt(game.params.level_to),
                 timeout: parseInt(game.params.timeout),
-                qual: (game.params.qual == 'on' ? 'on' : ''),
+                qual: (game.params.qual ? 1 : 0),
                 premium_abra: 0
             };
             

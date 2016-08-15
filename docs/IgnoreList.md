@@ -1,4 +1,4 @@
-## IgnoreList [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/ignorelist.user.js)
+## IgnoreList [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/IgnoreList.user.js)
 **Авторы:** [Fenex](http://klavogonki.ru/u/#/82885/)
 
 Чёрный список в чате.

@@ -1,10 +1,10 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name        KG_GameLog
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Позволяет вести журнал всех заездов
 // @author      voidmain
 // @license     MIT
-// @version     0.7
+// @version     0.7.0
 // @include     http://klavogonki.ru/*
 // @grant       none
 // @run-at      document-end 

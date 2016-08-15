@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name        KG_BulkMailer
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Массовая рассылка сообщений
 // @author      voidmain
 // @license     MIT
