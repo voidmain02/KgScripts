@@ -416,7 +416,7 @@
   },
   {
     "name": "KlavoEvents",
-    "version": "2.0.0+kts",
+    "version": "3.0.0",
     "authors": [
       "Fenex",
       "DIgorevich"
