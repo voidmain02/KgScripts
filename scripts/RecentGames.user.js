@@ -241,6 +241,14 @@ function main(){
 
 function getRecentGames() {
     var gameList = localStorage['recent_games'] ? JSON.parse(localStorage['recent_games']) : [];
+    // Update old configuration if needed:
+    // TODO: remove this in the future version.
+    gameList = gameList.map(function (game) {
+        if (game.params.qual === 'on' || game.params.qual === '') {
+            game.params.qual = game.params.qual === 'on' ? 1 : 0;
+        }
+        return game;
+    });
     for (var i = 0; i < gameList.length; i++) {
         gameList[i].id = i;
     }
