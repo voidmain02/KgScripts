@@ -22,7 +22,7 @@
 [KG_GameLog](docs/KG_GameLog.md) | Позволяет вести журнал всех заездов |
 [KG_FullStatisticsLink](docs/KG_FullStatisticsLink.md) | Добавляет ссылку на скачивание полной статистики |
 [avgSize_BookPart](docs/avgSize_BookPart.md) | Показывает для словарей-книг примерное количество символов на отрывок | ![][i]
-[KG_ClearProfile](docs/KG_ClearProfile.md) | Изменяет стилевое оформление профиля |
+[KG_ClearProfile](docs/KG_ClearProfile.md) | Изменяет стилевое оформление профиля | ![][c]
 [MceViewer](docs/MceViewer.md) | Расширение для markdown, позволяет делать в бортжурнале цветные надписи |
 [QuickVocsStart](docs/QuickVocsStart.md) | Добавляет на страницу словаря три ссылки для быстрого старта игры. Параметры заездов для ссылок можно настроить | ![][i]
 [klavostats_links](docs/klavostats_links.md) | Добавляет прямые ссылки на профиль игрока в КлавоСтатистике | ![][i]
@@ -53,6 +53,7 @@
 [RecordsLine](docs/RecordsLine.md) | Создаёт линейки рекордов |
 [KG_SeparateGameLink](docs/KG_SeparateGameLink.md) | Добавляет ссылку на создание нового заезда по текущему режиму (исключает возможность попадания в заезды других игроков) |
 [KG_PrivateChatLink](docs/KG_PrivateChatLink.md) | Приватный диалог в чате по Shift + клик ЛКМ по нику пользователя в окне сообщений |
+[KG_GlasslessBio](docs/KG_GlasslessBio.md) | В разделе «Сводка» изменяет вид блока «Био» | ![][c]
 
 Условные обозначения:
 
