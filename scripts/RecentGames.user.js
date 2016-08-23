@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          RecentGames
 // @namespace     klavogonki
-// @version       1.3.1
+// @version       1.3.2
 // @description   Кнопки на главной странице и на странице списка игр для создания заездов
 // @include       http://klavogonki.ru/
 // @include       http://klavogonki.ru/gamelist/
@@ -241,6 +241,14 @@ function main(){
 
 function getRecentGames() {
     var gameList = localStorage['recent_games'] ? JSON.parse(localStorage['recent_games']) : [];
+    // Update old configuration if needed:
+    // TODO: remove this in the future version.
+    gameList = gameList.map(function (game) {
+        if (game.params.qual === 'on' || game.params.qual === '') {
+            game.params.qual = game.params.qual === 'on' ? 1 : 0;
+        }
+        return game;
+    });
     for (var i = 0; i < gameList.length; i++) {
         gameList[i].id = i;
     }

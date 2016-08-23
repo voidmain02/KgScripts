@@ -435,7 +435,7 @@
   },
   {
     "name": "KlavoEvents",
-    "version": "2.0.0+kts",
+    "version": "3.0.0",
     "authors": [
       "Fenex",
       "DIgorevich"
@@ -499,7 +499,7 @@
   },
   {
     "name": "RecentGames",
-    "version": "1.3.1",
+    "version": "1.3.2",
     "authors": [
       "Lexin13"
     ],
@@ -559,7 +559,7 @@
     "description": "Показывает для словарей-книг примерное количество символов на отрывок"
   },
   {
-    "name": "chat2BBcode",
+    "name": "chat2BBCode",
     "version": "2.1.5",
     "authors": [
       "Fenex"
