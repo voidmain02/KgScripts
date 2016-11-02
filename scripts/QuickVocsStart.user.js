@@ -78,7 +78,7 @@ if(!document.getElementById('KTS_QuickVocsStart')) {
 											timeout: 10,
 											qual: true
 										}) + '"><span>Квалификация, 10 сек</span></a>';
-				td.innerHTML += '<a href="http://klavogonki.ru/profile/'+userid+'/stats/?gametype=voc-'+vocid+'"><span>Статистика</span></a>';
+				td.innerHTML += '<a href="http://klavogonki.ru/profile/'+userid+'/stats/?gametype=voc-'+vocid+'"><span>Моя статистика</span></a>';
 			}
 			return td;
 		}
