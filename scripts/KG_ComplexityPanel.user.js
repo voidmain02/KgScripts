@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4.0
+// @version        1.4.1
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
@@ -99,20 +99,32 @@ function embed() {
     // than other approaches: String#indexOf, RegExp, Array#indexOf.
     var dictionary = {};
 
-    var waitForText = setInterval(function () {
-        if (!game || !game.players) {
-            return;
-        }
+    // Saving the original prototype method:
+    var proxied = window.XMLHttpRequest.prototype.send;
 
-        clearInterval(waitForText);
+    window.XMLHttpRequest.prototype.send = function () {
+        var check_response = window.setInterval(function () {
+            if (this.readyState != 4) {
+                return false;
+            }
+            if (this.responseText.length) {
+                try {
+                    var json = JSON.parse(this.responseText);
+                    if ('text' in json) {
+                        createPanel(json.text.text);
+                        window.XMLHttpRequest.prototype.send = proxied;
+                    }
+                } catch (e) {}
+            }
+            window.clearInterval(check_response);
+        }.bind(this), 1);
+        return proxied.apply(this, [].slice.call(arguments));
+    };
 
-        if (!game.text) {
-            return;
-        }
-
+    function createPanel (text) {
         prepareDictionary();
 
-        var complexityObject = getComplexity(game.text);
+        var complexityObject = getComplexity(text);
         var complexity = complexityObject.complexity.toFixed(2);
 
         var params = document.getElementById("params");
@@ -157,8 +169,7 @@ function embed() {
                 }
             }
         }
-
-    }, 100);
+    }
 
     function prepareDictionary() {
         for (var i = 0; i < SYLLABLES.length; i += 2) {
