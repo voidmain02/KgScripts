@@ -5,7 +5,7 @@
 // @include        http://klavogonki.ru/vocs/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.1.4
+// @version        0.1.5
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -167,17 +167,45 @@ function main(){
         return;
     }
 
-    if( window.location.href.match( gamePageRE ) ){
+    if (window.location.href.match(gamePageRE)) {
         var forceTranslate = false;
-        if( vocLink )
-            forceTranslate = foreignVocs[ vocRE.exec( vocLink.href ).pop() ] ? true : false;
-        if( ( game.text.match( /[A-Za-z]+/g ) || [] ).join( '' ).length > 20 || forceTranslate ){
-            var observer = new MutationObserver(function( mutations ){
+        if (vocLink) {
+            forceTranslate = foreignVocs[vocRE.exec(vocLink.href).pop()] ? true : false;
+        }
+
+        // Saving the original prototype method:
+        var proxied = window.XMLHttpRequest.prototype.send;
+
+        window.XMLHttpRequest.prototype.send = function () {
+            var check_response = window.setInterval(function () {
+                if (this.readyState != 4) {
+                    return false;
+                }
+                if (this.responseText.length) {
+                    try {
+                        var json = JSON.parse(this.responseText);
+                        if ('text' in json) {
+                            init(json.text.text);
+                            window.XMLHttpRequest.prototype.send = proxied;
+                        }
+                    } catch (e) {}
+                }
+                window.clearInterval(check_response);
+            }.bind(this), 1);
+            return proxied.apply(this, [].slice.call(arguments));
+        };
+
+        function init (text) {
+            if ((text.match( /[A-Za-z]+/g ) || []).join('').length < 20 && !forceTranslate) {
+                return false;
+            }
+            var observer = new MutationObserver(function(mutations){
                 observer.disconnect();
-                game.translator = new KG_YandexTranslator( game.text, 'game.translator.showTranslation' );
-                game.translator.detectForeign( 'game.translator.detectForeign' );
+                window.KG_YandexTranslator = new KG_YandexTranslator(text,
+                    'KG_YandexTranslator.showTranslation');
+                window.KG_YandexTranslator.detectForeign('KG_YandexTranslator.detectForeign');
             });
-            observer.observe( scores, { childList: true, subtree: true, characterData: true });
+            observer.observe(scores, { childList: true, subtree: true, characterData: true });
         }
     }
 }

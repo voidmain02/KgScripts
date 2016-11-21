@@ -156,7 +156,7 @@
   },
   {
     "name": "KG_ComplexityPanel",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "authors": [
       "Silly_Sergio"
     ],
@@ -422,7 +422,7 @@
   },
   {
     "name": "KG_YandexTranslator",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "authors": [
       "agile"
     ],
