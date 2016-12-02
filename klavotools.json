@@ -52,9 +52,10 @@
   },
   {
     "name": "DelGameButton",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "authors": [
-      "Fenex"
+      "Fenex",
+      "agile"
     ],
     "integrated": true,
     "tags": [
