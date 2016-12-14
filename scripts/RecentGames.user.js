@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          RecentGames
 // @namespace     klavogonki
-// @version       1.3.2
+// @version       1.3.3
 // @description   Кнопки на главной странице и на странице списка игр для создания заездов
 // @include       http://klavogonki.ru/
 // @include       http://klavogonki.ru/gamelist/
@@ -106,57 +106,115 @@ function main(){
         return div;   
     }
 
-    if (/http:\/\/klavogonki.ru\/g\/\?gmid=/.test(location.href)){
-        var timer;
-        function handler(){
-            if (!(game && game.params)) return;
-            clearInterval(timer);
-            
-            if (game.params.competition || !maxGameCount || !game.params.gametype_clean) return;
-            
-            var lastGameParams = {
-                gametype: game.params.gametype_clean,
-                vocName: (game.params.voc ? game.params.voc.name : ''),
-                vocId: (game.params.voc ? parseInt(game.params.voc.id) : ''),
-                type: game.params.type,
-                level_from: parseInt(game.params.level_from),
-                level_to: parseInt(game.params.level_to),
-                timeout: parseInt(game.params.timeout),
-                qual: (game.params.qual ? 1 : 0),
-                premium_abra: 0
-            };
-            
-            var sGameParams = JSON.stringify(lastGameParams);
-            var gameList = getRecentGames();
-            
-            for (var i = 0; i < gameList.length; i++) {
-                if (JSON.stringify(gameList[i].params) == sGameParams) {
-                    if (gameList[i].pin) {
-                        return;
-                    } else {
-                        gameList.splice(i, 1);
-                        break;
-                    }
+    function saveGameParams () {
+        var desc = document.getElementById('gamedesc');
+        if (!desc) {
+            throw new Error('#gamedesc element not found.');
+        }
+
+        var span = desc.querySelector('span');
+        if (!span) {
+            throw new Error('#gamedesc span element not found.');
+        }
+
+        var descText = desc.textContent;
+        if (/соревнование/.test(descText) || !maxGameCount) {
+            return false;
+        }
+
+        var gameType = span.className.split('-').pop();
+        var vocName = gameType === 'voc' ? span.textContent.replace(/[«»]/g, '') : '';
+        var vocId = gameType === 'voc' ? parseInt(span.querySelector('a').href.match(/vocs\/(\d+)/)[1]) : '';
+
+        var type = 'normal';
+        if (/одиночный/.test(descText)) {
+            type = 'practice';
+        } else if (/друзьями/.test(descText)) {
+            type = 'private';
+        }
+
+        var levelFrom = 1;
+        var levelTo = 9;
+        var matches = descText.match(/для (\S+)–(\S+),/);
+        var ranks = {
+            'новичков': 1,
+            'любителей': 2,
+            'таксистов': 3,
+            'профи': 4,
+            'гонщиков': 5,
+            'маньяков': 6,
+            'суперменов': 7,
+            'кибергонщиков': 8,
+            'экстракиберов': 9,
+        };
+        if (matches) {
+            levelFrom = ranks[matches[1]];
+            levelTo = ranks[matches[2]];
+        }
+
+        var timeout = parseInt(descText.match(/таймаут\s(\d+)\sсек/)[1]);
+        // OMG
+        var qualification = /квалификация/.test(descText) ? 1 : 0;
+
+        var lastGameParams = {
+            gametype: gameType,
+            vocName: vocName,
+            vocId: vocId,
+            type: type,
+            level_from: levelFrom,
+            level_to: levelTo,
+            timeout: timeout,
+            qual: qualification,
+            // A legacy property, I guess:
+            premium_abra: 0,
+        };
+
+        var sGameParams = JSON.stringify(lastGameParams);
+        var gameList = getRecentGames();
+
+        for (var i = 0; i < gameList.length; i++) {
+            if (JSON.stringify(gameList[i].params) == sGameParams) {
+                if (gameList[i].pin) {
+                    return;
+                } else {
+                    gameList.splice(i, 1);
+                    break;
                 }
             }
-            
-            var pinGameCount = getPinGameCount(gameList);
-            while (gameList.length >= maxGameCount + pinGameCount) {
-                gameList.pop();
-            }
-            
-            var lastGame = {
-                params: lastGameParams,
-                id: -1,
-                pin: 0
-            };
-            
-            gameList.splice(pinGameCount, 0, lastGame);
-            localStorage['recent_games'] = JSON.stringify(gameList);
+        }
+
+        var pinGameCount = getPinGameCount(gameList);
+        while (gameList.length >= maxGameCount + pinGameCount) {
+            gameList.pop();
+        }
+
+        var lastGame = {
+            params: lastGameParams,
+            id: -1,
+            pin: 0
         };
-        timer = setInterval(handler, 1000);
+
+        gameList.splice(pinGameCount, 0, lastGame);
+        localStorage.setItem('recent_games', JSON.stringify(gameList));
     }
-    
+
+    if (/http:\/\/klavogonki.ru\/g\/\?gmid=/.test(location.href)) {
+        var gameLoading = document.getElementById('gameloading');
+        if (!gameLoading) {
+            throw new Error('#gameloading element not found.');
+        }
+
+        if (gameLoading.style.display !== 'none') {
+            var observer = new MutationObserver(function () {
+                observer.disconnect();
+                saveGameParams();
+            });
+            observer.observe(gameLoading, { attributes: true });
+        } else {
+            saveGameParams();
+        }
+    }
+
     if (/^http:\/\/klavogonki.ru\/$/.test(location.href)) {
         var div = createHistoryContainer();
         var e = document.getElementById('head');
