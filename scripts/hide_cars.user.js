@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           hide_cars
-// @version        0.7.1+kts
+// @version        0.7.2
 // @namespace      klavogonki
 // @description    Скрытие машинок во время набора текста
 // @include        http://klavogonki.ru/g/*
@@ -8,9 +8,6 @@
 // ==/UserScript==
 
 function HideCars() {
-	if (!game)
-		return; 
-
 	var param = document.getElementById("hide_cars_check");
 
 	if (localStorage["hideCars_STATUS"] == '1')

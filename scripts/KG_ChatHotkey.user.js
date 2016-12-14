@@ -5,7 +5,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.1.1
+// @version        1.1.2
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -147,8 +147,8 @@ function main(){
     };
 
     function game_route(){
-        Game.chathotkey = new KG_ChatHotkey( default_combination );
-        Game.chathotkey.bind(function( event, combo ){
+        var chatHotkey = new KG_ChatHotkey( default_combination );
+        chatHotkey.bind(function( event, combo ){
             if( combo.keys.some(function( obj ){ return obj.key.length === 1 }) && ! combo.alt && ! combo.ctrl ){
                 // Our hotkey combination will produce printable character when the text field is focused on — avoid chat minimization in that case:
                 var target = event.target.tagName.toLowerCase(),
@@ -171,11 +171,10 @@ function main(){
     function profile_route(){
         angular.element( document.body ).scope().$on( 'routeSegmentChange', function( event, route ){
             if( route.segment && route.segment.name == 'prefs' ){
-                var scope = event.targetScope,
-                    template = route.segment.locals.$template,
+                var template = route.segment.locals.$template,
                     index = template.lastIndexOf( '</div>' );
                 route.segment.locals.$template = template.substring( 0, index ) + script_template + template.substring( index );
-                scope.chathotkey = new KG_ChatHotkey( default_combination );
+                var chathotkey = new KG_ChatHotkey( default_combination );
             }
         });
     }

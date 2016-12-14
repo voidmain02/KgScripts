@@ -128,7 +128,7 @@
   },
   {
     "name": "KG_ChatHotkey",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "authors": [
       "agile"
     ],
@@ -585,7 +585,7 @@
   },
   {
     "name": "hide_cars",
-    "version": "0.7.1+kts",
+    "version": "0.7.2",
     "authors": [
       "rgall",
       "Fenex"
