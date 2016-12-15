@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          DailyScores
 // @namespace     klavogonki
-// @version       2.1.2
+// @version       2.1.3
 // @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
 // @include       http://klavogonki.ru/*
 // @author        Lexin13, agile
@@ -45,7 +45,7 @@ function main () {
       if (element instanceof HTMLElement) {
         panel.appendChild(element);
       } else {
-        var element = document.createTextNode(element);
+        element = document.createTextNode(element);
         panel.appendChild(element);
       }
     });
@@ -121,19 +121,34 @@ function main () {
   DailyScores.prototype.setLastRatingGameId = function (id) {
     this.values.rating.lastRaceId = id;
     this.save();
-  }
+  };
 
   DailyScores.prototype.getLastRatingGameId = function () {
     return this.values.rating.lastRaceId;
-  }
+  };
 
   var scoresCell = document.getElementById('userpanel-scores-container');
-  var bonusesCell = document.getElementById('userpanel-bonuses');
-  var level = document.getElementById('userpanel-level');
-
-  if (!scoresCell || !bonusesCell || !level) {
-    return;
+  if (!scoresCell) {
+    throw new Error('#userpanel-scores-container element not found.');
   }
+
+  var bonusesCell = document.getElementById('userpanel-bonuses');
+  if (!bonusesCell) {
+    throw new Error('#userpanel-bonuses element not found.');
+  }
+
+  var level = document.getElementById('userpanel-level');
+  if (!bonusesCell) {
+    throw new Error('#userpanel-level element not found.');
+  }
+
+  var link = document.querySelector('.dropmenu a');
+  if (!link) {
+    throw new Error('.dropmenu a element not found.');
+  }
+
+  // Extract the user id:
+  var userId = parseInt(link.href.match(/\/u\/#\/(\d+)/)[1]);
 
   // Extract the current rating value:
   var rating = parseInt(/\d+/.exec(level.getAttribute('original-title')) || 0);
@@ -141,64 +156,111 @@ function main () {
   var dailyScores = new DailyScores(scoresCell.parentNode,
     bonusesCell.parentNode, rating);
 
-  function scoresChanged () {
-    game.players.every(function (player) {
-      if (player.you && player.info && player.info.record
-          && player.info.record.scores_gained) {
-        dailyScores.update({
-          scores: parseInt(player.info.record.scores_gained)
-        });
+  // Check each XMLHttpRequest response for required JSON with scores_gained field:
+  function checkJSON (response) {
+    try {
+      var json = JSON.parse(response);
+      if (!('players' in json)) {
         return false;
       }
-      return true;
-    });
-    if (game.params.competition) {
-      var old = 0;
-      window.setInterval(function () {
-        if (game.ratings && game.ratings[window.__user__]) {
-          var gained = game.ratings[window.__user__].g - old;
-          old += gained;
-          dailyScores.update({ rating: gained });
+
+      for (var i = 0; i < json.players.length; i++) {
+        if ('record' in json.players[i] && json.players[i].record.user === userId) {
+          return json.players[i].record.scores_gained;
         }
-      }, 1000);
+      }
+
+      return false;
+    } catch (e) {
+      return false;
     }
   }
 
-  if (/http:\/\/klavogonki.ru\/g\/\?gmid=/.test(window.location.href)) {
-    var observer = new MutationObserver(function () {
-      observer.disconnect();
-      scoresChanged();
-    });
-    observer.observe(scoresCell, {
-      characterData: true,
-      subtree: true,
-      childList: true,
-    });
+  // Monitor rating changes at the active competition page:
+  function observeRating () {
+    if (!checkCompetition()) {
+      return false;
+    }
+
+    var old = 0;
+    window.setInterval(function () {
+      var container = document.querySelector('.player.you .rating .rating_gained');
+      if (!container) {
+        return false;
+      }
+
+      var gained = parseInt(container.textContent) - old;
+      old += gained;
+      dailyScores.update({ rating: gained });
+    }, 1000);
+  }
+
+  // Check if the current game is a rating competition:
+  function checkCompetition () {
+    var desc = document.getElementById('gamedesc');
+    if (!desc) {
+        throw new Error('#gamedesc element not found.');
+    }
+
+    return /соревнование/.test(desc.textContent);
+  }
+
+  if (/\/\/klavogonki.ru\/g\/\?gmid=/.test(window.location.href)) {
+    // Saving the original prototype method:
+    var proxied = window.XMLHttpRequest.prototype.send;
+
+    window.XMLHttpRequest.prototype.send = function () {
+      var check_response = window.setInterval(function () {
+        if (this.readyState != 4) {
+          return false;
+        }
+        window.clearInterval(check_response);
+        var scoresGained = checkJSON(this.responseText);
+        if (scoresGained) {
+          window.XMLHttpRequest.prototype.send = proxied;
+          dailyScores.update({ scores: scoresGained });
+          observeRating();
+        }
+      }.bind(this), 1);
+      return proxied.apply(this, [].slice.call(arguments));
+    };
+
+    // Scores value gained for the challenge of the day completion can be obtained only
+    // via listening of the existing WebSocket connection:
     var injector = angular.element(document.body).injector();
     injector.invoke(function ($rootScope, Me, Socket) {
       Socket.bindEventToScope($rootScope,
         sprintf("counters:%s/scores", Me.id),
           function (data) {
-        var finished = game.players.some(function (player) {
-          return player.you && game.finished;
-        });
-        if (finished) {
-          // Obtained scores for the completion of the challenge of the day:
-          var scores = data.newAmount - parseInt(scoresCell.textContent);
-          dailyScores.update({ scores: scores });
+        var finished = document.querySelector('.player.you .rating');
+        // Are we finished the race yet?
+        if (!finished || finished.style.display === 'none') {
+          return false;
         }
-      })
+
+        var scores = data.newAmount - parseInt(scoresCell.textContent);
+        dailyScores.update({ scores: scores });
+      });
     });
+
     var gameObserver = window.setInterval(function () {
-      if (!game || !game.params) {
-        return;
+      var gameLoading = document.getElementById('gameloading');
+      if (!gameLoading) {
+          throw new Error('#gameloading element not found.');
       }
 
-      window.clearInterval(gameObserver)
-      if (game.params.competition &&
-          game.id !== dailyScores.getLastRatingGameId()) {
+      if (gameLoading.style.display !== 'none') {
+        return false;
+      }
+
+      window.clearInterval(gameObserver);
+
+      // Extract the game id from the URL:
+      var matches = window.location.href.match(/\/\/klavogonki.ru\/g\/\?gmid=(\d+)/);
+
+      if (checkCompetition() && matches[1] !== dailyScores.getLastRatingGameId()) {
+        dailyScores.setLastRatingGameId(matches[1]);
         // Each rating game costs 150 score points:
-        dailyScores.setLastRatingGameId(game.id);
         dailyScores.update({ scores: -150 });
       }
     }, 1000);
