@@ -1,67 +1,162 @@
 // ==UserScript==
 // @name          save_race_in_blog
 // @namespace     klavogonki
-// @version       1.1.0+kts
+// @version       1.1.1
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
-// @include       http://klavogonki.ru/g/?gmid=*
-// @author        Lexin13
+// @include       http://klavogonki.ru/g/*
+// @author        Lexin13, agile
 // ==/UserScript==
 
-function main(){
-	var scores = $('userpanel-scores-container');    
-    var MutationObserver = window.MutationObserver ||
-                           window.WebKitMutationObserver ||
-                           window.MozMutationObserver;
-    var observer = new MutationObserver(
-        function(mutations) {
-            observer.disconnect();
-            scoresChangeHandler();
-    });
-    
-    observer.observe(scores, {
-        characterData: true,
-        subtree: true,
-        childList: true
-    }); 
-    
-    function scoresChangeHandler() {
-        var saveScript = "popconfirm('Добавить запись в бортжурнал?',"
-        	+ "function(){"
-        	+ "new Ajax.Request('/g/'+game.id+'.publish',{method:'post',parameters:{text:game.errors_text_bbcode}});"
-            + "document.getElementById('save-result').innerHTML = 'Сохранен';"
-            + "});";
-        var saveButton = document.createElement('div');
-        saveButton.id = 'save-result';
-        saveButton.setAttribute('style', 'float:left; font-size:10pt;');
-        saveButton.innerHTML = '<a href="javascript:void(0);" onclick="' + saveScript + '" style="color:#2a0;">Сохранить в бортжурнале</a>';
+function saveRaceInBlog () {
+  var link = document.querySelector('.dropmenu a');
+  if (!link) {
+    throw new Error('.dropmenu a element not found.');
+  }
 
-        var e = document.getElementById('again');
-        if (e) {
-            if(e.tagName == 'TABLE') {
-                e = e.getElementsByTagName('td')[0];
-            }
-            e.insertBefore(saveButton, e.firstChild);
+  var userId = parseInt(link.href.match(/\/u\/#\/(\d+)/)[1]);
+
+  function checkJSON (response) {
+    try {
+      var json = JSON.parse(response);
+      if (!('players' in json)) {
+        return false;
+      }
+
+      for (var i = 0; i < json.players.length; i++) {
+        if ('record' in json.players[i] && json.players[i].record.user === userId) {
+          return json.players[i].record.id;
         }
+      }
+
+      return false;
+    } catch (e) {
+      return false;
     }
+  }
+
+  function saveResult (result) {
+    var gameTypes = {
+      normal: 'Oбычный',
+      abra: 'Абракадабра',
+      referats: 'Яндекс.Рефераты',
+      noerror: 'Безошибочный',
+      marathon: 'Марафон',
+      chars: 'Буквы',
+      digits: 'Цифры',
+      sprint: 'Спринт',
+    };
+
+    var text = 'Результат #' + result.id + ' в режиме ';
+    if (result.gameType === 'voc') {
+      text += 'по словарю «[' + result.vocName + '](/vocs/' + result.vocId + '/ "Перейти на страницу словаря")»: ';
+    } else {
+      text += '**' + gameTypes[result.gameType] + '**: ';
+    }
+
+    text += result.stats.speed + '&nbsp;зн/мин, ' + result.stats.errors + '; ' + result.stats.time + '\n\n';
+
+    var typedMarked = result.typedHtml
+                        .replace(/<span class="error">|<\/span>/g, '**')
+                        .replace(/<s class="error">/g, '~~**')
+                        .replace(/<\/s>/g, '**~~');
+
+    text += '> ' + typedMarked;
+
+    if (confirm('Добавить запись в бортжурнал?')) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/profile/add-journal-post');
+      xhr.onload = function () {
+        if (this.status !== 200) {
+          throw new Error('Something went wrong.');
+        }
+
+        alert('Запись успешно добавлена.');
+      };
+      xhr.send(JSON.stringify({
+        userId: userId,
+        text: text,
+        hidden: false,
+      }));
+    }
+  }
+
+  function init (resultId) {
+    var container = document.createElement('div');
+    container.style.float = 'left';
+    container.style.fontSize = '10pt';
+    var link = document.createElement('a');
+    link.style.color = '#2a0';
+    link.textContent = 'Сохранить в бортжурнале';
+
+    var typed = document.querySelector('#errors_text p');
+    if (!typed) {
+      throw new Error('#errors_text p element not found.');
+    }
+
+    var statsContainer = document.querySelector('.player.you .stats');
+    if (!statsContainer) {
+      throw new Error('.player.you .stats element not found.');
+    }
+
+    var matches = statsContainer.textContent.match(/(\d{2}:\d{2}\.\d)(\d+) зн\/мин(\d+ ошиб\S+ \([\d,%]+\))/);
+    if (!matches) {
+      throw new Error('result stats were not parsed.');
+    }
+
+    var span = document.querySelector('#gamedesc span');
+    if (!span) {
+        throw new Error('#gamedesc span element not found.');
+    }
+
+    var gameType = span.className.split('-').pop();
+    var vocName = gameType === 'voc' ? span.textContent.replace(/[«»]/g, '') : '';
+    var vocId = gameType === 'voc' ? parseInt(span.querySelector('a').href.match(/vocs\/(\d+)/)[1]) : '';
+
+    var stats = {
+      time: matches[1],
+      speed: matches[2],
+      errors: matches[3],
+    };
+
+    var resultData = {
+      id: resultId,
+      stats: stats,
+      typedHtml: typed.innerHTML,
+      gameType: gameType,
+      vocName: vocName,
+      vocId: vocId,
+    };
+
+    link.addEventListener('click', saveResult.bind(null, resultData));
+    container.appendChild(link);
+
+    var again = document.querySelector('#again td');
+    if (!again) {
+      throw new Error('#again td element not found.');
+    }
+
+    again.insertBefore(container, again.firstChild);
+  }
+
+  // Saving the original prototype method:
+  var proxied = window.XMLHttpRequest.prototype.send;
+
+  window.XMLHttpRequest.prototype.send = function () {
+    var check_response = window.setInterval(function () {
+      if (this.readyState != 4) {
+        return false;
+      }
+      var resultId = checkJSON(this.responseText);
+      if (resultId) {
+        window.XMLHttpRequest.prototype.send = proxied;
+        init(resultId);
+      }
+      window.clearInterval(check_response);
+    }.bind(this), 1);
+    return proxied.apply(this, [].slice.call(arguments));
+  };
 }
 
-function execScript(source) {
-    if (typeof source == 'function') {
-        source = '(' + source + ')();';
-    }
-    
-    var script = document.createElement('script');
-    script.type = 'text/javascript';
-    script.innerHTML = source;
-    document.body.appendChild(script);
-}
-
-if(!document.getElementById('KTS_save_race_in_blog')) {
-	
-	execScript(main);
-	
-	var tmp_elem = document.createElement('div');
-	tmp_elem.id = 'KTS_save_race_in_blog';
-	tmp_elem.style.display = 'none';
-	document.body.appendChild(tmp_elem);	
-}
+var script = document.createElement('script');
+script.textContent = '(' + saveRaceInBlog.toString() + ')();';
+document.body.appendChild(script);
