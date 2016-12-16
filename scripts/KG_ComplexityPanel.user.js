@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4.1
+// @version        1.4.2
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
@@ -99,27 +99,30 @@ function embed() {
     // than other approaches: String#indexOf, RegExp, Array#indexOf.
     var dictionary = {};
 
-    // Saving the original prototype method:
-    var proxied = window.XMLHttpRequest.prototype.send;
+    // Extract the game id from the URL:
+    var matches = window.location.href.match(/\/\/klavogonki.ru\/g\/\?gmid=(\d+)/);
+    if (!matches) {
+        throw new Error('game id was not parsed.');
+    }
 
-    window.XMLHttpRequest.prototype.send = function () {
-        var check_response = window.setInterval(function () {
-            if (this.readyState != 4) {
-                return false;
-            }
-            if (this.responseText.length) {
-                try {
-                    var json = JSON.parse(this.responseText);
-                    if ('text' in json) {
-                        createPanel(json.text.text);
-                        window.XMLHttpRequest.prototype.send = proxied;
-                    }
-                } catch (e) {}
-            }
-            window.clearInterval(check_response);
-        }.bind(this), 1);
-        return proxied.apply(this, [].slice.call(arguments));
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/g/' + matches[1] + '.info');
+    xhr.onload = function () {
+        if (this.status !== 200) {
+            throw new Error('Got non-200 response status from the server.');
+        }
+
+        var json = JSON.parse(this.responseText);
+        if (!('text' in json)) {
+            throw new Error('The game text was not received.');
+        }
+
+        createPanel(json.text.text);
     };
+
+    var formData = new FormData;
+    formData.append('need_text', 1);
+    xhr.send(formData);
 
     function createPanel (text) {
         prepareDictionary();
