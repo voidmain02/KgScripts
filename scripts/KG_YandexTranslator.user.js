@@ -5,7 +5,7 @@
 // @include        http://klavogonki.ru/vocs/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.1.5
+// @version        0.1.6
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -173,27 +173,30 @@ function main(){
             forceTranslate = foreignVocs[vocRE.exec(vocLink.href).pop()] ? true : false;
         }
 
-        // Saving the original prototype method:
-        var proxied = window.XMLHttpRequest.prototype.send;
+        // Extract the game id from the URL:
+        var matches = window.location.href.match(/\/\/klavogonki.ru\/g\/\?gmid=(\d+)/);
+        if (!matches) {
+            throw new Error('game id was not parsed.');
+        }
 
-        window.XMLHttpRequest.prototype.send = function () {
-            var check_response = window.setInterval(function () {
-                if (this.readyState != 4) {
-                    return false;
-                }
-                if (this.responseText.length) {
-                    try {
-                        var json = JSON.parse(this.responseText);
-                        if ('text' in json) {
-                            init(json.text.text);
-                            window.XMLHttpRequest.prototype.send = proxied;
-                        }
-                    } catch (e) {}
-                }
-                window.clearInterval(check_response);
-            }.bind(this), 1);
-            return proxied.apply(this, [].slice.call(arguments));
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/g/' + matches[1] + '.info');
+        xhr.onload = function () {
+            if (this.status !== 200) {
+                throw new Error('Got non-200 response status from the server.');
+            }
+
+            var json = JSON.parse(this.responseText);
+            if (!('text' in json)) {
+                throw new Error('The game text was not received.');
+            }
+
+            init(json.text.text);
         };
+
+        var formData = new FormData;
+        formData.append('need_text', 1);
+        xhr.send(formData);
 
         function init (text) {
             if ((text.match( /[A-Za-z]+/g ) || []).join('').length < 20 && !forceTranslate) {
