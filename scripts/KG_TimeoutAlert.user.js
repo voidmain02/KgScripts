@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        KG_TimeoutAlert
 // @author      Andre_Macareno, Fenex, un4given, agile
-// @version     3.0.4
+// @version     3.0.5
 // @description Звуковое оповещение о старте игры
 // @include     http://klavogonki.ru/g/*
 // ==/UserScript==
@@ -18,7 +18,7 @@ function timeoutAlert() {
 
   var matches = desc.textContent.match(/таймаут\s(\d+)\s(сек|мин)/);
   // No alert if the game timeout less than 45 seconds:
-  if (matches[1] < 45 && matches[2] === 'сек') {
+  if (matches && matches[1] < 45 && matches[2] === 'сек') {
     return false;
   }
 
