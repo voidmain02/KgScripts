@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        KG_TimeoutAlert
 // @author      Andre_Macareno, Fenex, un4given, agile
-// @version     3.0.3
+// @version     3.0.4
 // @description Звуковое оповещение о старте игры
 // @include     http://klavogonki.ru/g/*
 // ==/UserScript==
@@ -27,8 +27,6 @@ function timeoutAlert() {
     throw new Error('#waiting_timeout element not found.');
   }
 
-  soundManager.createSound('timeoutAlert', 'http://klavogonki.ru/typo.mp3');
-
   var timer = setInterval(function() {
     var remainingTime = timeContainer.textContent.match(/(\d{2}).(\d{2})/);
     if (!remainingTime) {
@@ -38,7 +36,7 @@ function timeoutAlert() {
     // Make a sound alert in ≈ 17 seconds before the game start:
     if (parseInt(remainingTime[1]) === 0 && parseInt(remainingTime[2]) < 18) {
       clearInterval(timer);
-      soundManager.play('timeoutAlert');
+      soundManager.play('typo');
     }
   }, 500);
 }
