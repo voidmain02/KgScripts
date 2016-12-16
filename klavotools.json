@@ -102,7 +102,7 @@
   },
   {
     "name": "KG_CancelRaceShortcut",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "authors": [
       "voidmain",
       "unnamed777",
@@ -112,7 +112,7 @@
     "tags": [
       "Заезд"
     ],
-    "description": "Добавляет сочетание клавиш для отмены результатов заезда"
+    "description": "Добавляет сочетание Ctrl + Shift + Z для отмены результатов заезда"
   },
   {
     "name": "KG_CenterAlignment",
