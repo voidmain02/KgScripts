@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          RecentGames
 // @namespace     klavogonki
-// @version       1.3.3
+// @version       1.3.4
 // @description   Кнопки на главной странице и на странице списка игр для создания заездов
 // @include       http://klavogonki.ru/
 // @include       http://klavogonki.ru/gamelist/
@@ -152,7 +152,8 @@ function main(){
             levelTo = ranks[matches[2]];
         }
 
-        var timeout = parseInt(descText.match(/таймаут\s(\d+)\sсек/)[1]);
+        matches = descText.match(/таймаут\s(\d+)\s(сек|мин)/);
+        var timeout = matches[2] === 'сек' ? parseInt(matches[1]) : parseInt(matches[1]) * 60;
         // OMG
         var qualification = /квалификация/.test(descText) ? 1 : 0;
 
