@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          save_race_in_blog
 // @namespace     klavogonki
-// @version       1.1.1
+// @version       1.1.2
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http://klavogonki.ru/g/*
 // @author        Lexin13, agile
@@ -82,7 +82,6 @@ function saveRaceInBlog () {
 
   function init (resultId) {
     var container = document.createElement('div');
-    container.style.float = 'left';
     container.style.fontSize = '10pt';
     var link = document.createElement('a');
     link.style.color = '#2a0';
@@ -130,12 +129,18 @@ function saveRaceInBlog () {
     link.addEventListener('click', saveResult.bind(null, resultData));
     container.appendChild(link);
 
-    var again = document.querySelector('#again td');
+    var again = document.getElementById('again');
     if (!again) {
-      throw new Error('#again td element not found.');
+      throw new Error('#again element not found.');
     }
 
-    again.insertBefore(container, again.firstChild);
+    var cell = again.querySelector('td');
+    if (cell) {
+      container.style.float = 'left';
+      again.insertBefore(container, again.firstChild);
+    } else {
+      again.parentNode.appendChild(container);
+    }
   }
 
   // Saving the original prototype method:
@@ -146,12 +151,13 @@ function saveRaceInBlog () {
       if (this.readyState != 4) {
         return false;
       }
+
+      window.clearInterval(check_response);
       var resultId = checkJSON(this.responseText);
       if (resultId) {
         window.XMLHttpRequest.prototype.send = proxied;
         init(resultId);
       }
-      window.clearInterval(check_response);
     }.bind(this), 1);
     return proxied.apply(this, [].slice.call(arguments));
   };
