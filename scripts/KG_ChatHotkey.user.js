@@ -5,7 +5,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.1.2
+// @version        1.1.3
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -171,10 +171,11 @@ function main(){
     function profile_route(){
         angular.element( document.body ).scope().$on( 'routeSegmentChange', function( event, route ){
             if( route.segment && route.segment.name == 'prefs' ){
-                var template = route.segment.locals.$template,
+                var scope = event.targetScope,
+                    template = route.segment.locals.$template,
                     index = template.lastIndexOf( '</div>' );
                 route.segment.locals.$template = template.substring( 0, index ) + script_template + template.substring( index );
-                var chathotkey = new KG_ChatHotkey( default_combination );
+                scope.chathotkey = new KG_ChatHotkey( default_combination );
             }
         });
     }
