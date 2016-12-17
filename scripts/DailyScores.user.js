@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          DailyScores
 // @namespace     klavogonki
-// @version       2.1.4
+// @version       2.1.5
 // @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
 // @include       http://klavogonki.ru/*
 // @author        Lexin13, agile
@@ -182,7 +182,7 @@ function main () {
 
   // Monitor rating changes at the active competition page:
   function observeRating () {
-    if (!checkCompetition()) {
+    if (!checkGameDesc(/соревнование/)) {
       return false;
     }
 
@@ -199,14 +199,14 @@ function main () {
     }, 1000);
   }
 
-  // Check if the current game is a rating competition:
-  function checkCompetition () {
+  // Test the current game description text for the given RegExp object:
+  function checkGameDesc (re) {
     var desc = document.getElementById('gamedesc');
     if (!desc) {
         throw new Error('#gamedesc element not found.');
     }
 
-    return /соревнование/.test(desc.textContent);
+    return re.test(desc.textContent);
   }
 
   if (/\/\/klavogonki.ru\/g\/\?gmid=/.test(window.location.href)) {
@@ -220,7 +220,8 @@ function main () {
         }
         window.clearInterval(check_response);
         var scoresGained = checkJSON(this.responseText);
-        if (scoresGained) {
+        // In single games and games with friends scores are not gained immediately:
+        if (scoresGained && !checkGameDesc(/одиночный|друзьями/)) {
           window.XMLHttpRequest.prototype.send = proxied;
           dailyScores.update({ scores: scoresGained });
           observeRating();
@@ -262,7 +263,7 @@ function main () {
       // Extract the game id from the URL:
       var matches = window.location.href.match(/\/\/klavogonki.ru\/g\/\?gmid=(\d+)/);
 
-      if (checkCompetition() && matches[1] !== dailyScores.getLastRatingGameId()) {
+      if (checkGameDesc(/соревнование/) && matches[1] !== dailyScores.getLastRatingGameId()) {
         dailyScores.setLastRatingGameId(matches[1]);
         // Each rating game costs 150 score points:
         dailyScores.update({ scores: -150 });
