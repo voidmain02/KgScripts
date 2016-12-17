@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          DailyScores
 // @namespace     klavogonki
-// @version       2.1.3
+// @version       2.1.4
 // @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
 // @include       http://klavogonki.ru/*
 // @author        Lexin13, agile
@@ -107,11 +107,15 @@ function main () {
       this.values.rating.total += diff.rating;
     }
 
+    function format (n) {
+      return n % 1 === 0 ? n : n.toFixed(3);
+    }
+
     this.save();
     var scores = this.values.scores;
-    var scoresGainedTotal = (scores.gained > 0 ? '+' : '') + scores.gained;
+    var scoresGainedTotal = (scores.gained > 0 ? '+' : '') + format(scores.gained);
     var scoresChange = document.createElement('small');
-    scoresChange.textContent = diff.scores ? ' (' + diff.scores + ') ' : ' ';
+    scoresChange.textContent = diff.scores ? ' (' + format(diff.scores) + ') ' : ' ';
     var scoresSpent = scores.spent > 0 ? '−' + scores.spent : '';
     this.setPanel(this.scoresNode, scoresGainedTotal, scoresChange,
         scoresSpent);
