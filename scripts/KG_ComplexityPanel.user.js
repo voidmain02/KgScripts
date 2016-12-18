@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4.2
+// @version        1.4.3
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
@@ -105,24 +105,49 @@ function embed() {
         throw new Error('game id was not parsed.');
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/g/' + matches[1] + '.info');
-    xhr.onload = function () {
-        if (this.status !== 200) {
-            throw new Error('Got non-200 response status from the server.');
-        }
+    var gameLoading = document.getElementById('gameloading');
+    if (!gameLoading) {
+      throw new Error('#gameloading element not found.');
+    }
 
-        var json = JSON.parse(this.responseText);
-        if (!('text' in json)) {
-            throw new Error('The game text was not received.');
-        }
+    var competitionAlert = document.getElementById('competition_alert');
+    if (!competitionAlert) {
+      console.error('#competition_alert element not found.');
+    }
 
-        createPanel(json.text.text);
-    };
+    // We should wait for the game is fully loaded (request for the text will trigger
+    // a force entering to the game in the case of rating competitions):
+    if ((gameLoading.style.display !== 'none')
+        || (competitionAlert && competitionAlert.style.display !== 'none')) {
+      var observer = new MutationObserver(function () {
+        observer.disconnect();
+        getText();
+      });
+      observer.observe(gameLoading, { attributes: true });
+    } else {
+      getText();
+    }
 
-    var formData = new FormData;
-    formData.append('need_text', 1);
-    xhr.send(formData);
+    function getText () {
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/g/' + matches[1] + '.info');
+      xhr.onload = function () {
+          if (this.status !== 200) {
+              throw new Error('Got non-200 response status from the server.');
+          }
+
+          var json = JSON.parse(this.responseText);
+          if (!('text' in json)) {
+              throw new Error('The game text was not received.');
+          }
+
+          createPanel(json.text.text);
+      };
+
+      var formData = new FormData;
+      formData.append('need_text', 1);
+      xhr.send(formData);
+    }
 
     function createPanel (text) {
         prepareDictionary();
