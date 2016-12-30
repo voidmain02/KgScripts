@@ -275,7 +275,12 @@ function generateButtonsCode(a) {
 			src: "http://klavogonki.ru/img/smilies/smile.gif",
 			title: "Смайлы",
 			onclick: "smileTab_func('"+a+"');"
-		}
+		},
+        {
+            src: "https://github.com/voidmain02/KgScripts/raw/master/res/rte-youtube.png",
+            title: "Youtube видео",
+            onclick: "sendBBTag('youtube', '"+a+"_textarea');"
+        }
 	];
 	
 	var html_code = "<div class='bb_tools' id='bb_tools_"+a+"'>";
