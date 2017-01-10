@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4.3
+// @version        1.4.4
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
@@ -99,55 +99,27 @@ function embed() {
     // than other approaches: String#indexOf, RegExp, Array#indexOf.
     var dictionary = {};
 
-    // Extract the game id from the URL:
-    var matches = window.location.href.match(/\/\/klavogonki.ru\/g\/\?gmid=(\d+)/);
-    if (!matches) {
-        throw new Error('game id was not parsed.');
-    }
+    // Saving the original prototype method:
+    var proxied = window.XMLHttpRequest.prototype.send;
 
-    var gameLoading = document.getElementById('gameloading');
-    if (!gameLoading) {
-      throw new Error('#gameloading element not found.');
-    }
-
-    var competitionAlert = document.getElementById('competition_alert');
-    if (!competitionAlert) {
-      console.error('#competition_alert element not found.');
-    }
-
-    // We should wait for the game is fully loaded (request for the text will trigger
-    // a force entering to the game in the case of rating competitions):
-    if ((gameLoading.style.display !== 'none')
-        || (competitionAlert && competitionAlert.style.display !== 'none')) {
-      var observer = new MutationObserver(function () {
-        observer.disconnect();
-        getText();
-      });
-      observer.observe(gameLoading, { attributes: true });
-    } else {
-      getText();
-    }
-
-    function getText () {
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/g/' + matches[1] + '.info');
-      xhr.onload = function () {
-          if (this.status !== 200) {
-              throw new Error('Got non-200 response status from the server.');
-          }
-
-          var json = JSON.parse(this.responseText);
-          if (!('text' in json)) {
-              throw new Error('The game text was not received.');
-          }
-
-          createPanel(json.text.text);
-      };
-
-      var formData = new FormData;
-      formData.append('need_text', 1);
-      xhr.send(formData);
-    }
+    window.XMLHttpRequest.prototype.send = function () {
+        var check_response = window.setInterval(function () {
+            if (this.readyState != 4) {
+                return false;
+            }
+            if (this.responseText.length) {
+                try {
+                    var json = JSON.parse(this.responseText);
+                    if ('text' in json) {
+                        createPanel(json.text.text);
+                        window.XMLHttpRequest.prototype.send = proxied;
+                    }
+                } catch (e) {}
+            }
+            window.clearInterval(check_response);
+        }.bind(this), 1);
+        return proxied.apply(this, [].slice.call(arguments));
+    };
 
     function createPanel (text) {
         prepareDictionary();
