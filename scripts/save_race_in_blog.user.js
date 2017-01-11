@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          save_race_in_blog
 // @namespace     klavogonki
-// @version       1.1.2
+// @version       1.1.3
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http://klavogonki.ru/g/*
 // @author        Lexin13, agile
@@ -53,7 +53,9 @@ function saveRaceInBlog () {
       text += '**' + gameTypes[result.gameType] + '**: ';
     }
 
-    text += result.stats.speed + '&nbsp;зн/мин, ' + result.stats.errors + '; ' + result.stats.time + '\n\n';
+    text += result.stats.speed + '&nbsp;зн/мин, ' +
+      result.stats.errors.replace(')', '&#41;') + '; ' +
+      result.stats.time + '\n\n';
 
     var typedMarked = result.typedHtml
                         .replace(/<span class="error">|<\/span>/g, '**')
