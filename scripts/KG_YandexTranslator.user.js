@@ -5,7 +5,7 @@
 // @include        http://klavogonki.ru/vocs/*
 // @author         agile
 // @description    Выводит перевод иностранных текстов в заездах при помощи сервиса «Яндекс.Перевод»
-// @version        0.1.7
+// @version        0.1.8
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -181,16 +181,16 @@ function main(){
                 if (this.readyState != 4) {
                     return false;
                 }
+                window.clearInterval(check_response);
                 if (this.responseText.length) {
                     try {
                         var json = JSON.parse(this.responseText);
                         if ('text' in json) {
-                            init(json.text.text);
                             window.XMLHttpRequest.prototype.send = proxied;
+                            init(json.text.text);
                         }
                     } catch (e) {}
                 }
-                window.clearInterval(check_response);
             }.bind(this), 1);
             return proxied.apply(this, [].slice.call(arguments));
         };
