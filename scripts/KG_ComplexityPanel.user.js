@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4.5
+// @version        1.4.6
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
@@ -99,29 +99,31 @@ function embed() {
     // than other approaches: String#indexOf, RegExp, Array#indexOf.
     var dictionary = {};
 
+    // A flag for preventing clone panel creation:
+    var initialized = false;
+
     // Saving the original prototype method:
     var proxied = window.XMLHttpRequest.prototype.send;
 
     window.XMLHttpRequest.prototype.send = function () {
-        var check_response = window.setInterval(function () {
-            if (this.readyState != 4) {
-                return false;
-            }
-            window.clearInterval(check_response);
-            if (this.responseText.length) {
-                try {
-                    var json = JSON.parse(this.responseText);
-                    if ('text' in json) {
-                        window.XMLHttpRequest.prototype.send = proxied;
-                        createPanel(json.text.text);
-                    }
-                } catch (e) {}
-            }
-        }.bind(this), 1);
+        this.addEventListener('load', function () {
+            try {
+                var json = JSON.parse(this.responseText);
+                if ('text' in json) {
+                    window.XMLHttpRequest.prototype.send = proxied;
+                    createPanel(json.text.text);
+                }
+            } catch (e) {}
+        }.bind(this));
         return proxied.apply(this, [].slice.call(arguments));
     };
 
     function createPanel (text) {
+        if (initialized) {
+            return false;
+        }
+
+        initialized = true;
         prepareDictionary();
 
         var complexityObject = getComplexity(text);
