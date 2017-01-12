@@ -37,7 +37,7 @@
   },
   {
     "name": "DailyScores",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "authors": [
       "Lexin13",
       "agile"
@@ -169,7 +169,7 @@
   },
   {
     "name": "KG_DialogLink",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "authors": [
       "agile"
     ],
@@ -311,7 +311,7 @@
   },
   {
     "name": "KG_ImageLoader",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "authors": [
       "agile"
     ],
@@ -428,7 +428,7 @@
   },
   {
     "name": "KG_YandexTranslator",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "authors": [
       "agile"
     ],

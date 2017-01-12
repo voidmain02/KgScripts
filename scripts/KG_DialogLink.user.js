@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сообщения» добавляет текстовые ссылки для возможности открытия диалогов в новых вкладках браузера
-// @version        1.0.4
+// @version        1.0.5
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -45,20 +45,16 @@ function main(){
 
     add_links(); // Force update — ugly fix for the CoolNovo browser
 
-    window.XMLHttpRequest.prototype.send = function(){
-        var self = this;
-        var check_response = window.setInterval(function(){
-            if( self.readyState != 4 )
-                return;
-            if( self.responseText.length && self.responseText[ 0 ] != '<' )
-                try{
-                    if( 'messages' in JSON.parse( self.responseText ) )
-                        add_links();
-                }catch( e ){}
-            window.clearInterval( check_response );
-        }, 1 );
-        return proxied.apply( this, [].slice.call( arguments ) );
-    }
+    window.XMLHttpRequest.prototype.send = function () {
+        this.addEventListener('load', function () {
+            try{
+              if ('messages' in JSON.parse(self.responseText)) {
+                    add_links();
+                }
+            } catch (e) {}
+        }.bind(this));
+        return proxied.apply(this, [].slice.call(arguments));
+    };
 }
 
 var inject = document.createElement( 'script' );
