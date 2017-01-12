@@ -48,7 +48,7 @@ function main(){
     window.XMLHttpRequest.prototype.send = function () {
         this.addEventListener('load', function () {
             try{
-              if ('messages' in JSON.parse(self.responseText)) {
+                if ('messages' in JSON.parse(this.responseText)) {
                     add_links();
                 }
             } catch (e) {}
