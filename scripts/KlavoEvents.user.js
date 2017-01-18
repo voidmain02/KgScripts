@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KlavoEvents
-// @version        3.0.0
+// @version        3.0.1
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий
@@ -108,7 +108,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 function getTopics(page) {
                     return $http.get('http://klavogonki.ru/forum/events/page' + page)
                     .then(function(res) {
-                        var results = res.data.match(new RegExp(REG_EXP_TOPIC, 'g'));
+                        var results = res.data.match(REG_EXP_TOPIC);
                         topics = topics.concat(results);
                         
                         defer.notify((topics.length / length * 100).toFixed());
@@ -140,7 +140,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
             }
             
             var REG_EXP_HEAD = /(<tr class="posth[\s\S]+?)<tr class="posth/;
-            var REG_EXP_TOPIC = "<a.+?class=['\"]?topic\-title['\"]?.+?href=['\"]?([^'\" ]+)['\"]?.+?<noindex>\\s*(\\[[^\\]]+\\])(.+?)<\/noindex>[\\s\\S]+?class=['\"]?go['\"]?\\s+href=['\"]?([^\\s'\"]+)";
+            var REG_EXP_TOPIC = /topic-title[\s\S]+?href="(.+)"[\s\S]+?<noindex>\s*(\[[^\]]+\])(.+?)<\/noindex>[\s\S]+?class="go"[\s\S]+?href="(.+)"\s+(?=title)/g;
             
             function requestHeadTopic(href) {
                 return $http.get(href)
@@ -180,7 +180,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
             
             function parseTopic(str) {
                 if(!_.isString(str)) return null;
-                var topic = str.match(new RegExp(REG_EXP_TOPIC));
+                var topic = str.match(REG_EXP_TOPIC);
                 if(!topic) return null;
                 
                 try {
