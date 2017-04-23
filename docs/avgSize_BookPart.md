@@ -1,4 +1,4 @@
-## Klavogonki: average size of the books part [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/avgSize_BookPart.user.js)
+## avgSize_BookPart [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/avgSize_BookPart.user.js)
 **Авторы:** [Lexin13](http://klavogonki.ru/u/#/148447/)
 
 Показывает для словарей-книг примерное количество символов на отрывок:

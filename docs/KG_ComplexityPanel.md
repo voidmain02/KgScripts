@@ -1,4 +1,4 @@
-## Complexity Panel [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/KG_ComplexityPanel.user.js)
+## KG_ComplexityPanel [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/KG_ComplexityPanel.user.js)
 **Авторы:** [Silly_Sergio](http://klavogonki.ru/u/#/163151/)
 
 Во всех заездах, кроме квалификации, появляется панель с прогнозом сложности русского текста в текущем заезде. 

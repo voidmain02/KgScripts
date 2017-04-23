@@ -1,59 +1,78 @@
-﻿// ==UserScript==
-// @name          Klavogonki: klavostats links
+// ==UserScript==
+// @name          klavostats_links
 // @namespace     klavogonki
-// @version       2.2
+// @version       2.2.2
 // @description   Добавляет прямые ссылки на профиль игрока в КлавоСтатистике
 // @include       http://klavogonki.ru/u/*
-// @author        Lexin
-// @contributors  Fenex
-// @updateURL     
-// @downloadURL   
+// @author        Lexin13, Fenex, agile
 // ==/UserScript==
 
-function main() {
-	setInterval(function() {
-        var menu = angular.element('.sidebar');
-        
-        if(!menu.length) return;
-        if(menu.find('.klavostat-links').length) return;
-        
-        var player = angular.element('profile-header .name').contents().first().text().trim();
-        var group = angular.element('<ul class="profile-nav klavostat-links"></ul>');
-        
-        group.append( angular.element(
-            '<li>\
-                <a href="http://stat.klavogonki.ru/players.php?extra&n=' + player + '">КлавоСтатистика</a>\
-            </li>'
-        ) );
-        
-        group.append( angular.element(
-            '<li>\
-                <a href="http://stat.klavogonki.ru/history.php#' + player + '">История игрока</a>\
-            </li>'
-        ) );
-        
-        group.append( angular.element(
-            '<li>\
-                <a href="http://klavogonki.ru/vocs/search?section=all&type=all&order=&changed=&searchtext=%D0%B0%D0%B2%D1%82%D0%BE%D1%80%3A' + player + '">\
-                    Созданные словари\
-                </a>\
-            </li>'
-        ) );
-        
-        menu.append(group);
-        
-    }, 500);
+function main () {
+  function createMenu (sidebarNode, login) {
+    var menuStructure = [
+      {
+        text: 'КлавоСтатистика',
+        url: 'http://stat.klavogonki.ru/players.php?extra&n=' + login,
+      },
+      {
+        text: 'История игрока',
+        url: 'http://stat.klavogonki.ru/profile/#' + login,
+      },
+      {
+        text: 'Созданные словари',
+        url: 'http://klavogonki.ru/vocs/search?section=all&type=all&order=' +
+          '&changed=&searchtext=%D0%B0%D0%B2%D1%82%D0%BE%D1%80%3A' + login,
+      },
+    ];
+
+    var menu = document.createElement('ul');
+    menu.className = 'profile-nav';
+    menuStructure.forEach(function (item) {
+      var li = document.createElement('li');
+      var a = document.createElement('a');
+      a.href = item.url;
+      a.textContent = item.text;
+      li.appendChild(a);
+      menu.appendChild(li);
+    });
+    return sidebarNode.appendChild(menu);
+  }
+
+  function initMenu () {
+    var sidebarNode = document.querySelector('.sidebar');
+    if (!sidebarNode) {
+      return false;
+    }
+
+    var loginNode = document.querySelector('.profile-header .name');
+    if (!loginNode || !loginNode.firstChild) {
+      return false;
+    }
+
+    var login = loginNode.firstChild.textContent.trim();
+    return createMenu(sidebarNode, login);
+  }
+
+  var observer = window.setInterval(function () {
+    if (!initMenu()) {
+      return;
+    }
+    window.clearInterval(observer);
+    var injector = angular.element('body').injector();
+    injector.invoke(function ($routeParams, $rootScope, $timeout) {
+      var id = $routeParams.user;
+      $rootScope.$on('routeSegmentChange', function () {
+        if (id !== $routeParams.user) {
+          id = $routeParams.user;
+          // Wait for the digest cycle:
+          $timeout(initMenu);
+        }
+      })
+    });
+  }, 500);
 }
 
-function execScript(source) {
-	if (typeof source == 'function') {
-		source = '(' + source + ')();';
-	}
-	
-	var script = document.createElement('script');
-	script.type = 'text/javascript';
-	script.innerHTML = source;
-	document.body.appendChild(script);
-}
-
-execScript(main);
+var inject = document.createElement('script');
+inject.setAttribute('type', 'application/javascript');
+inject.appendChild(document.createTextNode('(' + main.toString() + ')()'));
+document.body.appendChild(inject);

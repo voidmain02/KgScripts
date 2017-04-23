@@ -1,11 +1,10 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           BB-Tools
-// @version        2.6.0 KTS
+// @version        2.6.0+kts
 // @namespace      klavogonki
 // @author         Fenex
-// @description    BB-Tools in forum and comments.
+// @description    Добавляет дополнительные bb-кнопки для форматирования сообщений на форуме, описания и комментариев словарей
 // @include        http://klavogonki.ru/forum*
-// @include        http://klavogonki.ru/profile/*
 // @include        http://klavogonki.ru/vocs/*
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
@@ -276,7 +275,12 @@ function generateButtonsCode(a) {
 			src: "http://klavogonki.ru/img/smilies/smile.gif",
 			title: "Смайлы",
 			onclick: "smileTab_func('"+a+"');"
-		}
+		},
+        {
+            src: "https://github.com/voidmain02/KgScripts/raw/master/res/rte-youtube.png",
+            title: "Youtube видео",
+            onclick: "sendBBTag('youtube', '"+a+"_textarea');"
+        }
 	];
 	
 	var html_code = "<div class='bb_tools' id='bb_tools_"+a+"'>";

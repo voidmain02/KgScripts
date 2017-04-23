@@ -1,8 +1,9 @@
 // ==UserScript==
 // @name           RecordsLine
-// @version        1.0
+// @version        1.0.1
 // @namespace      klavogonki
 // @author         Fenex
+// @description    Создаёт линейки рекордов
 // @include        http://klavogonki.ru/u/*
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // @grant          none
@@ -109,7 +110,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
     });
 }
 
-document.addEventListener('load', function() {
+window.addEventListener('load', function() {
     var script = document.createElement('script');
     script.setAttribute("type", "application/javascript");
     script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';

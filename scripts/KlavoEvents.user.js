@@ -1,204 +1,456 @@
-﻿// ==UserScript==
+// ==UserScript==
 // @name           KlavoEvents
-// @namespace      fnx
-// @include        http://klavogonki.ru*
-// @author         Fenex, DIgorevich
-// @version        2.0 KTS
+// @version        3.0.2
+// @namespace      klavogonki
+// @author         Fenex
+// @description    Лента событий
+// @include        http://klavogonki.ru/*
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @grant          none
+// @run-at         document-start
+// @license        MIT
 // ==/UserScript==
-if(!document.getElementById('KTS_KlavoEvents')) {
-	var str_ver = "var KEobj = new Object();KEobj.ver = '2.0';KEobj.mode = 'user';\n";
-	var elem = document.getElementById('head').getElementsByClassName('menu')[0];
-	var createElem = document.createElement('a');
-	createElem.setAttribute('href', 'javascript:changeViewerEvents();');
-	createElem.innerHTML = 'События';
-	createElem.id = 'klavo_events';
 
-    var pos = elem.getElementsByTagName('a').length;
-	elem.insertBefore(createElem, elem.getElementsByTagName('a')[pos]);
+var ANGULAR_USERJS_ID = 'KlavoEvents';
+var USERJS_INSTANCE_ID = Math.random().toString(36).substring(2);
 
-	var e_cnt = document.createElement('div');
-	e_cnt.id = 'content_0';
-	e_cnt.setAttribute('style', 'display:none;');
-	document.getElementById('content').parentNode.insertBefore(e_cnt, document.getElementById('content'));
+function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
+    'use strict';
+    
+    angular.element('#head .menu a.active').addClass('real');
+    
+    var item = angular.element('<a id="UserJS_KlavoEvents">События</a>')
+    .on('click', function(e) {
+        var target = angular.element(e.target);
+        if(target.hasClass('active')) {
+            target.removeClass('active').parent()
+                .find('.real').addClass('active');
+            angular.element('#content').show();
+            angular.element('#content_KE').hide();
+        } else {
+            target.addClass('active').parent()
+                .find('.real').removeClass('active');
+            angular.element('#content').hide();
+            show();
+        }
+    })
+    .appendTo(angular.element('#head .menu'));
+    
+    var root = null;
+    
+    function show() {
+        if(root) {
+            return root.show();
+        }
+        
+        var table = angular.element('\
+            <table class="list" ng:if="topics.length > 0">\
+                <tr class="header">\
+                    <td style="width: 20px;">№</td>\
+                    <td>Дата {{asdf}}</td>\
+                    <td style="width: 200px;">Название</td>\
+                </tr>\
+                <tr ng:init="isHover=false" ng:mouseenter="isHover=true" ng:mouseleave="isHover=false" class="item"\
+                    ng:class="{\'past\': isPast(topic.uTime), \'soon\': isSoon(topic.uTime), \'hover\': isHover}"\
+                    ng:repeat="topic in topics | orderBy:\'-uTime\' track by $index">\
+                        \
+                    <td ng:bind="$index + 1"></td>\
+                    <td class="tddate" ng:bind="topic.date"></td>\
+                    <td class="title">\
+                        <a ng:href="{{topic.href}}" ng:bind="topic.title"></a>\
+                        <a class="go" ng:href="{{topic.last_post}}" title="Перейти"><img alt="Перейти" src="/img/bullet_go.gif"></a>\
+                    </td>\
+                    <td>\
+                        <span class="viewer-btn" ng:click="Show(topic)">Показать</span>\
+                    </td>\
+                </tr>\
+            </table>');
+        
+        root = angular.element('<div id="content_KE">')
+        .append('<h4>Лента событий</h4>')
+        .append('<div class="loading" ng:if="topics.length == 0 && !error">Загрузка {{loading}}%</div>')
+        .append('<div class="loading" ng:if="topics.length == 0 && error">Не удалось построить ленту событий =(</div>')
+        .append(table);
+        
+        angular.element('#content').before(root);
+        
+        angular.module('userjs.' + ANGULAR_USERJS_ID, ['ng'])
+        .factory('Cache', function() {
+            var cache = {};
+            
+            function has(key) {
+                return !!cache[key];
+            }
+            
+            function add(key, value) {
+                cache[key] = angular.copy(value);
+            }
+            
+            function get(key) {
+                return angular.copy(cache[key]);
+            }
+            
+            return {
+                get: get,
+                add: add,
+                has: has
+            }
+        })
+        .factory('Request', function(Cache, $q, $http, $log) {
+            function getTopics() {
+                var count = 1;
+                var length = 120;
+                var pages = 10;
+                var topics = [];
+                
+                var defer = $q.defer();
+                
+                function getTopics(page) {
+                    return $http.get('http://klavogonki.ru/forum/events/page' + page)
+                    .then(function(res) {
+                        var results = res.data.match(new RegExp(REG_EXP_TOPIC, 'g'));
+                        topics = topics.concat(results);
+                        
+                        defer.notify((topics.length / length * 100).toFixed());
+                        if(topics.length > length || count > pages)
+                            return topics;
+                        
+                        return getTopics(++count);
+                    });
+                }
+                
+                getTopics(count).then(function(topics) {
+                    if(topics.length < 50) return $q.reject();
+                    var tmp = _.map(topics, parseTopic);
+                    tmp = _.sortBy(_.compact(tmp), 'uTime');
+                    defer.resolve(_.first(tmp.reverse(), 50));
+                });
+                
+                return defer.promise;
+            }
+                        
+            function getHead(href) {
+                return $q.when(Cache.get(href))
+                .then(function(res) {
+                    return res ? res : requestHeadTopic(href);
+                }).catch(function(err) {
+                    $log.log('KE: load head topic fail', err);
+                    return $q.reject(err);
+                });
+            }
+            
+            var REG_EXP_HEAD = /(<tr class="posth[\s\S]+?)<tr class="posth/;
+            var REG_EXP_TOPIC = 'topic-title[\\s\\S]+?href="(.+)"[\\s\\S]+?<noindex>\\s*(\\[[^\\]]+\\])(.+?)<\\/noindex>[\\s\\S]+?class="go"[\\s\\S]+?href="(.+)"\\s+title';
+            
+            function requestHeadTopic(href) {
+                return $http.get(href)
+                .then(function(res) {
+                    var tmp = res.data.match(REG_EXP_HEAD);
+                    if(!tmp) return $q.reject('not found');
+                    tmp = tmp[1]
+                        .replace(/<textarea[\s\S]+?<\/textarea>/, '')
+                        .replace(/<!--.+?-->/g, '');
+                    
+                    var parser = new DOMParser();
+                    var doc = parser.parseFromString(tmp, "text/html");
+                    
+                    var head = {user: {}};
+                    head.user.id = doc.getElementsByClassName('user')[0].getAttribute('href').replace(/[^\d]/g, '');
+                    head.user.login = doc.getElementsByClassName('user')[0].textContent;
+                    head.user.avatar = doc.getElementsByClassName('avatar_big')[0].
+                        getElementsByTagName('img')[0].src;
 
-	var ev_load = document.createElement('div');
-	ev_load.id = 'event_load';
-	ev_load.style.display = 'none';
-	ev_load.innerHTML = '<div class="r tl"><div class="tr"><div class="bl"><div class="br"><div class="rc">	<div class="event_load-content">Загрузка событий...</div></div></div></div></div>';
-	document.getElementById('content').parentNode.insertBefore(ev_load, document.getElementById('content'));
-	
-	function showFirstPost(id_mess, _scroll1) {
-		arr_scroll[id_mess] = _scroll1;
-		if($('evtd_'+id_mess).innerHTML=='') {
-			$('imgEventLoading_'+id_mess).show();
-			new Ajax.Request($('link_'+id_mess).href, {
-				method: 'get',
-				onSuccess: function(transport)
-				{
-					$('imgEventLoading_'+id_mess).hide();
-					var txt = transport.responseText;
-					var txt_search = txt.toLowerCase();
-					txt_search = txt_search.replace(/\'/g, "\"");
-					var start_i = txt_search.indexOf('<tr class="posth ">');
-					var end_i = txt_search.indexOf('<div class=post-opts');
-					if(start_i>end_i)
-						return;
-					$('evtd_'+id_mess).innerHTML = txt.substring(start_i, end_i)+'</td></tr><tr><td><center><span class="showhide" onclick="hideFirstPost('+id_mess+',document.documentElement.scrollTop || document.body.scrollTop)">Скрыть</span></center></td></tr>';
-					var elements = $('evtd_'+id_mess).getElementsByClassName('hidecont');
-					for(i=0;i<elements.length;i++)
-						elements[i].show();
-					elements = $('evtd_'+id_mess).getElementsByClassName('post-opts');
-					for(i=0;i<elements.length;i++)
-						elements[i].hide();
-					$('evtd_'+id_mess).getElementsByClassName('post-container')[0].getElementsByClassName('title')[0].getElementsByTagName('a')[1].hide();
-					$('evtd_'+id_mess).getElementsByClassName('post-container')[0].getElementsByClassName('title')[0].getElementsByTagName('span')[0].hide();
-					if($('evtd_'+id_mess).getElementsByClassName('post-container')[0].getElementsByClassName('text')[0].getElementsByClassName('modified')>0)
-						$('evtd_'+id_mess).getElementsByClassName('post-container')[0].getElementsByClassName('text')[0].getElementsByClassName('modified')[0].hide();
-				}});
-		}
-		$("href_func_show_"+id_mess).innerHTML = '';
-		$('evtd_'+id_mess).show();
-		$('href_func_hide_'+id_mess).show();
-	}
-	
-	function hideFirstPost(id_mess) {
-		$('href_func_show_'+id_mess).innerHTML = 'Показать';
-		$('evtd_'+id_mess).hide();
-		$('href_func_hide_'+id_mess).hide();
-		if(document.documentElement.scrollTop)
-			document.documentElement.scrollTop = arr_scroll[id_mess];
-		if(document.body.scrollTop)
-			document.body.scrollTop = arr_scroll[id_mess];
-	}
-
-	function changeViewerEvents() {
-		if($('content_0').style.display=='none')
-			showEventsInfo();
-		else {
-			$('content_0').hide();
-			$('content_0').innerHTML = '';
-			$('content').show();
-			if(active_menu)
-				active_menu.setAttribute('class', 'active');
-			$('klavo_events').removeAttribute('class');
-		}
-	}
-	function showEventsInfo() {
-		active_menu = $('klavo_events').parentNode.getElementsByClassName('active')[0];
-		if(active_menu)
-			active_menu.removeAttribute('class');
-		$('klavo_events').setAttribute('class', 'active');
-		$('content').hide();
-		$('content_0').show();
-		$('event_load').show();
-		
-		microAjax('http://net.lib54.ru/KTS/KE/', {}, function(transport) {
-			function go_next_system(data) {
-				if(!data) {return;}
-				var ver = data.version;
-				$('script_ver').innerHTML = '<span title="' + ver +'">Версия скрипта: '+ver+ '<img src="/img/ok.gif" /></span>';
-			}
-			function createTr(event, i) {				
-				var tr = '<tr>';
-				var ev_bgcolor = event.bgcolor ? 'style="background:#' + event.bgcolor + ';"' : '';
-				tr += '<tr onmouseout="$(\'href_func_show_'+i+'\').hide();" onmouseover="$(\'href_func_show_'+i+'\').show();" class="item " '+ev_bgcolor+'><td class="titlenote"><span class="topic-note">'+i+'</span></td><td class="tddate">['+event.date+']</td><td class="title">';
-				var avatar = ' style="padding-left: 20px;"';
-				tr += '<a' + avatar + ' id="link_'+i+'" href=http://klavogonki.ru/forum/events/'+event.href+'><noindex>'+event.name + '</noindex></a> <a href="/forum/events/'+event.post+'"><img src="/img/bullet_go.gif" /></a></td><td class="rightcol"><span class="showhide" style="display:none;" id="href_func_show_'+i+'" onclick="showFirstPost('+i+',document.documentElement.scrollTop || document.body.scrollTop)">Показать</span><span class="showhide" style="display:none;" id="href_func_hide_'+i+'" onclick="hideFirstPost('+i+')">Скрыть</span> <img style="display:none;" id="imgEventLoading_'+i+'" src="/img/small_loading.gif" /></td></tr><tr class="noitem"><td colspan="4" id="evtd_'+i+'" style="display:none;"></td></tr>';
-				tr+= '</tr>';
-				
-				return tr;
-			}
-			
-			var data = JSON.parse(transport);
-			var events = data.events;
-			var table = '<h4>Лента событий</h4><div id="scriptKE_message" style="display:none;"></div><table class="list"><tr style="color:#888888;" class="header"><td>№</td><td>Дата</td><td style="padding-left: 20px;">Название</td><td style="text-align:right;" id="script_ver"></td></tr>';
-			for(var i=0; i<events.length; i++) {
-				table += createTr(events[i], i+1);
-			}
-			table += '</table>';
-			$('content_0').innerHTML = table;
-			go_next_system(data.system);
-			$('event_load').hide();
-		});
-	}
-	
-	
-	
-	function microAjax(url, params, callbackFunction) {
-		this.bindFunction = function (caller, object) {
-			return function() {
-				return caller.apply(object, [object]);
-			};
-		};
-
-		this.stateChange = function (object) {
-			if (this.request.readyState==4)
-				this.callbackFunction(this.request.responseText);
-		};
-
-		this.getRequest = function() {
-			if (window.ActiveXObject)
-				return new ActiveXObject('Microsoft.XMLHTTP');
-			else if (window.XMLHttpRequest)
-				return new XMLHttpRequest();
-			return false;
-		};
-
-		this.params2Str = function(params) {
-			if(!params)
-				return;
-				
-			if(params.method=='POST') {
-				this.method = 'POST';
-			}
-
-			var output = '';
-			
-			for(var name in params) {
-				if(name=='method')
-					continue;
-				output += name + '=' + encodeURIComponent(params[name]) + '&';
-			}
-			
-			return output;
-		};
-		
-		this.method = 'GET';
-		this.param_obj = params;
-		this.params = this.params2Str(params);
-		this.callbackFunction = callbackFunction;
-		this.url = url;
-		this.request = this.getRequest();
-		
-		if(this.request) {
-			var req = this.request;
-			req.onreadystatechange = this.bindFunction(this.stateChange, this);
-
-			if (this.method == "POST") {
-				req.open("POST", this.url, true);
-				req.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-				req.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-				//req.setRequestHeader('Connection', 'close');
-				req.send(this.params);
-			} else {
-				req.open("GET", this.url + '?' + this.params, true);
-				req.send(null);
-			}
-		}
-	}
-	
-	var s = document.createElement('script');
-	s.innerHTML = "var arr_scroll = new Array();"+microAjax+str_ver+showEventsInfo+changeViewerEvents+showFirstPost+hideFirstPost;
-	document.body.appendChild(s);
-	
-	var s = document.createElement('style');
-	s.innerHTML = "#event_load{background:#eee url('http://klavogonki.ru/img/gray_back.gif') no-repeat 0 0;width:300px;}#event_load .rc{padding:20px;}#event_load .event_load-content{font-size:20px;color:#dd6600;background:transparent url('http://klavogonki.ru/img/loading.gif') no-repeat left;padding:20px 60px;}";
-	s.innerHTML += "#content_0 .list .noitem{background:#FAF9F2;} #content_0 .list .noitem td{border-top: 1px solid #DDDDDD;border-bottom: 1px solid #DDDDDD;padding: 6px 6px;} #content_0 .list{border-collapse: collapse;width:100%;}#content_0 .list .item td{border-bottom: 1px solid #DDDDDD;border-top: 1px solid #DDDDDD;white-space: nowrap;padding: 6px 6px;}#content_0 .list .item td.tddate{color:#888888;width:1pt;}#content_0 .list .item td.topic-note{width:1%;}#content_0 .list .item td.titlenote{width:1pt;}#content_0 .list .item td.rightcol{text-align:left;}#content_0 .list .item td.title{width:1pt;}#content_0 span.showhide{cursor:pointer;color:#888888;}";
-	document.body.appendChild(s);
-	
-	var tmp_elem = document.createElement('div');
-	tmp_elem.id = 'KTS_KlavoEvents';
-	tmp_elem.style.display = 'none';
-	document.body.appendChild(tmp_elem);	
+                    //expand hideblocks
+                    var hiddens = doc.getElementsByClassName('hidetop');
+                    var hideconts = doc.getElementsByClassName('hidecont');
+                    
+                    for(var i=0; i<hiddens.length; i++)
+                        hiddens[i].addClassName('expand');
+                    
+                    for(var i=0; i<hideconts.length; i++)
+                        hideconts[i].style.display = 'block';
+                    
+                    head.text = doc.getElementsByClassName('text')[0].innerHTML;
+                    
+                    Cache.add(href, head);
+                    
+                    return head;
+                });
+            }
+            
+            function parseTopic(str) {
+                if(!_.isString(str)) return null;
+                var topic = str.match(new RegExp(REG_EXP_TOPIC));
+                if(!topic) return null;
+                
+                try {
+                    var time, date, sDate = [];
+                    if(time = topic[2].match(/\d{2}:\d{2}/)) {
+                        topic[2] = topic[2].replace(time, '');
+                    }
+                    
+                    var duration = topic[2].indexOf('-');
+                    if(duration != -1) {
+                        topic[2] = topic[2].substr(0, duration);
+                    }
+                    
+                    if(date = topic[2].match(/\d+/g)) {
+                        date = _.first(date, 3);
+                        
+                        //day
+                        if(date[0].length < 2)
+                            sDate.push('0');
+                        sDate.push(date[0]);
+                        
+                        sDate.push('.');
+                        
+                        //month
+                        if(date[1].length < 2)
+                            sDate.push('0');
+                        sDate.push(date[1]);
+                        
+                        sDate.push('.');
+                        
+                        //year
+                        if(!date[2]) {
+                            sDate.push(new Date().getFullYear());
+                        } else {
+                            if(date[2] < 100)
+                                sDate.push('20');
+                            sDate.push(date[2]);
+                        }
+                        
+                        //time
+                        if(time) {
+                            sDate.push(' в ');
+                            sDate.push(time);
+                        }
+                        
+                        sDate = sDate.join('');
+                        
+                        return {
+                            date: sDate,
+                            uTime: getUnixTime(sDate),
+                            title: topic[3].trim(),
+                            href: topic[1],
+                            last_post: topic[4]
+                        };
+                        
+                    } else {
+                        return null;
+                    }
+                } catch(e) {
+                    return null;
+                }
+                
+                return null;
+            }
+            
+            function getUnixTime(str) {
+                var rgx = "(\\d+)\\.(\\d+)\\.(\\d+)";
+                if(str.indexOf('в')) {
+                    rgx += ".*?(\\d{1,2}):(\\d{1,2})";
+                }
+                
+                var m = str.match(new RegExp(rgx));
+                return new Date(Date.UTC(m[3], parseInt(m[2])-1, m[1], m[4]-3, m[5]));
+            }
+            
+            return {
+                getHead: getHead,
+                getTopics: getTopics
+            };
+        });
+        
+        var injectorKE = angular.injector(['userjs.' + ANGULAR_USERJS_ID]);
+        
+        angular.element('body').injector()
+        .invoke(function($rootScope, $compile, $modal2, $q, $log) {
+            if(!$rootScope.userjs)
+                $rootScope.userjs = {};
+            
+            if($rootScope.userjs[ANGULAR_USERJS_ID])
+                return false;
+            
+            $rootScope.userjs[ANGULAR_USERJS_ID] = USERJS_INSTANCE_ID;
+            
+            Request = injectorKE.get('Request');
+            
+            var $scope = $rootScope.$new(true);
+            $compile(root)($scope);
+            
+            $scope.topics = [];
+            $scope.loading = 0;
+            $scope.error = false;
+            
+            Request.getTopics().then(function(topics) {
+                $scope.topics = topics;
+            }, void 0, function onUpdated(status) {
+                $scope.loading = status;
+                $scope.$apply();
+            })
+            .catch(function(err) {
+                $log.log('KE: load topics list fail', err);
+                $scope.error = true;
+            }).finally(function() {
+                $scope.$apply();
+            });
+            
+            $scope.isPast = function(time) {
+                return new Date() > time;
+            };
+            
+            $scope.isSoon = function(time) {
+                var delay = (time - new Date());
+                return delay > 0 && delay < 1000 * 60 * 60 * 24;
+            };
+            
+            $scope.Show = function(topic) {
+                return $modal2.open({
+                    template: document.getElementById('templateOpenEvent').textContent,
+                    controller: dlgOpenEventCtrl,
+                    resolve: {
+                        topic: function() {
+                            return $q.when(topic);
+                        }
+                    }
+                }).result;
+            }
+        });
+        
+        function dlgOpenEventCtrl($scope, $log, $modalInstance, topic, $q, $sce) {
+            $scope.topic = topic;
+            $scope.loading = true;
+            
+            Request = injectorKE.get('Request');
+            
+            Request.getHead(topic.href).then(function(head) {;
+                $scope.head = head;
+                head.text = $sce.trustAsHtml(head.text);
+                $scope.loading = false;
+            });
+                        
+            $scope.onClose = function() {
+                $modalInstance.dismiss();
+            };
+        }
+    }
 }
+
+window.addEventListener('load', function() {
+if(!document.getElementById('UserJS_KlavoEvents')) {
+    var script = document.createElement('script');
+    script.setAttribute("type", "application/javascript");
+    script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';
+    document.body.appendChild(script);
+    document.body.removeChild(script);
+    
+    var style = document.createElement('style');
+    style.textContent = json2css({
+        '.list': {
+            'border-collapse': 'collapse',
+            'width': '100%'
+        },
+        '.list .item td': {
+            'border-bottom': '1px solid #DDDDDD',
+            'border-top': '1px solid #DDDDDD',
+            'white-space': 'nowrap',
+            'padding': '6px 6px'
+        },
+        '.list .item .tddate': {
+            'color': '#888888',
+            'width': '1pt'
+        },
+        '.list .item .tddate:before': {
+            'content': "'['"
+        },
+        '.list .item .tddate:after': {
+            'content': "']'"
+        },
+        '.list .item': {
+            'background-color': '#ddeeff'
+        },
+        '.list .item.past': {
+            'background-color': '#efefef'
+        },
+        '.list .item.soon': {
+            'background-color': '#9adc9a'
+        },
+        '.loading': {
+            'font-size': '20px',
+            'margin': 'auto',
+            'display': 'inline-block',
+            'width': '100%',
+            'color': 'grey',
+            'text-align': 'center',
+            'padding': '40px'
+        },
+        '.list .item.hover .viewer-btn': {
+            'display': 'inline-block'
+        },
+        '.list .item .viewer-btn': {
+            'display': 'none',
+            'cursor': 'pointer',
+            'color': 'gray'
+        },
+    }, '#content_KE') + json2css({
+        '.about-user': {
+            'position': 'absolute',
+            'top': '11px',
+            'left': '12px'
+        },
+        '.about-user > a': {
+            'height': '36px'
+        },
+        '.about-user > img': {
+            'height': '37px',
+            'width': '37px'
+        },
+        '.text img': {
+            'max-width': '100%'
+        }
+    }, '.dlg-klavoevents-open-event');
+    document.head.appendChild(style);
+    
+    var templateOpenEvent = document.createElement('script');
+    templateOpenEvent.setAttribute('type', 'text/ng-template');
+    templateOpenEvent.id = 'templateOpenEvent';
+    templateOpenEvent.textContent = "\
+        <div class='dlg-klavoevents-open-event'>\
+            <div class='modal-header'>\
+                <button class='close' ng:click='onClose()'>&times;</button>\
+                <h4 class='modal-title' ng:bind='topic.title'></h4>\
+                <div ng:if='!loading' class='about-user'>\
+                    <img ng:src='{{head.user.avatar}}' />\
+                    <a target='_blank' ng:href='/u/#/{{head.user.id}}/' ng:bind='head.user.login'></a>\
+                </div>\
+            </div>\
+            <div class='modal-body' ng:if='loading'>\
+                Loading...\
+            </div>\
+            <div class='modal-body' ng:if='!loading'>\
+                <div class='text' ng:bind-html='head.text'></div>\
+            </div>\
+            <div class='modal-footer'>\
+                <a class='btn btn-link' ng:href='{{topic.href}}'>Перейти</a>\
+                <button ng:click='onClose()' class='btn btn-primary'>Закрыть</button>\
+            </div>\
+        </div>";
+    document.body.appendChild(templateOpenEvent);
+}
+});
+
+
+function json2css(obj, root) {
+    var out = [];
+    for(var selector in obj) {
+        if(root)
+            out.push(root + ' ');
+        out.push(selector + '{');
+        for(var css in obj[selector]) {
+            out.push(css + ':' + obj[selector][css] + ' !important;');
+        }
+        out.push('}');
+    }
+    return out.join('');
+} 

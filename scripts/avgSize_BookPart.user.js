@@ -1,9 +1,10 @@
 // ==UserScript== 
-// @name           Klavogonki: average size of the books part
+// @name           avgSize_BookPart
 // @namespace      klavogonki
-// @version        1.1 KTS
+// @version        1.1.0+kts
 // @include        http://klavogonki.ru/vocs/*
-// @author         Lexin
+// @author         Lexin13
+// @description    Показывает для словарей-книг примерное количество символов на отрывок
 // ==/UserScript== 
 
 function calc(html)

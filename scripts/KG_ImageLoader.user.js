@@ -4,7 +4,7 @@
 // @include        http://klavogonki.ru/u/*
 // @author         agile
 // @description    Отображает изображения вместо текстовых ссылок в записях разделов «Сводка», «Бортжурнал» и «Друзья».
-// @version        1.2.0
+// @version        1.2.1
 // @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
@@ -90,21 +90,16 @@ function main(){
     update(); // Force update — ugly fix for the CoolNovo browser
 
     window.XMLHttpRequest.prototype.send = function(){
-        var self = this;
-
-        var check_response = window.setInterval(function(){
-            if( self.readyState != 4 )
-                return;
-            if( self.responseText.length && self.responseText[ 0 ] != '<' )
-                try{
-                    var json = JSON.parse( self.responseText );
-                    if( 'posts' in json || 'updatedExisting' in json )
-                        update();
-                }catch( e ){}
-            window.clearInterval( check_response );
-        }, 1 );
-        return proxied.apply( this, [].slice.call( arguments ) );
-    }
+        this.addEventListener('load', function () {
+            try {
+                var json = JSON.parse(this.responseText);
+                if ('posts' in json || 'updatedExisting' in json) {
+                    update();
+                }
+            } catch (e) {}
+        }.bind(this));
+        return proxied.apply(this, [].slice.call(arguments));
+    };
 }
 
 var inject = document.createElement( 'script' );

@@ -1,4 +1,4 @@
-## klavogonki: hide text [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/klavogonki_hide_text.user.js)
+## KG_HideText [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/KG_HideText.user.js)
 **Авторы:** [novkostya](http://klavogonki.ru/u/#/57333/)
 
 Скрывает набираемый текст, хоткей Ctrl+. Предназначен для тренировки памяти.

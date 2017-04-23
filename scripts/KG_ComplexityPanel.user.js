@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4
+// @version        1.4.6
 // @namespace      klavogonki
 // @author         Silly_Sergio
-// @description    Shows text complexity rating for Russian races.
+// @description    Добавляет панель прогноза сложности текста в заездах
 // @include        http://klavogonki.ru/g/*
 // @grant          none
 // ==/UserScript==
@@ -99,20 +99,34 @@ function embed() {
     // than other approaches: String#indexOf, RegExp, Array#indexOf.
     var dictionary = {};
 
-    var waitForText = setInterval(function () {
-        if (!game || !game.players) {
-            return;
+    // A flag for preventing clone panel creation:
+    var initialized = false;
+
+    // Saving the original prototype method:
+    var proxied = window.XMLHttpRequest.prototype.send;
+
+    window.XMLHttpRequest.prototype.send = function () {
+        this.addEventListener('load', function () {
+            try {
+                var json = JSON.parse(this.responseText);
+                if ('text' in json) {
+                    window.XMLHttpRequest.prototype.send = proxied;
+                    createPanel(json.text.text);
+                }
+            } catch (e) {}
+        }.bind(this));
+        return proxied.apply(this, [].slice.call(arguments));
+    };
+
+    function createPanel (text) {
+        if (initialized) {
+            return false;
         }
 
-        clearInterval(waitForText);
-
-        if (!game.text) {
-            return;
-        }
-
+        initialized = true;
         prepareDictionary();
 
-        var complexityObject = getComplexity(game.text);
+        var complexityObject = getComplexity(text);
         var complexity = complexityObject.complexity.toFixed(2);
 
         var params = document.getElementById("params");
@@ -157,8 +171,7 @@ function embed() {
                 }
             }
         }
-
-    }, 100);
+    }
 
     function prepareDictionary() {
         for (var i = 0; i < SYLLABLES.length; i += 2) {

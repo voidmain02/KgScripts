@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name        KG_SaveGameResult
-// @namespace   http://klavogonki.alexzh.ru
+// @namespace   klavogonki
 // @description Добавляет ссылку на сохранение результатов заезда в JSON формате
 // @author      voidmain
 // @license     MIT
-// @version     1.9
+// @version     1.9.1
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end
@@ -89,7 +89,7 @@ function main() {
                 'text': game.textinfo.text || null,
                 'length': game.textinfo.length
             },
-            'exportScriptVersion': '1.9'
+            'exportScriptVersion': '1.9.1'
         };
 
         for(var i = gameData.places.length - 1; i >= 0; i--) {
@@ -103,7 +103,7 @@ function main() {
 
     var $gameResultLink = $$$('<a href="#" title="Сохранить результаты заезда"></a>').appendTo('body').on('click', function() {
         $$$(this).attr( {
-            'href': 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(getGameData())),
+            'href': 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(getGameData(), null, 4)),
             'download': 'game_' + game.begintimeServer + '.json'
         });
     });

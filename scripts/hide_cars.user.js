@@ -1,17 +1,13 @@
-﻿// ==UserScript==
-// @name           klavogonki - hide cars
-// @version        0.7.1 KTS
-// @namespace      2klavogonki.ru
-// @description    hide card while typing
+// ==UserScript==
+// @name           hide_cars
+// @version        0.7.2
+// @namespace      klavogonki
+// @description    Скрытие машинок во время набора текста
 // @include        http://klavogonki.ru/g/*
-// @author         rgall
-// (r)             Fenex
+// @author         rgall, Fenex
 // ==/UserScript==
 
 function HideCars() {
-	if (!game)
-		return; 
-
 	var param = document.getElementById("hide_cars_check");
 
 	if (localStorage["hideCars_STATUS"] == '1')

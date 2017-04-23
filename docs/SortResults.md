@@ -1,4 +1,4 @@
-## klavogonki: Sort results [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/sortresults.user.js)
+## SortResults [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/SortResults.user.js)
 **Авторы:** [novkostya](http://klavogonki.ru/u/#/57333/)
 
 Счётчик игроков в заезде (в целом и по рангам).
