@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_ShowStatOfThisMode
 // @namespace    klavogonki
-// @version      1.2.0
+// @version      1.2.1
 // @description  Показывает в верхней панели статистику по текущему режиму: в заезде, на странице словаря, на странице топов
 // @author       Phemmer
 // @include      http://klavogonki.ru/g/*
@@ -54,7 +54,15 @@
 	{
 		var currentStat = document.getElementById('gametype-link').innerText;
 		if (currentStat == modeName) return;
-		document.getElementById('gametype-select').value = modeId;
-		changeGametypeSelect();
+		var select = document.getElementById('gametype-select');
+		for (var i = 0; i < select.options.length; i++)
+		{
+			if (select.options[i].value == modeId)
+			{
+				select.value = modeId;
+				changeGametypeSelect();
+				return;
+			}
+		}
 	}
 })();
