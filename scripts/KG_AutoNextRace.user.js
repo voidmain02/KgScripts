@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_AutoNextRace
 // @namespace    klavogonki
-// @version      1.2.0
+// @version      1.2.1
 // @description  Добавляет возможность автоматического старта заездов и создания следующего после набора
 // @author       Phemmer
 // @include      http://klavogonki.ru/g/*
@@ -9,6 +9,7 @@
 
 var interval_auto_next_check = 0;
 function chbChanged() {
+	console.log(interval_auto_next_check);
 	var param = document.getElementById("auto_next_check");
 	if (param.checked) 	{
 		localStorage.autoNext_STATUS = '1';
@@ -45,8 +46,9 @@ var params = document.getElementById("param_shadow");
 if (params) {
 	var elem = document.createElement("div");
 	elem.id = "auto_next";
-	elem.innerHTML = '<input id="auto_next_check" type="checkbox" onChange="chbChanged();"><label for="auto_next_check">Автоматически играть еще раз</label>' + '<input type="hidden" id="auto_next_flag">';
+	elem.innerHTML = '<input id="auto_next_check" type="checkbox"><label for="auto_next_check">Автоматически играть еще раз</label>' + '<input type="hidden" id="auto_next_flag">';
 	params.parentNode.insertBefore(elem, params);
+	document.getElementById("auto_next_check").addEventListener("click", chbChanged, false);
 }
 
 var script = document.createElement("script");
