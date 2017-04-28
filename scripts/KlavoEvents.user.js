@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KlavoEvents
-// @version        3.0.3
+// @version        3.0.4
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий
@@ -198,7 +198,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                         var month = ('0' + date[1]).slice(-2);
                         var year = ('20' + (date[2] || new Date().getFullYear())).slice(-4);
 
-                        var check = month + '.' + day + '.' + year;
+                        var check = month + '/' + day + '/' + year;
                         if ((new Date(check)).toString() === 'Invalid Date') {
                             return null;
                         }
