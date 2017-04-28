@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KlavoEvents
-// @version        3.0.2
+// @version        3.0.3
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий
@@ -94,7 +94,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 get: get,
                 add: add,
                 has: has
-            }
+            };
         })
         .factory('Request', function(Cache, $q, $http, $log) {
             function getTopics() {
@@ -128,20 +128,14 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 
                 return defer.promise;
             }
-                        
+
             function getHead(href) {
-                return $q.when(Cache.get(href))
-                .then(function(res) {
-                    return res ? res : requestHeadTopic(href);
-                }).catch(function(err) {
-                    $log.log('KE: load head topic fail', err);
-                    return $q.reject(err);
-                });
+                return Cache.has(href) ? $q.when(Cache.get(href)) : requestHeadTopic(href);
             }
-            
+
             var REG_EXP_HEAD = /(<tr class="posth[\s\S]+?)<tr class="posth/;
-            var REG_EXP_TOPIC = 'topic-title[\\s\\S]+?href="(.+)"[\\s\\S]+?<noindex>\\s*(\\[[^\\]]+\\])(.+?)<\\/noindex>[\\s\\S]+?class="go"[\\s\\S]+?href="(.+)"\\s+title';
-            
+            var REG_EXP_TOPIC = "<a.+?href=['\"]?([^'\" ]+)['\"]?.+?<noindex>\\s*(\\[[^\\]]+\\])(.+?)<\/noindex>[\\s\\S]+?class=['\"]?go['\"]?\\s+href=['\"]?([^\\s'\"]+)";
+
             function requestHeadTopic(href) {
                 return $http.get(href)
                 .then(function(res) {
@@ -150,10 +144,10 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                     tmp = tmp[1]
                         .replace(/<textarea[\s\S]+?<\/textarea>/, '')
                         .replace(/<!--.+?-->/g, '');
-                    
+
                     var parser = new DOMParser();
                     var doc = parser.parseFromString(tmp, "text/html");
-                    
+
                     var head = {user: {}};
                     head.user.id = doc.getElementsByClassName('user')[0].getAttribute('href').replace(/[^\d]/g, '');
                     head.user.login = doc.getElementsByClassName('user')[0].textContent;
@@ -163,99 +157,80 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                     //expand hideblocks
                     var hiddens = doc.getElementsByClassName('hidetop');
                     var hideconts = doc.getElementsByClassName('hidecont');
-                    
+
                     for(var i=0; i<hiddens.length; i++)
                         hiddens[i].addClassName('expand');
-                    
+
                     for(var i=0; i<hideconts.length; i++)
                         hideconts[i].style.display = 'block';
-                    
+
                     head.text = doc.getElementsByClassName('text')[0].innerHTML;
-                    
+
                     Cache.add(href, head);
-                    
+
                     return head;
                 });
             }
             
             function parseTopic(str) {
-                if(!_.isString(str)) return null;
+                if (!_.isString(str)) return null;
                 var topic = str.match(new RegExp(REG_EXP_TOPIC));
-                if(!topic) return null;
+                if (!topic) return null;
+
+                var title = topic[2];
                 
                 try {
-                    var time, date, sDate = [];
-                    if(time = topic[2].match(/\d{2}:\d{2}/)) {
-                        topic[2] = topic[2].replace(time, '');
+                    var time, date = [];
+
+                    if(time = title.match(/(\d{1,2}):(\d{1,2})/)) {
+                        title = title.replace(time, '');
                     }
-                    
-                    var duration = topic[2].indexOf('-');
-                    if(duration != -1) {
-                        topic[2] = topic[2].substr(0, duration);
+
+                    var duration = title.indexOf('-');
+                    if (duration != -1) {
+                        title = title.substr(0, duration);
                     }
-                    
-                    if(date = topic[2].match(/\d+/g)) {
+
+                    if(date = title.match(/\d+/g)) {
                         date = _.first(date, 3);
-                        
-                        //day
-                        if(date[0].length < 2)
-                            sDate.push('0');
-                        sDate.push(date[0]);
-                        
-                        sDate.push('.');
-                        
-                        //month
-                        if(date[1].length < 2)
-                            sDate.push('0');
-                        sDate.push(date[1]);
-                        
-                        sDate.push('.');
-                        
-                        //year
-                        if(!date[2]) {
-                            sDate.push(new Date().getFullYear());
-                        } else {
-                            if(date[2] < 100)
-                                sDate.push('20');
-                            sDate.push(date[2]);
+
+                        var day = ('0' + date[0]).slice(-2);
+                        var month = ('0' + date[1]).slice(-2);
+                        var year = ('20' + (date[2] || new Date().getFullYear())).slice(-4);
+
+                        var check = month + '.' + day + '.' + year;
+                        if ((new Date(check)).toString() === 'Invalid Date') {
+                            return null;
                         }
-                        
-                        //time
-                        if(time) {
-                            sDate.push(' в ');
-                            sDate.push(time);
-                        }
-                        
-                        sDate = sDate.join('');
-                        
+
+                        var hours = ('0' + time[1]).slice(-2);
+                        var minutes = ('0' + time[2]).slice(-2);
+
+                        var sTime = time ? ' в ' + hours + ':' + minutes : '';
+                        var intDateTime = [day, month, year, hours, minutes].map(function(s) {
+                            return parseInt(s, 10);
+                        });
                         return {
-                            date: sDate,
-                            uTime: getUnixTime(sDate),
+                            date: day + '.' + month + '.' + year + sTime,
+                            uTime: getUnixTime(intDateTime),
                             title: topic[3].trim(),
                             href: topic[1],
                             last_post: topic[4]
                         };
-                        
                     } else {
                         return null;
                     }
                 } catch(e) {
                     return null;
                 }
-                
+
                 return null;
             }
-            
-            function getUnixTime(str) {
-                var rgx = "(\\d+)\\.(\\d+)\\.(\\d+)";
-                if(str.indexOf('в')) {
-                    rgx += ".*?(\\d{1,2}):(\\d{1,2})";
-                }
-                
-                var m = str.match(new RegExp(rgx));
-                return new Date(Date.UTC(m[3], parseInt(m[2])-1, m[1], m[4]-3, m[5]));
+
+            function getUnixTime(d) {
+                return new Date(Date.UTC(d[2], d[1]-1, d[0], d[3], d[4]));
             }
-            
+
             return {
                 getHead: getHead,
                 getTopics: getTopics
@@ -321,15 +296,17 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
         function dlgOpenEventCtrl($scope, $log, $modalInstance, topic, $q, $sce) {
             $scope.topic = topic;
             $scope.loading = true;
-            
+
             Request = injectorKE.get('Request');
-            
-            Request.getHead(topic.href).then(function(head) {;
+
+            Request.getHead(topic.href).then(function(head) {
                 $scope.head = head;
                 head.text = $sce.trustAsHtml(head.text);
                 $scope.loading = false;
+            }).finally(function() {
+                $scope.$apply();
             });
-                        
+
             $scope.onClose = function() {
                 $modalInstance.dismiss();
             };
@@ -339,12 +316,6 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
 
 window.addEventListener('load', function() {
 if(!document.getElementById('UserJS_KlavoEvents')) {
-    var script = document.createElement('script');
-    script.setAttribute("type", "application/javascript");
-    script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';
-    document.body.appendChild(script);
-    document.body.removeChild(script);
-    
     var style = document.createElement('style');
     style.textContent = json2css({
         '.list': {
@@ -411,7 +382,7 @@ if(!document.getElementById('UserJS_KlavoEvents')) {
         }
     }, '.dlg-klavoevents-open-event');
     document.head.appendChild(style);
-    
+
     var templateOpenEvent = document.createElement('script');
     templateOpenEvent.setAttribute('type', 'text/ng-template');
     templateOpenEvent.id = 'templateOpenEvent';
@@ -437,6 +408,12 @@ if(!document.getElementById('UserJS_KlavoEvents')) {
             </div>\
         </div>";
     document.body.appendChild(templateOpenEvent);
+
+    var script = document.createElement('script');
+    script.setAttribute("type", "application/javascript");
+    script.textContent = '(' + main + ')("'+ ANGULAR_USERJS_ID + '", "' + USERJS_INSTANCE_ID + '");';
+    document.body.appendChild(script);
+    document.body.removeChild(script);
 }
 });
 
