@@ -1,16 +1,15 @@
 // ==UserScript==
 // @name         KG_AutoNextRace
 // @namespace    klavogonki
-// @version      1.4.1
+// @version      1.4.3
 // @description  Добавляет возможность автоматического старта заезда и автосоздания следующего после набора
 // @author       Phemmer
 // @include      http://klavogonki.ru/g/*
 // ==/UserScript==
 
-var isCompetition = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/) !== null;
-if (!isCompetition) main();
-
 function main(){
+	var isCompetition = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/) !== null;
+	if (isCompetition) return;
 	var params = document.getElementById("param_shadow");
 	var elem = document.createElement("div");
 	elem.id = "auto_next";
@@ -30,7 +29,7 @@ function main(){
 
 	function CheckRating(){
 		var rating = document.querySelector(".player.you .rating" );
-		if (rating.style.display !== 'none' && localStorage.autoNext_STATUS == '1') {
+		if (rating && rating.style.display !== 'none' && localStorage.autoNext_STATUS == '1') {
 			observer.disconnect();
 			setTimeout(GoToNext, 1000);
 		}
@@ -51,3 +50,15 @@ function main(){
 		}
 	}
 }
+
+function exec(fn) {
+    var script = document.createElement('script');
+    script.setAttribute('type', 'application/javascript');
+    script.textContent = '(' + fn + ')();';
+    document.body.appendChild(script);
+    document.body.removeChild(script);
+}
+
+window.addEventListener('load', function() {
+    exec(main);
+}, false);
