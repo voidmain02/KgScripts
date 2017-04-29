@@ -2,7 +2,7 @@
 // @name         KG_AutoNextRace
 // @namespace    klavogonki
 // @version      1.4.0
-// @description  Добавляет возможность автоматического старта заездов и создания следующего после набора
+// @description  Добавляет возможность автоматического старта заезда и автосоздания следующего после набора
 // @author       Phemmer
 // @include      http://klavogonki.ru/g/*
 // ==/UserScript==
