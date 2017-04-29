@@ -55,6 +55,8 @@
 [KG_PrivateChatLink](docs/KG_PrivateChatLink.md) | Приватный диалог в чате по Shift + клик ЛКМ по нику пользователя в окне сообщений |
 [KG_GlasslessBio](docs/KG_GlasslessBio.md) | В разделе «Сводка» изменяет вид блока «Био» | ![][c]
 [KG_antipalevo](docs/KG_antipalevo.md) | Выделяет жирным шрифтом приватные сообщения в процессе набора, предотвращая казусы при ошибочной отправке шёпота в общий чат | ![][i]
+[KG_AutoNextRace](docs/KG_AutoNextRace.md) | Добавляет возможность автоматического старта заезда и автосоздания следующего после набора |
+[KG_ShowStatOfThisMode](docs/KG_ShowStatOfThisMode.md) | Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов |
 
 Условные обозначения:
 
@@ -66,4 +68,4 @@
 
 [c]: http://i.imgur.com/MwnDQMM.png "Возможны конфликты с другими скриптами (подробнее на странице с описанием)"
 [t]: http://i.imgur.com/r7txxEV.png "Есть функциональные тесты"
-[i]: http://net.lib54.ru/KTS/pict/dic.png "Интегрирован в KlavoTools"
+[i]: http://i.imgur.com/H4ejIh1.png "Интегрирован в KlavoTools"
