@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_ShowStatOfThisMode
 // @namespace    klavogonki
-// @version      1.2.1
+// @version      1.2.3
 // @description  Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов
 // @author       Phemmer
 // @include      http://klavogonki.ru/g/*
@@ -10,7 +10,7 @@
 // @include      http://klavogonki.ru/top/week/*
 // ==/UserScript==
 
-(function() {
+function main(){
 	var modeName;
 	var modeId;
 	var url = document.location.href;
@@ -65,4 +65,16 @@
 			}
 		}
 	}
-})();
+}
+
+function exec(fn) {
+    var script = document.createElement('script');
+    script.setAttribute('type', 'application/javascript');
+    script.textContent = '(' + fn + ')();';
+    document.body.appendChild(script);
+    document.body.removeChild(script);
+}
+
+window.addEventListener('load', function() {
+    exec(main);
+}, false);
