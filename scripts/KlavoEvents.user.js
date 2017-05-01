@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KlavoEvents
-// @version        3.0.4
+// @version        3.0.5
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий
@@ -133,14 +133,17 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 return Cache.has(href) ? $q.when(Cache.get(href)) : requestHeadTopic(href);
             }
 
-            var REG_EXP_HEAD = /(<tr class="posth[\s\S]+?)<tr class="posth/;
+            var REG_EXP_HEAD = /(<tr class="posth[\s\S]+?)<\/table>/;
             var REG_EXP_TOPIC = "<a.+?href=['\"]?([^'\" ]+)['\"]?.+?<noindex>\\s*(\\[[^\\]]+\\])(.+?)<\/noindex>[\\s\\S]+?class=['\"]?go['\"]?\\s+href=['\"]?([^\\s'\"]+)";
 
             function requestHeadTopic(href) {
                 return $http.get(href)
                 .then(function(res) {
                     var tmp = res.data.match(REG_EXP_HEAD);
-                    if(!tmp) return $q.reject('not found');
+                    if (!tmp) {
+                        return $q.reject('REG_EXP_HEAD has no match.');
+                    }
+
                     tmp = tmp[1]
                         .replace(/<textarea[\s\S]+?<\/textarea>/, '')
                         .replace(/<!--.+?-->/g, '');
@@ -169,6 +172,9 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                     Cache.add(href, head);
 
                     return head;
+                }).catch(function(err) {
+                    console.error(err);
+                    return $q.reject(err);
                 });
             }
             
