@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          DailyScores
 // @namespace     klavogonki
-// @version       2.1.6
+// @version       2.1.7
 // @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
 // @include       http://klavogonki.ru/*
 // @author        Lexin13, agile
@@ -9,14 +9,18 @@
 // ==/UserScript==
 
 function main () {
-  function DailyScores (scoresRow, bonusesRow, rating) {
+  function DailyScores (scoresRow, bonusesRow, rating, ratingUpperBound) {
     this.scoresNode = this.createScoresPanel(scoresRow);
     this.ratingNode = this.createRatingPanel(bonusesRow);
     this.store = window.localStorage;
     this.prefix = 'DailyScores';
     this.values = {
       scores: { gained: 0, spent: 0 },
-      rating: { gained: 0, total: rating },
+      rating: {
+        gained: 0,
+        total: rating,
+        upperBound: ratingUpperBound,
+      },
     };
     this.load();
   }
@@ -75,10 +79,25 @@ function main () {
         time.setUTCHours(23);
         time.setUTCMinutes(40);
         var currentRating = this.values.rating.total;
+        var currentRatingUpperBound = this.values.rating.upperBound;
+
+        if (data.rating.upperBound === undefined) {
+          data.rating.upperBound = currentRatingUpperBound;
+        }
+
         if (new Date() < time) {
           this.values = data;
         }
-        this.update({ rating: currentRating - this.values.rating.total });
+
+        if (currentRatingUpperBound === this.values.rating.upperBound) {
+          this.update({ rating: currentRating - this.values.rating.total });
+        } else {
+          var diff = this.values.rating.upperBound - this.values.rating.total;
+          this.update({
+            rating: diff + currentRating,
+            ratingUpperBound: currentRatingUpperBound,
+          });
+        }
       } catch (error) {
         console.error(error);
       }
@@ -105,6 +124,15 @@ function main () {
     if (diff.rating) {
       this.values.rating.gained += diff.rating;
       this.values.rating.total += diff.rating;
+
+      if (this.values.rating.total >= this.values.rating.upperBound) {
+        this.values.rating.total -= this.values.rating.upperBound;
+        this.values.rating.upperBound = undefined;
+      }
+
+      if (diff.ratingUpperBound) {
+        this.values.rating.upperBound = diff.ratingUpperBound;
+      }
     }
 
     function format (n) {
@@ -154,11 +182,13 @@ function main () {
   // Extract the user id:
   var userId = parseInt(link.href.match(/\/u\/#\/(\d+)/)[1]);
 
-  // Extract the current rating value:
-  var rating = parseInt(/\d+/.exec(level.getAttribute('original-title')) || 0);
+  // Extract the current rating value and amount of rating needed for the next level:
+  var matches = level.getAttribute('original-title').match(/Опыт:\s+(\d+)\s+\/\s+(\d+)/);
+  var rating = parseInt(matches[1] || 0);
+  var ratingUpperBound = parseInt(matches[2] || 0);
 
   var dailyScores = new DailyScores(scoresCell.parentNode,
-    bonusesCell.parentNode, rating);
+    bonusesCell.parentNode, rating, ratingUpperBound);
 
   // Check each XMLHttpRequest response for required JSON with scores_gained field:
   function checkJSON (response) {
@@ -261,8 +291,16 @@ function main () {
 
       if (checkGameDesc(/соревнование/) && matches[1] !== dailyScores.getLastRatingGameId()) {
         dailyScores.setLastRatingGameId(matches[1]);
-        // Each rating game costs 150 score points:
-        dailyScores.update({ scores: -150 });
+        // Each "x" competition costs 50 score points:
+        var cost = 50;
+        var re = /\(x\d+\)/;
+        var desc = document.getElementById('gamedesc').textContent;
+
+        if (checkGameDesc(re)) {
+          cost *= desc[desc.search(re) + 2];
+        }
+
+        dailyScores.update({ scores: -cost });
       }
     }, 1000);
   }

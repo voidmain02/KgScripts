@@ -37,8 +37,7 @@
   },
   {
     "name": "DailyScores",
-    "broken": true,
-    "version": "2.1.6",
+    "version": "2.1.7",
     "authors": [
       "Lexin13",
       "agile"
