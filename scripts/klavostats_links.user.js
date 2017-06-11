@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          klavostats_links
 // @namespace     klavogonki
-// @version       2.2.2
+// @version       2.2.3
 // @description   Добавляет прямые ссылки на профиль игрока в КлавоСтатистике
 // @include       http://klavogonki.ru/u/*
 // @author        Lexin13, Fenex, agile
@@ -12,11 +12,13 @@ function main () {
     var menuStructure = [
       {
         text: 'КлавоСтатистика',
-        url: 'http://stat.klavogonki.ru/players.php?extra&n=' + login,
+        //url: 'http://stat.klavogonki.ru/players.php?extra&n=' + login,
+        url: 'http://kg.bezumn.ru/players.php?extra&n=' + login,
       },
       {
         text: 'История игрока',
-        url: 'http://stat.klavogonki.ru/profile/#' + login,
+        //url: 'http://stat.klavogonki.ru/profile/#' + login,
+        url: 'http://kg.bezumn.ru/profile/#' + login,
       },
       {
         text: 'Созданные словари',
