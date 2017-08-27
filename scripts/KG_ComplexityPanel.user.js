@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KG_ComplexityPanel
-// @version        1.4.6
+// @version        1.4.7
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
@@ -110,7 +110,6 @@ function embed() {
             try {
                 var json = JSON.parse(this.responseText);
                 if ('text' in json) {
-                    window.XMLHttpRequest.prototype.send = proxied;
                     createPanel(json.text.text);
                 }
             } catch (e) {}

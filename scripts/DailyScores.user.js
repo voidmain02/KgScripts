@@ -249,7 +249,6 @@ function main () {
         var scoresGained = checkJSON(this.responseText);
         // In single games and games with friends scores are not gained immediately:
         if (scoresGained && !checkGameDesc(/одиночный|друзьями/)) {
-          window.XMLHttpRequest.prototype.send = proxied;
           dailyScores.update({ scores: scoresGained });
           observeRating();
         }
