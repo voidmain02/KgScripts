@@ -3,7 +3,7 @@
 // @namespace   klavogonki
 // @description Отключает кнопку ContextMenu в поле ввода текста во время заезда
 // @author      agile
-// @version     1.0.0
+// @version     1.0.1
 // @include     http://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end
@@ -12,8 +12,8 @@
 function main() {
   var textbox = document.getElementById('inputtext');
   if (textbox) {
-    textbox.addEventListener('keydown', function (event) {
-      if (event.code === 'ContextMenu') {
+    window.addEventListener('contextmenu', function (event) {
+      if (event.target === textbox) {
         event.preventDefault();
       }
     });
