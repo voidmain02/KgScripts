@@ -193,6 +193,18 @@
     "description": "В разделе «Сообщения» добавляет текстовые ссылки для возможности открытия диалогов в новых вкладках браузера"
   },
   {
+    "name": "KG_DisableMenuKey",
+    "version": "1.0.0",
+    "authors": [
+      "agile"
+    ],
+    "integrated": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Отключает кнопку ContextMenu в поле ввода текста во время заезда"
+  },
+  {
     "name": "KG_DisableTab",
     "version": "1.0.0",
     "authors": [
