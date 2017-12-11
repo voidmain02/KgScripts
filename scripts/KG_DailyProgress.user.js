@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name         Daily task progress bar
+// @name         KG_DailyProgress
 // @namespace    klavogonki
 // @version      0.1
-// @description  Add tiny progress bar to daily task badge
+// @description  Визуальная полоса прогресса выполнения «Задачи дня»
 // @author       Spaider aka Denis Dmitriev
 // @match        http://klavogonki.ru/*
 // @grant        none
