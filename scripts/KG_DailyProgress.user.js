@@ -106,7 +106,7 @@ function updateProgress() {
             return;
         }
         var pb = getOrCreateProgressBar(gauge);
-        pb.style.width = 'calc(100% * ' + progress.done + '/ ' + progress.total + ')';
+        pb.style.width = (100 * progress.done / progress.total) + '%';
     } catch (e) {
         console.log('DailyProgress: Ошибка при обновлении. ' + e);
     }
