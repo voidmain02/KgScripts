@@ -58,6 +58,7 @@
 [KG_AutoNextRace](docs/KG_AutoNextRace.md) | Добавляет возможность автоматического старта заезда и автосоздания следующего после набора |
 [KG_ShowStatOfThisMode](docs/KG_ShowStatOfThisMode.md) | Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов |
 [KG_DisableMenuKey](docs/KG_DisableMenuKey.md) | Отключает кнопку ContextMenu в поле ввода текста во время заезда | ![][i]
+[KG_DailyProgress](docs/KG_DailyProgress.md) | Визуальная полоса прогресса выполения «Задачи дня» | ![][i]
 
 Условные обозначения:
 
