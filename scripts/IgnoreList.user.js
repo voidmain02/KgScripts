@@ -3,7 +3,7 @@
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/g*
 // @author         Fenex
-// @version        4.0.2
+// @version        4.1.3
 // @description    Чёрный список в чате
 // @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
@@ -41,7 +41,8 @@ function editBlackList() {
         now.push(BlackList[i].id);
     }
     
-    var a = prompt('Введите через запятую ID пользователей для добавления в чёрный список:', now.toString());
+    var a = prompt('Введите через запятую ID пользователей для добавления в чёрный список\n'+
+                   '(л12345 - скрывать личку; п12345 - публичку; 12345 - скрывать и то и то):', now.toString());
 	if(typeof a == 'object')
 		return;
 
@@ -51,7 +52,7 @@ function editBlackList() {
     
     for(var i=0; i<a.length; i++) {
         a[i] = a[i].trim();
-        if(!/^\d+$/.test(a[i])) { continue }
+        if(!/^л?п?\d+$/.test(a[i])) { continue }
         
         var userdata = document.querySelector('span[data-user="'+a[i]+'"]');
         if(userdata) {
@@ -102,8 +103,20 @@ setInterval(function() {
         var username = messages[i].getElementsByClassName('username');
         if(username.length) {
             var id = username[0].getElementsByTagName('span')[0].getAttribute('data-user');
-            if(~ids.indexOf(id))
+            if(~ids.indexOf(id)) {
                 messages[i].style.display = 'none';
+            } else {
+                var isPrivate = messages[i].getElementsByClassName('private');
+                if (isPrivate.length) {
+                    if(~ids.indexOf('л'+id))
+                        messages[i].style.display = 'none';
+                    //TODO: автоответчик
+                } else {
+                    if(~ids.indexOf('п'+id))
+                        messages[i].style.display = 'none';			
+                }				
+            }
+
         } else {
             var sm = messages[i].getElementsByClassName('system-message');
             if(sm.length) {
