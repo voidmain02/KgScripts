@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KlavoEvents
-// @version        3.0.5
+// @version        3.0.6
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий
@@ -108,7 +108,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 function getTopics(page) {
                     return $http.get('http://klavogonki.ru/forum/events/page' + page)
                     .then(function(res) {
-                        var results = res.data.match(new RegExp(REG_EXP_TOPIC, 'g'));
+                        var results = res.data.match(new RegExp(REG_EXP_TOPIC.source, 'g'));
                         topics = topics.concat(results);
                         
                         defer.notify((topics.length / length * 100).toFixed());
@@ -134,7 +134,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
             }
 
             var REG_EXP_HEAD = /(<tr class="posth[\s\S]+?)<\/table>/;
-            var REG_EXP_TOPIC = "<a.+?href=['\"]?([^'\" ]+)['\"]?.+?<noindex>\\s*(\\[[^\\]]+\\])(.+?)<\/noindex>[\\s\\S]+?class=['\"]?go['\"]?\\s+href=['\"]?([^\\s'\"]+)";
+            var REG_EXP_TOPIC = /<a.+?href=['\"]?([^'\" ]+)['\"]?.+?<noindex>\s*(\[[^\]]+\])(.+?)<\/noindex>[\s\S]+?class=['\"]?last-post['\"]?[\s\S]+?(?:class=['\"]?go['\"]\s+href=['\"]?([^\s'\"]+)?|(\s+)<\/)/;
 
             function requestHeadTopic(href) {
                 return $http.get(href)
@@ -180,7 +180,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
             
             function parseTopic(str) {
                 if (!_.isString(str)) return null;
-                var topic = str.match(new RegExp(REG_EXP_TOPIC));
+                var topic = str.match(REG_EXP_TOPIC);
                 if (!topic) return null;
 
                 var title = topic[2];
@@ -221,7 +221,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                             uTime: getUnixTime(intDateTime),
                             title: topic[3].trim(),
                             href: topic[1],
-                            last_post: topic[4]
+                            last_post: (!topic[4] || topic[4].trim() === '') ? topic[1] : topic[4],
                         };
                     } else {
                         return null;
