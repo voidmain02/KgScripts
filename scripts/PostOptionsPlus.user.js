@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           PostOptionsPlus
 // @description    Добавляет ссылки для быстрого обращения по имени и цитаты выделенного текста на форуме
-// @version        2.1.4
+// @version        2.1.5
 // @author         olimo, Fenex
 // @namespace      klavogonki
 // @include        http://klavogonki.ru/forum/*
@@ -10,7 +10,7 @@ function remember_sel() {
 	sel_text = $selection.getText().trim();
 }
 function cite_selected(postnumber) {
-	var username = document.getElementById('username-'+postnumber).innerHTML;
+	var username = document.getElementById('username-'+postnumber).innerText;
 	var cite_sel = '[quote='+username+']'+sel_text+'[/quote]';
 	var rep = document.getElementById('fast-reply_textarea');
 	if (rep.value == '')
@@ -21,7 +21,7 @@ function cite_selected(postnumber) {
 	document.getElementById('write-link').style.display = 'none';
 }
 function ins_name(postnumber) {
-	var username = document.getElementById('username-'+postnumber).innerHTML;
+	var username = document.getElementById('username-'+postnumber).innerText;
 	var inserted_name = '[b]'+username+'[/b], ';
 	var rep = document.getElementById('fast-reply_textarea');
 	if (rep.value == '')
