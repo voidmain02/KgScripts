@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           IgnoreList
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/g*
+// @include        http*://klavogonki.ru/g*
 // @author         Fenex
 // @version        4.1.3
 // @description    Чёрный список в чате
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
 var BlackList = [];
@@ -80,7 +80,7 @@ function editBlackList() {
         var td = document.createElement('td');
         var img = document.createElement('img');
         img.setAttribute('style', 'cursor:pointer;');
-        img.setAttribute('src', 'http://klavogonki.ru/img/exclamation.gif');
+        img.setAttribute('src', 'https://klavogonki.ru/img/exclamation.gif');
         img.setAttribute('title', 'Чёрный список');
         td.appendChild(img);
         th.parentNode.insertBefore(td, th);
