@@ -31,9 +31,9 @@ function createElements(selected) {
 	if (!selected) {
 		option.innerText = 'off';
 		option.selected = selected;
-	} else {
-		option.innerText = 'off';
 	}
+	option.innerText = 'off';
+	
 	document.getElementById('stopSelectId').appendChild(option);
 
 
