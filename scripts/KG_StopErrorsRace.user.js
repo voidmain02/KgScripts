@@ -68,11 +68,8 @@ window.onload = function (){
 	const normalRaceX = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
 
 	if (!!rightUrl.match(/gmid/) && normalRaceX === null) {
-		if (localStorage.selectedItem !== 'off') {
-			createElements(true);
-		} else {
-			createElements(false);
-		}
+		const is_on = localStorage.selectedItem !== 'off';
+		createElements(is_on);
 		checkSelect();
 	}
 };
@@ -101,16 +98,9 @@ window.addEventListener("keyup", (event) => {
 			constter.length < 2 && constter >= 'а' && constter <= 'я' ||
 			constter.length < 2 && numberAndSymbols.indexOf(constter) !== -1) {
 
-			if (+localStorage.selectedItem === 0) {
-				if (+errors.innerText !== 0) {
-					stopGame(input);
-					createNewGameAndRedirect();
-				}	
-			} else {
-				if (+errors.innerText > +localStorage.selectedItem) {
-					stopGame(input);
-					createNewGameAndRedirect();
-				}
+			if (errors.innerText >= localStorage.selectedItem) {	
+				stopGame(input);
+				createNewGameAndRedirect();
 			}
 		}
 	}
