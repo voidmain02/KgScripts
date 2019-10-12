@@ -86,22 +86,15 @@ function createNewGameAndRedirect() {
 
 
 window.addEventListener("keyup", (event) => {
-	const numberAndSymbols = ' !\#$%&\'()*+-./`0123456789:;<=>?@[\\]^_ё';
 	const rightUrl = window.location.href;
 
 	if (!!rightUrl.match(/gmid/) && localStorage.selectedItem !== 'off') {
 		const errors = document.getElementById("errors-label");
 		const input  = document.getElementById("inputtext");
-		const constter = event.key.toLowerCase();
 
-		if (constter >= 'a' && constter <= 'z' ||
-			constter >= 'а' && constter <= 'я' ||
-			numberAndSymbols.indexOf(constter) !== -1) {
-
-			if (errors.innerText >= localStorage.selectedItem) {	
-				stopGame(input);
-				createNewGameAndRedirect();
-			}
+		if (errors.innerText > localStorage.selectedItem) {	
+			stopGame(input);
+			createNewGameAndRedirect();
 		}
 	}
 });
