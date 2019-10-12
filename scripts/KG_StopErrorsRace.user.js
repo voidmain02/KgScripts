@@ -18,7 +18,7 @@ function createElements() {
 	label.textContent = 'Выберите количество ошибок';
 	select.name = 'stopErrorsSelect';
 	label.id = 'stopLabelId';
-	div.setAttribute.id = 'stopSelectedDivId';
+	div.id = 'stopSelectedDivId';
 	select.id = 'stopSelectId';
 
 	const node = document.getElementsByClassName("rc");
