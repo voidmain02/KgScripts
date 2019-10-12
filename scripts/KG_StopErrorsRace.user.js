@@ -30,7 +30,7 @@ function createElements() {
 	let option = document.createElement("option");
 	
 	if (!is_on) {
-		option.selected = selected;
+		option.selected = true;
 	}
 	option.innerText = 'off';
 	
