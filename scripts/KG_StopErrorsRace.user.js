@@ -37,7 +37,7 @@ function createElements(selected) {
 	document.getElementById('stopSelectId').appendChild(option);
 
 
-	for (let i = 0; i < 6; i++) {
+	for (let i = 1; i < 6; i++) {
 		option = document.createElement("option");
 		option.value = i;
 		option.innerText = i;
@@ -94,9 +94,9 @@ window.addEventListener("keyup", (event) => {
 		const input  = document.getElementById("inputtext");
 		const constter = event.key.toLowerCase();
 
-		if (constter.length < 2 && constter >= 'a' && constter <= 'z' ||
-			constter.length < 2 && constter >= 'а' && constter <= 'я' ||
-			constter.length < 2 && numberAndSymbols.indexOf(constter) !== -1) {
+		if (constter >= 'a' && constter <= 'z' ||
+			constter >= 'а' && constter <= 'я' ||
+			numberAndSymbols.indexOf(constter) !== -1) {
 
 			if (errors.innerText >= localStorage.selectedItem) {	
 				stopGame(input);
