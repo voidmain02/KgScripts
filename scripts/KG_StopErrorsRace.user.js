@@ -28,10 +28,7 @@ function createElements(selected) {
 
 	let option = document.createElement("option");
 	
-	if (!selected) {
-		option.innerText = 'off';
-		option.selected = selected;
-	}
+	if (!selected) option.selected = selected;
 	option.innerText = 'off';
 	
 	document.getElementById('stopSelectId').appendChild(option);
