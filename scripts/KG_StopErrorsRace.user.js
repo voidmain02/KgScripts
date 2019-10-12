@@ -9,29 +9,32 @@
 
 "use strict";
 
-function createElements(selected) {
+function createElements() {
+	const is_on = localStorage.selectedItem !== 'off';
 	const div    = document.createElement("div");
 	const select = document.createElement("select");
 	const label  = document.createElement("label");
 	
 	label.textContent = 'Выберите количество ошибок';
 	select.name = 'stopErrorsSelect';
-	label.setAttribute("id", "stopLabelId");
-	div.setAttribute("id", "stopSelectedDivId");
-	select.setAttribute("id", "stopSelectId");
+	label.id = 'stopLabelId';
+	div.setAttribute.id = 'stopSelectedDivId';
+	select.id = 'stopSelectId';
 
 	const node = document.getElementsByClassName("rc");
 	node[2].appendChild(div);
-	document.getElementById('stopSelectedDivId').appendChild(label);
-	document.getElementById('stopSelectedDivId').appendChild(select);
-	document.getElementById('stopLabelId').style.margin = '0 5px 0 0';
+	div.appendChild(label);
+	div.appendChild(select);
+	label.style.margin = '0 5px 0 0';
 
 	let option = document.createElement("option");
 	
-	if (!selected) option.selected = selected;
+	if (!is_on) {
+		option.selected = selected;
+	}
 	option.innerText = 'off';
 	
-	document.getElementById('stopSelectId').appendChild(option);
+	select.appendChild(option);
 
 
 	for (let i = 1; i < 6; i++) {
@@ -39,19 +42,17 @@ function createElements(selected) {
 		option.value = i;
 		option.innerText = i;
 
-		if (localStorage.selectedItem !== 'off') {
-			if (Number(localStorage.selectedItem) === i) {
-				option.selected = true;
-			}
+		if (localStorage.selectedItem !== 'off' && +localStorage.selectedItem === i) {
+			option.selected = true;
 		}
-		document.getElementById('stopSelectId').appendChild(option);
+		select.appendChild(option);
 	}
 }
 
 function checkSelect() {
 	document.getElementById("stopSelectId")
 	.addEventListener("change", (e) => {
-		const value = e.target.selectedOptions[0].innerHTML;
+		const value = e.target.selectedOptions[0].textContent;
 		localStorage.selectedItem = value;
 	});
 }
@@ -60,18 +61,18 @@ if (localStorage.selectedItem === undefined) {
 	localStorage.selectedItem = 'off';
 }
 
-window.onload = function (){
+window.addEventListener('load', () => {
 	const rightUrl = window.location.href;
 	const normalRaceX = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
 
 	if (!!rightUrl.match(/gmid/) && normalRaceX === null) {
-		const is_on = localStorage.selectedItem !== 'off';
-		createElements(is_on);
+		createElements();
 		checkSelect();
 	}
-};
+});
 
-function stopGame(input) {
+function stopGame() {
+	const input  = document.getElementById("inputtext");
 	input.disabled = true;
 	input.style.backgroundColor = '#ccc';
 }
@@ -81,16 +82,13 @@ function createNewGameAndRedirect() {
 	window.location = `/g/${url}.replay`;
 }
 
+const errors = document.getElementById("errors-label");
+const rightUrl = window.location.href.match(/gmid/);
 
 window.addEventListener("keyup", (event) => {
-	const rightUrl = window.location.href;
-
-	if (!!rightUrl.match(/gmid/) && localStorage.selectedItem !== 'off') {
-		const errors = document.getElementById("errors-label");
-		const input  = document.getElementById("inputtext");
-
+	if (!!rightUrl && localStorage.selectedItem !== 'off') {
 		if (errors.innerText > localStorage.selectedItem) {	
-			stopGame(input);
+			stopGame();
 			createNewGameAndRedirect();
 		}
 	}
