@@ -63,13 +63,15 @@ if (localStorage.selectedItem === undefined) {
 
 window.addEventListener('load', () => {
 	const rightUrl = window.location.href;
-	const normalRaceX = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
-
-	if (!!rightUrl.match(/gmid/) && normalRaceX === null) {
+	if (!!rightUrl.match(/gmid/) && getRaceX()) {
 		createElements();
 		checkSelect();
 	}
 });
+
+function getRaceX() {
+	return !document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
+}
 
 function stopGame() {
 	const input  = document.getElementById("inputtext");
@@ -86,8 +88,8 @@ const errors = document.getElementById("errors-label");
 const rightUrl = window.location.href.match(/gmid/);
 
 window.addEventListener("keyup", (event) => {
-	if (!!rightUrl && localStorage.selectedItem !== 'off') {
-		if (errors.innerText > localStorage.selectedItem) {	
+	if (!!rightUrl && localStorage.selectedItem !== 'off' && getRaceX()) {
+		if (errors.innerText > localStorage.selectedItem) {
 			stopGame();
 			createNewGameAndRedirect();
 		}
