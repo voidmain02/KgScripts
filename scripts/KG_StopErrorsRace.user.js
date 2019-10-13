@@ -61,16 +61,11 @@ if (localStorage.selectedItem === undefined) {
 	localStorage.selectedItem = 'off';
 }
 
-window.addEventListener('load', () => {
+function is_competition() {
 	const rightUrl = window.location.href;
-	if (!!rightUrl.match(/gmid/) && getRaceX()) {
-		createElements();
-		checkSelect();
-	}
-});
-
-function getRaceX() {
-	return !document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
+	const xRace = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
+	if (!!rightUrl.match(/gmid/) && !xRace) return true;
+	return false;
 }
 
 function stopGame() {
@@ -84,14 +79,20 @@ function createNewGameAndRedirect() {
 	window.location = `/g/${url}.replay`;
 }
 
-const errors = document.getElementById("errors-label");
-const rightUrl = window.location.href.match(/gmid/);
+window.addEventListener("load", () => {
+	if (is_competition()) {
+		createElements();
+		checkSelect();
 
-window.addEventListener("keyup", (event) => {
-	if (!!rightUrl && localStorage.selectedItem !== 'off' && getRaceX()) {
-		if (errors.innerText > localStorage.selectedItem) {
-			stopGame();
-			createNewGameAndRedirect();
-		}
+		const errors = document.getElementById("errors-label");
+
+		window.addEventListener("keyup", (event) => {
+			if (localStorage.selectedItem !== 'off') {
+				if (errors.innerText > localStorage.selectedItem) {
+					stopGame();
+					createNewGameAndRedirect();
+				}
+			}
+		});
 	}
 });
