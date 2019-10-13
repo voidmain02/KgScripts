@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_StopErrorsRace
 // @namespace    klavogonki
-// @version      1.0.0
+// @version      1.0.1
 // @description  Останавливает заезд и создает новый если количество ошибок больше, чем указанное в настройках.
 // @author       Akmat
 // @include      http://klavogonki.ru/g/*
