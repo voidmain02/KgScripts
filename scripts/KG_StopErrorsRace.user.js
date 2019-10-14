@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_StopErrorsRace
 // @namespace    klavogonki
-// @version      1.0.0
+// @version      1.0.1
 // @description  Останавливает заезд и создает новый если количество ошибок больше, чем указанное в настройках.
 // @author       Akmat
 // @include      http://klavogonki.ru/g/*
@@ -61,15 +61,11 @@ if (localStorage.selectedItem === undefined) {
 	localStorage.selectedItem = 'off';
 }
 
-window.addEventListener('load', () => {
+function is_competition() {
 	const rightUrl = window.location.href;
-	const normalRaceX = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
-
-	if (!!rightUrl.match(/gmid/) && normalRaceX === null) {
-		createElements();
-		checkSelect();
-	}
-});
+	const xRace = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
+	return !!rightUrl.match(/gmid/) && !xRace;
+}
 
 function stopGame() {
 	const input  = document.getElementById("inputtext");
@@ -82,14 +78,20 @@ function createNewGameAndRedirect() {
 	window.location = `/g/${url}.replay`;
 }
 
-const errors = document.getElementById("errors-label");
-const rightUrl = window.location.href.match(/gmid/);
+window.addEventListener("load", () => {
+	if (is_competition()) {
+		createElements();
+		checkSelect();
 
-window.addEventListener("keyup", (event) => {
-	if (!!rightUrl && localStorage.selectedItem !== 'off') {
-		if (errors.innerText > localStorage.selectedItem) {	
-			stopGame();
-			createNewGameAndRedirect();
-		}
+		const errors = document.getElementById("errors-label");
+
+		window.addEventListener("keyup", (event) => {
+			if (localStorage.selectedItem !== 'off') {
+				if (errors.innerText > localStorage.selectedItem) {
+					stopGame();
+					createNewGameAndRedirect();
+				}
+			}
+		});
 	}
 });
