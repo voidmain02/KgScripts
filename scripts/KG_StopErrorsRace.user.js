@@ -64,8 +64,7 @@ if (localStorage.selectedItem === undefined) {
 function is_competition() {
 	const rightUrl = window.location.href;
 	const xRace = document.getElementById('gamedesc').innerText.match(/Обычный, соревнование/);
-	if (!!rightUrl.match(/gmid/) && !xRace) return true;
-	return false;
+	return !!rightUrl.match(/gmid/) && !xRace;
 }
 
 function stopGame() {
