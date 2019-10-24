@@ -10,7 +10,7 @@
 "use strict";
 
 function createElements() {
-	const is_on = localStorage.selectedItem !== 'off';
+	const is_on = localStorage.getItem("selectedItem") !== 'off';
 	const div    = document.createElement("div");
 	const select = document.createElement("select");
 	const label  = document.createElement("label");
@@ -26,10 +26,9 @@ function createElements() {
 	div.id = 'stopSelectedDivId';
 	select.id = 'stopSelectId';
 	checkboxInput.id = 'checkboxInputId';
-	checkboxLabel.id = 'checkboxLabelId';
 	checkboxInput.type = 'checkbox';
 
-	checkboxInput.checked = (!!localStorage.autoNextErrorCheckbox) ? true : false;
+	checkboxInput.checked = !!localStorage.getItem("autoNextErrorCheckbox");
 	
 	const node = document.getElementsByClassName("rc");
 	node[2].appendChild(div);
@@ -37,14 +36,14 @@ function createElements() {
 	div.appendChild(select);
 	div.appendChild(checkboxInput);
 	div.appendChild(checkboxLabel);
-	checkboxInputId.style.margin = '0 0 0 15px';
+	checkboxInput.style.margin = '0 0 0 15px';
 	label.style.margin = '0 31px 0 0';
 
 	let option = document.createElement("option");
 
 	if (!is_on) {
 		option.selected = true;
-		document.getElementById("checkboxInputId").disabled = true;
+		checkboxInput.disabled = true;
 	}
 	option.innerText = 'off';
 	
@@ -56,7 +55,8 @@ function createElements() {
 		option.value = i;
 		option.innerText = i;
 
-		if (localStorage.selectedItem !== 'off' && +localStorage.selectedItem === i) {
+		if (localStorage.getItem("selectedItem") !== 'off' &&
+		 +localStorage.getItem("selectedItem") === i) {
 			option.selected = true;
 		}
 		select.appendChild(option);
@@ -67,26 +67,25 @@ function checkSelect() {
 	document.getElementById("stopSelectId")
 	.addEventListener("change", (e) => {
 		const value = e.target.selectedOptions[0].textContent;
-		localStorage.selectedItem = value;
-		let input = document.getElementById("checkboxInputId");
-		input.disabled = value === 'off';
+		localStorage.setItem("selectedItem", value);
+		document.getElementById("checkboxInputId").disabled = value === 'off';
 	});
 }
 
 function checkInputAutoNext() {
 	document.getElementById("checkboxInputId")
 	.addEventListener("change", (e) => {
-		localStorage.autoNextErrorCheckbox = (e.target.checked) ? 1 : '';
+		localStorage.setItem("autoNextErrorCheckbox", (e.target.checked) ? 1 : '');
 	});
 }
 
 
-if (localStorage.selectedItem === undefined) {
-	localStorage.selectedItem = 'off';
+if (localStorage.getItem("selectedItem") === undefined) {
+	localStorage.setItem("selectedItem", "off");
 }
 
-if (localStorage.autoNextErrorCheckbox === undefined) {
-	localStorage.autoNextErrorCheckbox = 1;
+if (localStorage.getItem("autoNextErrorCheckbox") === undefined) {
+	localStorage.setItem("autoNextErrorCheckbox", 1);
 }
 
 function is_competition() {
@@ -115,13 +114,11 @@ window.addEventListener("load", () => {
 		const errors = document.getElementById("errors-label");
 
 		window.addEventListener("keyup", (event) => {
-			if (localStorage.selectedItem !== 'off') {
-				if (errors.innerText > localStorage.selectedItem &&
-					!!localStorage.autoNextErrorCheckbox) {
+			if (localStorage.getItem("selectedItem") !== 'off') {
+				if (errors.innerText > localStorage.getItem("selectedItem")) {
 					stopGame();
-					createNewGameAndRedirect();
-				} else if (errors.innerText > localStorage.selectedItem) {
-					stopGame();
+					if (localStorage.getItem("autoNextErrorCheckbox"))
+						createNewGameAndRedirect();
 				}
 			}
 		});
