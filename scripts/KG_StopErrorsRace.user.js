@@ -50,7 +50,7 @@ function createElements() {
 	select.appendChild(option);
 
 
-	for (let i = 1; i < 6; i++) {
+	for (let i = 0; i < 6; i++) {
 		option = document.createElement("option");
 		option.value = i;
 		option.innerText = i;
@@ -115,6 +115,12 @@ window.addEventListener("load", () => {
 
 		window.addEventListener("keyup", (event) => {
 			if (localStorage.getItem("selectedItem") !== 'off') {
+				if (localStorage.getItem("selectedItem") === "0" &&
+					errors.innerText === "1") {
+					stopGame();
+					createNewGameAndRedirect();
+				}
+
 				if (errors.innerText > localStorage.getItem("selectedItem")) {
 					stopGame();
 					if (localStorage.getItem("autoNextErrorCheckbox"))
