@@ -9,6 +9,31 @@
 
 "use strict";
 
+function addStylesForFailRaceText() {
+    const css = `.stop-error-fail {
+        color: red;
+        position: absolute;
+        border-radius: 3px;
+        font-size: 49px;
+        font-weight: bold;
+        border: 2px solid red;
+        padding: 20px 20px;
+        display: inline-block;
+        top: 71px;
+        left: 215px;}`,
+    head = document.head || document.getElementsByTagName('head')[0],
+    style = document.createElement('style');
+    head.appendChild(style);
+
+    style.type = 'text/css';
+    if (style.styleSheet){
+        // This is required for IE8 and below.
+        style.styleSheet.cssText = css;
+    } else {
+        style.appendChild(document.createTextNode(css));
+    }
+}
+
 function createElements() {
 	const is_on = localStorage.getItem("selectedItem") !== 'off';
 	const div    = document.createElement("div");
@@ -103,6 +128,19 @@ function stopGame() {
 function createNewGameAndRedirect() {
 	const url = window.location.href.match(/[0-9]+/)[0];
 	window.location = `/g/${url}.replay`;
+}
+
+function creatFailWord() {
+    const p = document.createElement("p");
+    p.innerText = 'Провал';
+    p.setAttribute( 'class', 'stop-error-fail');
+    const p = document.getElementsByClassName('stop-error-fail');
+    
+    if (p.length === 0) {
+        const textRace = document.getElementById('typetext');
+        textRace.style.color = '#ccc';
+        textRace.appendChild(p);
+    }
 }
 
 window.addEventListener("load", () => {
