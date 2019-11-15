@@ -134,9 +134,8 @@ function creatFailWord() {
     const p = document.createElement("p");
     p.innerText = 'Провал';
     p.setAttribute( 'class', 'stop-error-fail');
-    const p = document.getElementsByClassName('stop-error-fail');
     
-    if (p.length === 0) {
+    if (document.getElementsByClassName('stop-error-fail').length === 0) {
         const textRace = document.getElementById('typetext');
         textRace.style.color = '#ccc';
         textRace.appendChild(p);
@@ -147,6 +146,7 @@ window.addEventListener("load", () => {
 	if (is_competition()) {
 		createElements();
 		checkSelect();
+		addStylesForFailRaceText();
 		checkInputAutoNext();
 
 		const errors = document.getElementById("errors-label");
@@ -156,11 +156,13 @@ window.addEventListener("load", () => {
 				if (localStorage.getItem("selectedItem") === "0" &&
 					errors.innerText === "1") {
 					stopGame();
+					creatFailWord();
 					createNewGameAndRedirect();
 				}
 
 				if (errors.innerText > localStorage.getItem("selectedItem")) {
 					stopGame();
+					creatFailWord();
 					if (localStorage.getItem("autoNextErrorCheckbox"))
 						createNewGameAndRedirect();
 				}
