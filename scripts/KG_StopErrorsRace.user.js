@@ -12,15 +12,12 @@
 function addStylesForFailRaceText() {
     const css = `.stop-error-fail {
         color: red;
-        position: absolute;
         border-radius: 3px;
         font-size: 49px;
         font-weight: bold;
+        text-align: center;
         border: 2px solid red;
-        padding: 20px 20px;
-        display: inline-block;
-        top: 71px;
-        left: 215px;}`,
+        padding: 20px 20px;}`,
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
     head.appendChild(style);
