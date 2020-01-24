@@ -154,7 +154,8 @@ window.addEventListener("load", () => {
 					errors.innerText === "1") {
 					stopGame();
 					creatFailWord();
-					createNewGameAndRedirect();
+					if (localStorage.getItem("autoNextErrorCheckbox"))
+						createNewGameAndRedirect();
 				}
 
 				if (errors.innerText > localStorage.getItem("selectedItem")) {
