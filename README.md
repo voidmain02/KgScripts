@@ -57,7 +57,7 @@
 [KG_antipalevo](docs/KG_antipalevo.md) | Выделяет жирным шрифтом приватные сообщения в процессе набора, предотвращая казусы при ошибочной отправке шёпота в общий чат | ![][i]
 [KG_AutoNextRace](docs/KG_AutoNextRace.md) | Добавляет возможность автоматического старта заезда и автосоздания следующего после набора |
 [KG_StopErrorsRace](docs/KG_StopErrorsRace.md) | Останавливает заезд и создает новый если количество ошибок больше, чем указанное на панели настроек. |
-[KG_OpacityBeforefocusTextRace](docs/KG_OpacityBeforefocusTextRace.md) | Набранный текст в текушей игре будет выглядет серым цветом тем самым помогает легко ориентироваться в тексте когда набираете. |
+[KG_OpacityBeforefocusTextRace](docs/KG_OpacityBeforefocusTextRace.md) | Набранный текст в текушей игре будет отображаться серым цветом тем самым помогает легко ориентироваться в тексте. |
 [KG_ShowStatOfThisMode](docs/KG_ShowStatOfThisMode.md) | Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов |
 [KG_DisableMenuKey](docs/KG_DisableMenuKey.md) | Отключает кнопку ContextMenu в поле ввода текста во время заезда | ![][i]
 [KG_DailyProgress](docs/KG_DailyProgress.md) | Визуальная полоса прогресса выполнения «Задачи дня» | ![][i]
