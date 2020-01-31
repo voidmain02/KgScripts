@@ -126,6 +126,18 @@
     "description": "Останавливает заезд и создает новый если количество ошибок больше, чем указанное на панели настроек"
   },
   {
+    "name": "KG_OpacityBeforefocusTextRace",
+    "version": "1.0.0",
+    "authors": [
+      "Akmat"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Набранный текст в текущей игре будет отображаться серым цветом (помогает легко ориентироваться в тексте)."
+  },
+  {
     "name": "KG_CancelRaceShortcut",
     "version": "1.1.1",
     "authors": [
