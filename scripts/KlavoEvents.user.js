@@ -4,8 +4,8 @@
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий
-// @include        http://klavogonki.ru/*
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @include        http*://klavogonki.ru/*
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // @grant          none
 // @run-at         document-start
 // @license        MIT
@@ -106,7 +106,7 @@ function main(ANGULAR_USERJS_ID, USERJS_INSTANCE_ID) {
                 var defer = $q.defer();
                 
                 function getTopics(page) {
-                    return $http.get('http://klavogonki.ru/forum/events/page' + page)
+                    return $http.get(location.protocol + '//klavogonki.ru/forum/events/page' + page)
                     .then(function(res) {
                         var results = res.data.match(new RegExp(REG_EXP_TOPIC.source, 'g'));
                         topics = topics.concat(results);

@@ -4,7 +4,7 @@
 // @version      0.1.1
 // @description  Окрашивает ники на странице лога чата, а также добавляет счётчик сообщений
 // @author       Fenex
-// @include      http://klavogonki.ru/chatlogs/*
+// @include      http*://klavogonki.ru/chatlogs/*
 // @grant        none
 // ==/UserScript==
 (function() {

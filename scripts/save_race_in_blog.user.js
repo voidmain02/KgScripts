@@ -3,7 +3,7 @@
 // @namespace     klavogonki
 // @version       1.1.4
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
-// @include       http://klavogonki.ru/g/*
+// @include       http*://klavogonki.ru/g/*
 // @author        Lexin13, agile
 // ==/UserScript==
 

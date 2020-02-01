@@ -5,7 +5,7 @@
 // @author      voidmain
 // @license     MIT
 // @version     1.2.0
-// @include     http://klavogonki.ru/u/*
+// @include     http*://klavogonki.ru/u/*
 // @grant       none
 // @run-at      document-end 
 // ==/UserScript==

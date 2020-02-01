@@ -4,9 +4,9 @@
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Добавляет дополнительные bb-кнопки для форматирования сообщений на форуме, описания и комментариев словарей
-// @include        http://klavogonki.ru/forum*
-// @include        http://klavogonki.ru/vocs/*
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @include        http*://klavogonki.ru/forum*
+// @include        http*://klavogonki.ru/vocs/*
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 function getCursorPos(input) {
 	var result = {start: 0, end: 0};
@@ -272,7 +272,7 @@ function generateButtonsCode(a) {
 			onclick: "sendBBTag('html', '"+a+"_textarea');"
 		},
 		{
-			src: "http://klavogonki.ru/img/smilies/smile.gif",
+			src: "https://klavogonki.ru/img/smilies/smile.gif",
 			title: "Смайлы",
 			onclick: "smileTab_func('"+a+"');"
 		},
@@ -316,7 +316,7 @@ function smileTab_func(a) {
 }
 
 function insertSmileInPost(a) {	
-	insertTag('[img]http://klavogonki.ru/img/smilies/'+a+'.gif[/img]', '', tab_smiles+'_textarea');
+	insertTag('[img]https://klavogonki.ru/img/smilies/'+a+'.gif[/img]', '', tab_smiles+'_textarea');
 }
 
 function Obj(a) {
@@ -360,7 +360,7 @@ if(!document.getElementById('KTS_BB_Tools')) {
 		innerButtonsCode('voc');
 		
 	var st = document.createElement('style');
-	st.innerHTML = 'div.bb_tools img{cursor:pointer;}#table_smiles{font-size:12px;margin:0 0 2em;position:fixed;z-index:7;}.popup-box table{border-collapse:collapse;border-bottom:0px;}div#table_smiles table tr td.c img{cursor:pointer;}.popup-box .move {-moz-background-clip:border;-moz-background-inline-policy:continuous;-moz-background-origin:padding;background:#ffffff none repeat scroll 0 0;cursor:move;height:10px;position:absolute;left:12px;top:12px;width:10px;z-index:2;}.popup-box .move ins {-moz-background-clip:border;-moz-background-inline-policy:continuous;-moz-background-origin:padding;background:transparent url(http://klavogonki.ru/img/chat/dragdrop.gif) no-repeat scroll 0 0;height:10px;position:absolute;width:10px;}';
+	st.innerHTML = 'div.bb_tools img{cursor:pointer;}#table_smiles{font-size:12px;margin:0 0 2em;position:fixed;z-index:7;}.popup-box table{border-collapse:collapse;border-bottom:0px;}div#table_smiles table tr td.c img{cursor:pointer;}.popup-box .move {-moz-background-clip:border;-moz-background-inline-policy:continuous;-moz-background-origin:padding;background:#ffffff none repeat scroll 0 0;cursor:move;height:10px;position:absolute;left:12px;top:12px;width:10px;z-index:2;}.popup-box .move ins {-moz-background-clip:border;-moz-background-inline-policy:continuous;-moz-background-origin:padding;background:transparent url(https://klavogonki.ru/img/chat/dragdrop.gif) no-repeat scroll 0 0;height:10px;position:absolute;width:10px;}';
 	document.body.appendChild(st);
 
 	var s1 = document.createElement('script');

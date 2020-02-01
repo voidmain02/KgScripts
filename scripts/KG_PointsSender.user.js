@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           KG_PointsSender
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/u/*
+// @include        http*://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сообщения» позволяет сделать множественную отправку очков нескольким пользователям
 // @version        1.1.2
-// @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
+// @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){
