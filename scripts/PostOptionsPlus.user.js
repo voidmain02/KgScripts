@@ -4,7 +4,7 @@
 // @version        2.1.5
 // @author         olimo, Fenex
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/forum/*
+// @include        http*://klavogonki.ru/forum/*
 // ==/UserScript==
 function remember_sel() {
 	sel_text = $selection.getText().trim();

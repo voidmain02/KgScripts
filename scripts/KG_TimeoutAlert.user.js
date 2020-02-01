@@ -3,7 +3,7 @@
 // @author      Andre_Macareno, Fenex, un4given, agile
 // @version     3.0.6
 // @description Звуковое оповещение о старте игры
-// @include     http://klavogonki.ru/g/*
+// @include     http*://klavogonki.ru/g/*
 // ==/UserScript==
 
 function timeoutAlert() {

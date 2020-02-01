@@ -4,7 +4,7 @@
 // @version      1.0.0
 // @description  Набранный текст в текущей игре будет отображаться серым цветом (помогает легко ориентироваться в тексте).
 // @author       Akmat
-// @include      http://klavogonki.ru/g/*
+// @include      http*://klavogonki.ru/g/*
 // ==/UserScript==
 
 "use strict";

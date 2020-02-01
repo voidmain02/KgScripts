@@ -4,9 +4,9 @@
 // @version      0.1
 // @description  Визуальная полоса прогресса выполнения «Задачи дня»
 // @author       Spaider aka Denis Dmitriev
-// @match        http://klavogonki.ru/*
+// @match        http*://klavogonki.ru/*
 // @grant        none
-// @iconr        http://www.gravatar.com/avatar/f2cefb694c412538c4061eb822ae0528?s=48
+// @iconr        https://www.gravatar.com/avatar/f2cefb694c412538c4061eb822ae0528?s=48
 // ==/UserScript==
 
 function setupObserver() {

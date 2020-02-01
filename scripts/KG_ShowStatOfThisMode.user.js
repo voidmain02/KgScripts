@@ -4,17 +4,17 @@
 // @version      1.2.3
 // @description  Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов
 // @author       Phemmer
-// @include      http://klavogonki.ru/g/*
-// @include      http://klavogonki.ru/vocs/*
-// @include      http://klavogonki.ru/top/day/*
-// @include      http://klavogonki.ru/top/week/*
+// @include      http*://klavogonki.ru/g/*
+// @include      http*://klavogonki.ru/vocs/*
+// @include      http*://klavogonki.ru/top/day/*
+// @include      http*://klavogonki.ru/top/week/*
 // ==/UserScript==
 
 function main(){
 	var modeName;
 	var modeId;
 	var url = document.location.href;
-	if (url.substr(21, 4) == 'vocs')
+	if (url.indexOf('/vocs/') != -1)
 	{
 		modeName = document.querySelector("#profile-block.vocview-block .user-title .title");
 		if (modeName === null) return;
@@ -23,7 +23,7 @@ function main(){
 		change();
 	}
 
-	else if (url.substr(21, 3) == 'top')
+	else if ((url.indexOf('/top/day/') != -1) || (url.indexOf('/top/week/') != -1))
 	{
 		modeName = document.querySelector("#toplist ul.mode li.active span");
 		if (modeName === null) return;
@@ -32,7 +32,7 @@ function main(){
 		change();
 	}
 
-	else if (url.substr(24, 4) == 'gmid')
+	else if (url.indexOf('gmid=') != -1)
 	{
 		var gamedesc = document.querySelector("#gamedesc span");
 		var gametype = gamedesc.getAttribute("class").replace('gametype-', '');

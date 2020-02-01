@@ -4,7 +4,7 @@
 // @version      1.1.2
 // @description  Останавливает заезд и создает новый если количество ошибок больше, чем указанное в настройках.
 // @author       Akmat
-// @include      http://klavogonki.ru/g/*
+// @include      http*://klavogonki.ru/g/*
 // ==/UserScript==
 
 "use strict";

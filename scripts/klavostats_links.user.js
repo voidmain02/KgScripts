@@ -3,7 +3,7 @@
 // @namespace     klavogonki
 // @version       2.2.3
 // @description   Добавляет прямые ссылки на профиль игрока в КлавоСтатистике
-// @include       http://klavogonki.ru/u/*
+// @include       http*://klavogonki.ru/u/*
 // @author        Lexin13, Fenex, agile
 // ==/UserScript==
 
@@ -22,7 +22,7 @@ function main () {
       },
       {
         text: 'Созданные словари',
-        url: 'http://klavogonki.ru/vocs/search?section=all&type=all&order=' +
+        url: location.protocol+'//klavogonki.ru/vocs/search?section=all&type=all&order=' +
           '&changed=&searchtext=%D0%B0%D0%B2%D1%82%D0%BE%D1%80%3A' + login,
       },
     ];

@@ -3,9 +3,9 @@
 // @namespace     klavogonki
 // @version       1.3.4
 // @description   Кнопки на главной странице и на странице списка игр для создания заездов
-// @include       http://klavogonki.ru/
-// @include       http://klavogonki.ru/gamelist/
-// @include       http://klavogonki.ru/g/*
+// @include       http*://klavogonki.ru/
+// @include       http*://klavogonki.ru/gamelist/
+// @include       http*://klavogonki.ru/g/*
 // @author        Lexin13
 // ==/UserScript==
 
@@ -53,7 +53,7 @@ function main(){
     }
     
     function generateLink(aGame) {
-        return 'http://klavogonki.ru/create/?'
+        return location.protocol+'//klavogonki.ru/create/?'
             + 'gametype=' + aGame.params.gametype
             + (aGame.params.vocId != '' ? '&voc=' + aGame.params.vocId : '')
             + '&type=' + aGame.params.type
@@ -74,8 +74,8 @@ function main(){
         li.innerHTML = 
             '<div class="recent-game-handle"><img src="/img/blank.gif"></div>'
             + '<div class="recent-game-buttons">'
-            + '<div class="recent-game-pin"><img src="http://klavogonki.ru/img/pin.png" title="Зафиксировать" onclick="pinRecentGame(' + id + ')"></div>'
-            + '<div class="recent-game-delete"><img src="http://klavogonki.ru/img/cross_small.png" title="Удалить" onclick="deleteRecentGame(' + id + ');"></div>'
+            + '<div class="recent-game-pin"><img src="https://klavogonki.ru/img/pin.png" title="Зафиксировать" onclick="pinRecentGame(' + id + ')"></div>'
+            + '<div class="recent-game-delete"><img src="https://klavogonki.ru/img/cross_small.png" title="Удалить" onclick="deleteRecentGame(' + id + ');"></div>'
             + '</div>'
             + '<a href="' + generateLink(aGame) + '">' + generateName(aGame) + '</a>';
         
@@ -199,7 +199,7 @@ function main(){
         localStorage.setItem('recent_games', JSON.stringify(gameList));
     }
 
-    if (/http:\/\/klavogonki.ru\/g\/\?gmid=/.test(location.href)) {
+    if (/https?:\/\/klavogonki.ru\/g\/\?gmid=/.test(location.href)) {
         var gameLoading = document.getElementById('gameloading');
         if (!gameLoading) {
             throw new Error('#gameloading element not found.');
@@ -216,14 +216,14 @@ function main(){
         }
     }
 
-    if (/^http:\/\/klavogonki.ru\/$/.test(location.href)) {
+    if (/^https?:\/\/klavogonki.ru\/$/.test(location.href)) {
         var div = createHistoryContainer();
         var e = document.getElementById('head');
         e.appendChild(div);
         sortableRecentGames();
     }
 
-    if (/http:\/\/klavogonki.ru\/gamelist\//.test(location.href)) {
+    if (/https?:\/\/klavogonki.ru\/gamelist\//.test(location.href)) {
         var opt = document.createElement('span');
         opt.id = 'recent-games-options';
         
@@ -279,7 +279,7 @@ function main(){
         + '.recent-game-description {display:block; font-size:11px; color:#000;}'
         + '.recent-game-qual {color:#F00;}'
         + '.recent-game-levels {display:block; font-size:11px; color:#000;}'
-        + '.recent-game-handle {display:none; position:absolute; left:0px; top:0px; width:16px; height:16px; z-index:100; cursor:move; background:transparent url("http://klavogonki.ru/img/dragdrop2.gif") no-repeat 0 0!important;}'
+        + '.recent-game-handle {display:none; position:absolute; left:0px; top:0px; width:16px; height:16px; z-index:100; cursor:move; background:transparent url("https://klavogonki.ru/img/dragdrop2.gif") no-repeat 0 0!important;}'
         + '.pin-game .recent-game-handle {display:block}'
         + '.recent-game-buttons {display:none; position:absolute; right:0px;}'
         + '.recent-game-buttons img:hover {opacity:1; cursor:pointer;}'

@@ -5,7 +5,7 @@
 // @author      voidmain
 // @license     MIT
 // @version     1.0.0
-// @include     http://klavogonki.ru/g/*
+// @include     http*://klavogonki.ru/g/*
 // @grant       GM_addStyle
 // @run-at      document-start
 // ==/UserScript==

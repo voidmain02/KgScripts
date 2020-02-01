@@ -4,7 +4,7 @@
 // @namespace      klavogonki
 // @author         Silly_Sergio
 // @description    Добавляет панель прогноза сложности текста в заездах
-// @include        http://klavogonki.ru/g/*
+// @include        http*://klavogonki.ru/g/*
 // @grant          none
 // ==/UserScript==
 

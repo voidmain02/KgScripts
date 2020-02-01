@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name           chat2BBcode
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/gamelist*
-// @include        http://klavogonki.ru/g*
+// @include        http*://klavogonki.ru/gamelist*
+// @include        http*://klavogonki.ru/g*
 // @author         Fenex
 // @description    Кнопка, показывающая окно с логом текущего разговора в чате, возможность экспорта лога с форматированием BB-кодов
 // @version        2.1.5
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
 function create_BBcode(mode) {
@@ -52,7 +52,7 @@ function create_BBcode(mode) {
         if(!sm)
             break;
         if(mode)
-            txt = txt.replace(regexp, '[img]http://klavogonki.ru/img/smilies/'+sm[1]+'.gif[/img]');
+            txt = txt.replace(regexp, '[img]'+location.protocol+'//klavogonki.ru/img/smilies/'+sm[1]+'.gif[/img]');
         else
             txt = txt.replace(regexp, ':'+sm[1]+':');
     }
@@ -75,7 +75,7 @@ var array = [];
 var room = null;
 array.push('general');
 
-if(room = location.href.match(/^http:\/\/klavogonki\.ru\/g\/?\?gmid=([\d]{5})/))
+if(room = location.href.match(/^https?:\/\/klavogonki\.ru\/g\/?\?gmid=([\d]{5})/))
     array.push('game'+room[1]);
     
 for(var i=0; i<array.length; i++) {

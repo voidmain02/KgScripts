@@ -4,7 +4,7 @@
 // @version      1.4.3
 // @description  Добавляет возможность автоматического старта заезда и автосоздания следующего после набора
 // @author       Phemmer
-// @include      http://klavogonki.ru/g/*
+// @include      http*://klavogonki.ru/g/*
 // ==/UserScript==
 
 function main(){
@@ -37,7 +37,7 @@ function main(){
 
 	function GoToNext() {
 		if (localStorage.autoNext_STATUS == '1')
-			window.location='/g/' + document.location.href.substr(29, 5) + '.replay';
+			window.location='/g/' + window.location.href.match(/[0-9]+/)[0] + '.replay';
 	}
 	function chbChanged() {
 		if (chbAutoNext.checked) 	{
