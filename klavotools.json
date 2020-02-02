@@ -16,14 +16,14 @@
     "name": "BigTextArea",
     "broken": true,
     "disabled": true,
-    "version": "1.1.0+kts",
+    "version": "1.2.0+kts",
     "authors": [
       "Fenex"
     ],
     "tags": [
       "Форум"
     ],
-    "description": "Увеличивает область для ввода текста на форуме. Добавляет кнопки «Стереть» и «Отмена»"
+    "description": "Увеличивает область для ввода текста на форуме."
   },
   {
     "name": "ColoredChatlog",
