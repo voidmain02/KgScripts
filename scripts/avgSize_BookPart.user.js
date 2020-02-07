@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name           avgSize_BookPart
 // @namespace      klavogonki
-// @version        1.1.0+kts
+// @version        1.1.1+kts
 // @include        http://klavogonki.ru/vocs/*
 // @author         Lexin13
 // @description    Показывает для словарей-книг примерное количество символов на отрывок
@@ -48,7 +48,15 @@ if(!document.getElementById('KTS_avgSize_BookPart')) {
 	}
 	else
 	{
-	    var content = document.getElementsByClassName("user-content")[0].getElementsByTagName("dd")[6]; 
+	    var userContent = document.getElementsByClassName("user-content")[0];
+	    if (userContent === undefined)
+	        return;
+
+	    var titles = userContent.getElementsByTagName("dt");
+	    for (var i = 0; i < titles.length; i++)
+	        if (titles[i].innerHTML.indexOf("Содержание:") != -1)
+	            var content = userContent.getElementsByTagName("dd")[i];
+
 	    var textPos = content.innerHTML.indexOf("<div"); 
 	    var stat = content.innerHTML.substr(0, textPos).trim(); 
 
