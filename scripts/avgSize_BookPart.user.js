@@ -1,7 +1,7 @@
 // ==UserScript== 
 // @name           avgSize_BookPart
 // @namespace      klavogonki
-// @version        1.1.0+kts
+// @version        1.3.0
 // @include        http*://klavogonki.ru/vocs/*
 // @author         Lexin13
 // @description    Показывает для словарей-книг примерное количество символов на отрывок

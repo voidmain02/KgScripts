@@ -4,7 +4,7 @@
 // @include        http*://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделе «Сводка» изменяет вид блока «Био»
-// @version        1.0.6
+// @version        1.1.0
 // @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 

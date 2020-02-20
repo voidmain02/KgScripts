@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name		KG_antipalevo
 // @author		un4given (u.menya.vse@zzzae.biz)
-// @version		1.2.0
+// @version		1.3.0
 // @description	Выделяет жирным шрифтом приватные сообщения в процессе набора, предотвращая казусы при ошибочной отправке шёпота в общий чат
 // @include		http*://klavogonki.ru/g*
 // ==/UserScript==

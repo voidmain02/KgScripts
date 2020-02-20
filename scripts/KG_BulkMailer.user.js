@@ -4,7 +4,7 @@
 // @description Массовая рассылка сообщений
 // @author      voidmain
 // @license     MIT
-// @version     0.9.1
+// @version     0.10.0
 // @include     http*://klavogonki.ru/u/*
 // @grant       none
 // @run-at      document-end 
@@ -40,7 +40,7 @@ top: 10px; right: 4px; width: 14px; height: 14px; font-size: 12px; color: #aaa; 
 </div>\n\
 </div>\n\
 <div class="modal2-footer">\n\
-<div class="markdown-note">Разрешается использовать <a href="https://klavogonki.ru/wiki/Markdown" target="_blank">разметку Markdown</a></div>\n\
+<div class="markdown-note">Разрешается использовать <a href="/wiki/Markdown" target="_blank">разметку Markdown</a></div>\n\
 <button class="btn btn-link" ng:click="onCancel()">Отмена</button>\n\
 <button app:submit-animated class="btn btn-primary" type="submit" ng:disabled="dirty">Отправить</button>\n\
 </div>\n\

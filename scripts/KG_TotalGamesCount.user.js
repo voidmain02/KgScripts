@@ -4,7 +4,7 @@
 // @description Добавляет отображение общего количества заездов на страницу статистики
 // @author      voidmain
 // @license     MIT
-// @version     1.0.0
+// @version     1.1.0
 // @include     http*://klavogonki.ru/u/*
 // @grant       none
 // @run-at      document-end 

@@ -4,7 +4,7 @@
 // @description Меняет стилевое оформление страницы заезда: поле ввода по центру, настройки скрыты
 // @author      voidmain
 // @license     MIT
-// @version     1.0.0
+// @version     1.1.0
 // @include     http*://klavogonki.ru/g/*
 // @grant       GM_addStyle
 // @run-at      document-start

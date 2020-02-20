@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          save_race_in_blog
 // @namespace     klavogonki
-// @version       1.1.4
+// @version       1.2.0
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http*://klavogonki.ru/g/*
 // @author        Lexin13, agile

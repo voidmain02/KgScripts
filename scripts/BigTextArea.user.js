@@ -4,7 +4,7 @@
 // @include        http*://klavogonki.ru/forum*
 // @author         Fenex
 // @description    Увеличивает область для ввода текста на форуме.
-// @version        1.2.0+kts
+// @version        1.3.0
 // @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 //edit width and height of textBox

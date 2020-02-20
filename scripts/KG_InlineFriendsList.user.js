@@ -4,7 +4,7 @@
 // @include        http*://klavogonki.ru/u/*
 // @author         agile
 // @description    Изменяет вид списка друзей, делая последний более компактным
-// @version        1.0.2
+// @version        1.1.0
 // @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_OpacityBeforefocusTextRace
 // @namespace    klavogonki
-// @version      1.0.0
+// @version      1.1.0
 // @description  Набранный текст в текущей игре будет отображаться серым цветом (помогает легко ориентироваться в тексте).
 // @author       Akmat
 // @include      http*://klavogonki.ru/g/*

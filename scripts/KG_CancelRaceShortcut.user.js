@@ -4,7 +4,7 @@
 // @description Добавляет сочетание Ctrl + Shift + Z для отмены результатов заезда
 // @author      voidmain, unnamed777, novkostya
 // @license     MIT
-// @version     1.1.1
+// @version     1.2.0
 // @include     http*://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end

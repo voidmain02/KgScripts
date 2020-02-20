@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          RecentGames
 // @namespace     klavogonki
-// @version       1.3.4
+// @version       1.4.0
 // @description   Кнопки на главной странице и на странице списка игр для создания заездов
 // @include       http*://klavogonki.ru/
 // @include       http*://klavogonki.ru/gamelist/
@@ -74,8 +74,8 @@ function main(){
         li.innerHTML = 
             '<div class="recent-game-handle"><img src="/img/blank.gif"></div>'
             + '<div class="recent-game-buttons">'
-            + '<div class="recent-game-pin"><img src="https://klavogonki.ru/img/pin.png" title="Зафиксировать" onclick="pinRecentGame(' + id + ')"></div>'
-            + '<div class="recent-game-delete"><img src="https://klavogonki.ru/img/cross_small.png" title="Удалить" onclick="deleteRecentGame(' + id + ');"></div>'
+            + '<div class="recent-game-pin"><img src="/img/pin.png" title="Зафиксировать" onclick="pinRecentGame(' + id + ')"></div>'
+            + '<div class="recent-game-delete"><img src="/img/cross_small.png" title="Удалить" onclick="deleteRecentGame(' + id + ');"></div>'
             + '</div>'
             + '<a href="' + generateLink(aGame) + '">' + generateName(aGame) + '</a>';
         

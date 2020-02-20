@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           KlavoEvents
-// @version        3.0.6
+// @version        3.1.0
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Лента событий

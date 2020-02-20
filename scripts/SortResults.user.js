@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           SortResults
-// @version        0.19.4+kts
+// @version        1.0.0
 // @namespace      klavogonki
 // @author         novkostya
 // @description    Сортировка участников в заезде по местам, количеству и проценту ошибок, нику, рейтингу. Счётчик игроков в заезде

@@ -4,7 +4,7 @@
 // @include       http*://klavogonki.ru/g/*
 // @author        agile
 // @description   Добавляет ссылку на создание нового заезда по текущему режиму (исключает возможность попадания в заезды других игроков).
-// @version       1.0.2
+// @version       1.1.0
 // @icon          https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // @grant         none
 // ==/UserScript==

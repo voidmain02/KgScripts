@@ -3,7 +3,7 @@
 // @namespace      klavogonki
 // @include        http*://klavogonki.ru/vocs/*
 // @author         Fenex
-// @version        5.0.0+kts
+// @version        5.1.0
 // @description    Добавляет на страницу словаря три ссылки для быстрого старта игры. Параметры заездов для ссылок можно настроить
 // @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
@@ -79,7 +79,7 @@ if(!document.getElementById('KTS_QuickVocsStart')) {
 											timeout: 10,
 											qual: true
 										}) + '"><span>Квалификация, 10 сек</span></a>';
-				td.innerHTML += '<a href="'+protocol+'//klavogonki.ru/profile/'+userid+'/stats/?gametype=voc-'+vocid+'"><span>Моя статистика</span></a>';
+				td.innerHTML += '<a href="/profile/'+userid+'/stats/?gametype=voc-'+vocid+'"><span>Моя статистика</span></a>';
 			}
 			return td;
 		}

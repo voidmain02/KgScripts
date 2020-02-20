@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           StatisticsAvgResults
-// @version        1.4.0
+// @version        1.5.0
 // @namespace      klavogonki
 // @author         Fenex
 // @description    В статистике показывает среднее арифметическое по результатам скорости и процента ошибок за отображаемый день

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          klavostats_links
 // @namespace     klavogonki
-// @version       2.2.3
+// @version       2.3.0
 // @description   Добавляет прямые ссылки на профиль игрока в КлавоСтатистике
 // @include       http*://klavogonki.ru/u/*
 // @author        Lexin13, Fenex, agile

@@ -5,7 +5,7 @@
 // @include        http*://klavogonki.ru/g*
 // @author         Fenex
 // @description    Кнопка, показывающая окно с логом текущего разговора в чате, возможность экспорта лога с форматированием BB-кодов
-// @version        2.1.5
+// @version        2.2.0
 // @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 

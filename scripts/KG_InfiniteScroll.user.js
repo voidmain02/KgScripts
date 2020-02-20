@@ -4,7 +4,7 @@
 // @include        http*://klavogonki.ru/u/*
 // @author         agile
 // @description    В разделах «Бортжурнал», «Друзья» и «Сообщения» автоматически подгружает старые записи при скроллинге колесом мыши
-// @version        1.1.0
+// @version        1.2.0
 // @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 

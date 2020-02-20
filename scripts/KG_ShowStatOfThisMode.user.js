@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_ShowStatOfThisMode
 // @namespace    klavogonki
-// @version      1.2.3
+// @version      1.3.0
 // @description  Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов
 // @author       Phemmer
 // @include      http*://klavogonki.ru/g/*

@@ -1,7 +1,7 @@
 [
   {
     "name": "BB-Tools",
-    "version": "2.6.0+kts",
+    "version": "2.7.0",
     "authors": [
       "Fenex"
     ],
@@ -16,7 +16,7 @@
     "name": "BigTextArea",
     "broken": true,
     "disabled": true,
-    "version": "1.2.0+kts",
+    "version": "1.3.0",
     "authors": [
       "Fenex"
     ],
@@ -27,7 +27,7 @@
   },
   {
     "name": "ColoredChatlog",
-    "version": "0.1.1",
+    "version": "1.0.0",
     "authors": [
       "Fenex"
     ],
@@ -38,7 +38,7 @@
   },
   {
     "name": "DailyScores",
-    "version": "2.1.8",
+    "version": "2.2.0",
     "authors": [
       "Lexin13",
       "agile"
@@ -53,7 +53,7 @@
   },
   {
     "name": "DelGameButton",
-    "version": "2.1.3",
+    "version": "2.2.0",
     "authors": [
       "Fenex",
       "agile"
@@ -92,7 +92,7 @@
   },
   {
     "name": "KG_AntiBackspace",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "authors": [
       "Fenex",
       "agile"
@@ -104,7 +104,7 @@
   },
   {
     "name": "KG_AutoNextRace",
-    "version": "1.4.3",
+    "version": "1.5.0",
     "authors": [
       "Phemmer"
     ],
@@ -116,7 +116,7 @@
   },
   {
     "name": "KG_StopErrorsRace",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "authors": [
       "Akmat"
     ],
@@ -128,7 +128,7 @@
   },
   {
     "name": "KG_OpacityBeforefocusTextRace",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "Akmat"
     ],
@@ -140,7 +140,7 @@
   },
   {
     "name": "KG_CancelRaceShortcut",
-    "version": "1.1.1",
+    "version": "1.2.0",
     "authors": [
       "voidmain",
       "unnamed777",
@@ -154,7 +154,7 @@
   },
   {
     "name": "KG_CenterAlignment",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "voidmain"
     ],
@@ -166,7 +166,7 @@
   },
   {
     "name": "KG_ChatHotkey",
-    "version": "1.1.3",
+    "version": "1.2.0",
     "authors": [
       "agile"
     ],
@@ -179,7 +179,7 @@
   },
   {
     "name": "KG_ClearProfile",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "authors": [
       "voidmain"
     ],
@@ -195,7 +195,7 @@
   },
   {
     "name": "KG_ComplexityPanel",
-    "version": "1.4.7",
+    "version": "1.5.0",
     "authors": [
       "Silly_Sergio"
     ],
@@ -219,7 +219,7 @@
   },
   {
     "name": "KG_DisableMenuKey",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "authors": [
       "agile"
     ],
@@ -231,7 +231,7 @@
   },
   {
     "name": "KG_DisableTab",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "voidmain"
     ],
@@ -243,7 +243,7 @@
   },
   {
     "name": "KG_EnterToSpace",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "voidmain"
     ],
@@ -280,7 +280,7 @@
   },
   {
     "name": "KG_FastDialog",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "authors": [
       "agile"
     ],
@@ -293,7 +293,7 @@
   },
   {
     "name": "KG_FullStatisticsLink",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "voidmain"
     ],
@@ -320,7 +320,7 @@
   },
   {
     "name": "KG_GlasslessBio",
-    "version": "1.0.6",
+    "version": "1.1.0",
     "authors": [
       "agile"
     ],
@@ -336,7 +336,7 @@
   },
   {
     "name": "KG_HideAllGamesInGamelist",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "authors": [
       "Fenex"
     ],
@@ -348,7 +348,7 @@
   },
   {
     "name": "KG_HideText",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "authors": [
       "novkostya"
     ],
@@ -360,7 +360,7 @@
   },
   {
     "name": "KG_ImageLoader",
-    "version": "1.2.1",
+    "version": "1.3.0",
     "authors": [
       "agile"
     ],
@@ -374,7 +374,7 @@
   },
   {
     "name": "KG_InfiniteScroll",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "authors": [
       "agile"
     ],
@@ -389,7 +389,7 @@
   },
   {
     "name": "KG_InlineFriendsList",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "authors": [
       "agile"
     ],
@@ -402,7 +402,7 @@
   },
   {
     "name": "KG_PointsSender",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "authors": [
       "agile"
     ],
@@ -415,7 +415,7 @@
   },
   {
     "name": "KG_PrivateChatLink",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "authors": [
       "agile"
     ],
@@ -439,7 +439,7 @@
   },
   {
     "name": "KG_SeparateGameLink",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "authors": [
       "agile"
     ],
@@ -450,7 +450,7 @@
   },
   {
     "name": "KG_ShowStatOfThisMode",
-    "version": "1.2.3",
+    "version": "1.3.0",
     "authors": [
       "Phemmer"
     ],
@@ -464,7 +464,7 @@
   },
   {
     "name": "KG_TimeoutAlert",
-    "version": "3.0.6",
+    "version": "3.1.0",
     "authors": [
       "Andre_Macareno",
       "Fenex",
@@ -479,7 +479,7 @@
   },
   {
     "name": "KG_TotalGamesCount",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "authors": [
       "voidmain"
     ],
@@ -505,7 +505,7 @@
   },
   {
     "name": "KlavoEvents",
-    "version": "3.0.6",
+    "version": "3.1.0",
     "authors": [
       "Fenex",
       "DIgorevich"
@@ -519,7 +519,7 @@
   },
   {
     "name": "MceViewer",
-    "version": "1.5.0",
+    "version": "1.6.0",
     "authors": [
       "Fenex"
     ],
@@ -545,7 +545,7 @@
   },
   {
     "name": "PostOptionsPlus",
-    "version": "2.1.4",
+    "version": "2.2.0",
     "authors": [
       "olimo",
       "Fenex"
@@ -558,7 +558,7 @@
   },
   {
     "name": "QuickVocsStart",
-    "version": "5.0.0+kts",
+    "version": "5.1.0",
     "authors": [
       "Fenex"
     ],
@@ -570,7 +570,7 @@
   },
   {
     "name": "RecentGames",
-    "version": "1.3.4",
+    "version": "1.4.0",
     "authors": [
       "Lexin13"
     ],
@@ -597,7 +597,7 @@
   },
   {
     "name": "SortResults",
-    "version": "0.19.4+kts",
+    "version": "1.0.0",
     "authors": [
       "novkostya"
     ],
@@ -609,7 +609,7 @@
   },
   {
     "name": "StatisticsAvgResults",
-    "version": "1.4.0",
+    "version": "1.5.0",
     "authors": [
       "Fenex"
     ],
@@ -621,7 +621,7 @@
   },
   {
     "name": "avgSize_BookPart",
-    "version": "1.1.1+kts",
+    "version": "1.3.0",
     "authors": [
       "Lexin13"
     ],
@@ -633,7 +633,7 @@
   },
   {
     "name": "chat2BBCode",
-    "version": "2.1.5",
+    "version": "2.2.0",
     "authors": [
       "Fenex"
     ],
@@ -658,7 +658,7 @@
   },
   {
     "name": "hide_cars",
-    "version": "0.7.2",
+    "version": "1.0.0",
     "authors": [
       "rgall",
       "Fenex"
@@ -671,7 +671,7 @@
   },
   {
     "name": "klavostats_links",
-    "version": "2.2.3",
+    "version": "2.3.0",
     "authors": [
       "Lexin13",
       "Fenex",
@@ -685,7 +685,7 @@
   },
   {
     "name": "save_race_in_blog",
-    "version": "1.1.4",
+    "version": "1.2.0",
     "authors": [
       "Lexin13",
       "agile"
@@ -700,7 +700,7 @@
   },
   {
     "name": "tagHide",
-    "version": "2.1.0+kts",
+    "version": "2.2.0",
     "authors": [
       "Fenex"
     ],
@@ -712,7 +712,7 @@
   },
   {
     "name": "KG_antipalevo",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "authors": [
       "un4given"
     ],
@@ -724,7 +724,7 @@
   },
   {
     "name": "KG_DailyProgress",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "authors": [
       "Spaider"
     ],

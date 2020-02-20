@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           BB-Tools
-// @version        2.6.0+kts
+// @version        2.7.0
 // @namespace      klavogonki
 // @author         Fenex
 // @description    Добавляет дополнительные bb-кнопки для форматирования сообщений на форуме, описания и комментариев словарей

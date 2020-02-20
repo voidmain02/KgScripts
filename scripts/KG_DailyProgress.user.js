@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_DailyProgress
 // @namespace    klavogonki
-// @version      0.1
+// @version      1.0.0
 // @description  Визуальная полоса прогресса выполнения «Задачи дня»
 // @author       Spaider aka Denis Dmitriev
 // @match        http*://klavogonki.ru/*

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ColoredChatlog
 // @namespace    klavogonki
-// @version      0.1.1
+// @version      1.0.0
 // @description  Окрашивает ники на странице лога чата, а также добавляет счётчик сообщений
 // @author       Fenex
 // @include      http*://klavogonki.ru/chatlogs/*

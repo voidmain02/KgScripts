@@ -5,7 +5,7 @@
 // @include        http*://klavogonki.ru/g/*
 // @author         agile
 // @description    Приватный диалог в чате по Shift + клик ЛКМ по нику пользователя в окне сообщений
-// @version        1.0.1
+// @version        1.1.0
 // @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 

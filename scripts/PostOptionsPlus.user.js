@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name           PostOptionsPlus
 // @description    Добавляет ссылки для быстрого обращения по имени и цитаты выделенного текста на форуме
-// @version        2.1.5
+// @version        2.2.0
 // @author         olimo, Fenex
 // @namespace      klavogonki
 // @include        http*://klavogonki.ru/forum/*
