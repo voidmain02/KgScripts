@@ -490,6 +490,7 @@
   },
   {
     "name": "KG_YandexTranslator",
+    "broken": true,
     "version": "0.2.1",
     "authors": [
       "agile"
