@@ -14,11 +14,12 @@
   },
   {
     "name": "BigTextArea",
+    "broken": true,
+    "disabled": true,
     "version": "1.1.0+kts",
     "authors": [
       "Fenex"
     ],
-    "integrated": true,
     "tags": [
       "Форум"
     ],
