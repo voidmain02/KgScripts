@@ -4,7 +4,7 @@
 // @include        http*://klavogonki.ru/g/*
 // @author         Fenex, agile
 // @description    Отключает действие «Назад» браузера по нажатию на Backspace в заездах
-// @version        1.2.0
+// @version        1.1.0
 // @icon           https://www.gravatar.com/avatar/d9c74d6be48e0163e9e45b54da0b561c?r=PG&s=48&default=identicon
 // ==/UserScript==
 
