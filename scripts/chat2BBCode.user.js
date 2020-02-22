@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name           chat2BBcode
+// @name           chat2BBCode
 // @namespace      klavogonki
 // @include        http*://klavogonki.ru/gamelist*
 // @include        http*://klavogonki.ru/g*
@@ -24,7 +24,7 @@ function create_BBcode(mode) {
         } else {
             m = e[i].innerHTML.match(/([\d]{2}\:[\d]{2}\:[\d]{2}).+style="color\:([#\d\w]+).+data-user="[\d]+">(.+)<\/span>&gt;<\/span>(.+)/);
         }
-        
+
         if(mode)
             txt += ' [color=gray] ';
         txt += '[' + m[1] + ']';
@@ -58,7 +58,7 @@ function create_BBcode(mode) {
     }
     $('chat2BBcode_txt').innerText = txt;
     popalert('<textarea style="width:400px;height:300px;" id="chat2BBcode_textarea"></textarea><div style="text-align:center;"><input onclick="create_BBcode(1);" type="button" value="с BB-кодом" /><input onclick="create_BBcode(0);" type="button" value="без BB-кода" /></div><script>$("chat2BBcode_textarea").value = $("chat2BBcode_txt").innerText;$("chat2BBcode_textarea").select()</script>');
-    
+
     return;
 }
 
@@ -77,14 +77,14 @@ array.push('general');
 
 if(room = location.href.match(/^https?:\/\/klavogonki\.ru\/g\/?\?gmid=([\d]{5})/))
     array.push('game'+room[1]);
-    
+
 for(var i=0; i<array.length; i++) {
     if(!document.getElementById('chat-'+array[i])) {
         continue;
     }
-    
+
     var node = document.querySelectorAll('#chat-' + array[i] + ' table table td')[0];
-        
+
     var td = document.createElement('td');
     td.innerHTML = '<input type="button" value="BBCode" onclick="create_BBcode(1)" />';
     node.parentNode.insertBefore(td, node.nextSibling);
