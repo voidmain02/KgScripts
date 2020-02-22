@@ -14,11 +14,12 @@
   },
   {
     "name": "BigTextArea",
+    "broken": true,
+    "disabled": true,
     "version": "1.1.0+kts",
     "authors": [
       "Fenex"
     ],
-    "integrated": true,
     "tags": [
       "Форум"
     ],
@@ -490,6 +491,7 @@
   },
   {
     "name": "KG_YandexTranslator",
+    "broken": true,
     "version": "0.2.1",
     "authors": [
       "agile"
