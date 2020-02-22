@@ -1,0 +1,30 @@
+{
+  "name": "kgscripts",
+  "version": "1.0.0",
+  "description": "klavogonki userjs storage",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "npm run build-ts && ava",
+    "build-ts": "tsc --build tsconfig.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/voidmain02/KgScripts.git"
+  },
+  "keywords": [
+    "userscript",
+    "klavogonki"
+  ],
+  "author": "Klavogonki Community",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/voidmain02/KgScripts/issues"
+  },
+  "homepage": "https://github.com/voidmain02/KgScripts#readme",
+  "devDependencies": {
+    "ava": "^3.3.0",
+    "typescript": "^3.8.2"
+  }
+}
