@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           KG_ImageLoader
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/u/*
+// @include        http*://klavogonki.ru/u/*
 // @author         agile
 // @description    Отображает изображения вместо текстовых ссылок в записях разделов «Сводка», «Бортжурнал» и «Друзья».
-// @version        1.2.1
-// @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
+// @version        1.3.0
+// @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){

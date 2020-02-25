@@ -3,8 +3,8 @@
 // @author         novkostya
 // @description    Скрывает набираемый текст, хоткей Ctrl+. Предназначен для тренировки памяти
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/g/*
-// @version        1.2.0
+// @include        http*://klavogonki.ru/g/*
+// @version        1.3.0
 // ==/UserScript==
 
 function init()

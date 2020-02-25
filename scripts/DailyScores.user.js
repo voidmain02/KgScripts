@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name          DailyScores
 // @namespace     klavogonki
-// @version       2.1.8
+// @version       2.2.0
 // @description   Показывает на верхней панели количество очков, полученных в заездах за день и за заезд, количество полученного в соревнованиях рейтинга
-// @include       http://klavogonki.ru/*
+// @include       http*://klavogonki.ru/*
 // @author        Lexin13, agile
 // @grant         none
 // @run-at        document-idle

@@ -27,5 +27,11 @@ obj/
 [Rr]elease*/
 _ReSharper*/
 [Tt]est[Rr]esult*
-.idea/
+
 node_modules/
+tests/helpers/**/*.js
+*.map
+
+# text editor's prefs
+.idea/
+.vscode/

@@ -1,13 +1,13 @@
 // ==UserScript==
 // @name           tagHide
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/*
+// @include        http*://klavogonki.ru/*
 // @author         Fenex
 // @description    Позволяет делать на форуме хайды с подзаголовками. Подзаголовок должен быть помещён внутри хайда между знаками равно
-// @version        2.1.0+kts
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @version        2.2.0
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
-if(!document.getElementById('TKS_taghide')) {
+if(!document.getElementById('KTS_taghide')) {
 	var divs = document.getElementsByClassName("hidemain");
 	if(divs[0]) {
 		for (i=0;i<divs.length;i++) {
@@ -24,7 +24,7 @@ if(!document.getElementById('TKS_taghide')) {
 	}
 	
 	var tmp_elem = document.createElement('div');
-	tmp_elem.id = 'TKS_taghide';
+	tmp_elem.id = 'KTS_taghide';
 	tmp_elem.style.display = 'none';
 	document.body.appendChild(tmp_elem);	
 }

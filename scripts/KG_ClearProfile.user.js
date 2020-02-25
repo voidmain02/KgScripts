@@ -4,8 +4,8 @@
 // @description Изменяет стилевое оформление профиля
 // @author      voidmain
 // @license     MIT
-// @version     1.2.0
-// @include     http://klavogonki.ru/u/*
+// @version     1.3.0
+// @include     http*://klavogonki.ru/u/*
 // @grant       none
 // @run-at      document-end 
 // ==/UserScript==

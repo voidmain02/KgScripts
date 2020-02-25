@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           KG_HideAllGamesInGamelist
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/gamelist/*
+// @include        http*://klavogonki.ru/gamelist/*
 // @author         Fenex
 // @description    Добавляет возможность скрытия всех игр в общем списке
-// @version        1.1.0
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @version        1.2.0
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 
 if (!document.getElementById('KTS_HAGIGL')) {

@@ -3,8 +3,8 @@
 // @namespace   klavogonki
 // @description Отключает кнопку ContextMenu в поле ввода текста во время заезда
 // @author      agile
-// @version     1.0.1
-// @include     http://klavogonki.ru/g/*
+// @version     1.1.0
+// @include     http*://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end
 // ==/UserScript==

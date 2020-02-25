@@ -1,12 +1,12 @@
 // ==UserScript==
 // @name           KG_ChatHotkey
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/g/*
-// @include        http://klavogonki.ru/u/*
+// @include        http*://klavogonki.ru/g/*
+// @include        http*://klavogonki.ru/u/*
 // @author         agile
 // @description    Добавляет возможность сворачивания чата в заезде по определенной пользователем комбинации клавиш.
-// @version        1.1.3
-// @icon           http://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
+// @version        1.2.0
+// @icon           https://www.gravatar.com/avatar/8e1ba53166d4e473f747b56152fa9f1d?s=48
 // ==/UserScript==
 
 function main(){

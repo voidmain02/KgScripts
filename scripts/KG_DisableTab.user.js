@@ -4,8 +4,8 @@
 // @description Отключает кнопку Tab в поле ввода текста во время заезда
 // @author      voidmain
 // @license     MIT
-// @version     1.0.0
-// @include     http://klavogonki.ru/g/*
+// @version     1.1.0
+// @include     http*://klavogonki.ru/g/*
 // @grant       none
 // @run-at      document-end 
 // ==/UserScript==

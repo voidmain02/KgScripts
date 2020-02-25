@@ -2,10 +2,10 @@
 // @name           MceViewer
 // @description    Расширение для markdown, позволяет делать в бортжурнале цветные надписи 
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/u/*
+// @include        http*://klavogonki.ru/u/*
 // @author         Fenex
-// @version        1.5.0
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @version        1.6.0
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // ==/UserScript==
 (function() {
 	setInterval(function() {

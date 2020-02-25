@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           KG_AntiBackspace
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/g/*
+// @include        http*://klavogonki.ru/g/*
 // @author         Fenex, agile
 // @description    Отключает действие «Назад» браузера по нажатию на Backspace в заездах
-// @version        1.0.1
-// @icon           http://www.gravatar.com/avatar/d9c74d6be48e0163e9e45b54da0b561c?r=PG&s=48&default=identicon
+// @version        1.1.0
+// @icon           https://www.gravatar.com/avatar/d9c74d6be48e0163e9e45b54da0b561c?r=PG&s=48&default=identicon
 // ==/UserScript==
 
 window.addEventListener('keydown', function(e) {

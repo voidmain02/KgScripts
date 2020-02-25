@@ -1,11 +1,11 @@
 // ==UserScript==
 // @name           StatisticsAvgResults
-// @version        1.4.0
+// @version        1.5.0
 // @namespace      klavogonki
 // @author         Fenex
 // @description    В статистике показывает среднее арифметическое по результатам скорости и процента ошибок за отображаемый день
-// @include        http://klavogonki.ru/u/*
-// @icon           http://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
+// @include        http*://klavogonki.ru/u/*
+// @icon           https://www.gravatar.com/avatar.php?gravatar_id=d9c74d6be48e0163e9e45b54da0b561c&r=PG&s=48&default=identicon
 // @grant          none
 // @run-at         document-end
 // @license        MIT

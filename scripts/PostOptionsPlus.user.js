@@ -1,10 +1,10 @@
 // ==UserScript==
 // @name           PostOptionsPlus
 // @description    Добавляет ссылки для быстрого обращения по имени и цитаты выделенного текста на форуме
-// @version        2.1.5
+// @version        2.2.0
 // @author         olimo, Fenex
 // @namespace      klavogonki
-// @include        http://klavogonki.ru/forum/*
+// @include        http*://klavogonki.ru/forum/*
 // ==/UserScript==
 function remember_sel() {
 	sel_text = $selection.getText().trim();

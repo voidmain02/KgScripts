@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name           hide_cars
-// @version        0.7.2
+// @version        1.0.0
 // @namespace      klavogonki
 // @description    Скрытие машинок во время набора текста
-// @include        http://klavogonki.ru/g/*
+// @include        http*://klavogonki.ru/g/*
 // @author         rgall, Fenex
 // ==/UserScript==
 

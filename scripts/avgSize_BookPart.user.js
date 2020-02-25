@@ -1,8 +1,8 @@
 // ==UserScript== 
 // @name           avgSize_BookPart
 // @namespace      klavogonki
-// @version        1.1.1+kts
-// @include        http://klavogonki.ru/vocs/*
+// @version        1.3.0
+// @include        http*://klavogonki.ru/vocs/*
 // @author         Lexin13
 // @description    Показывает для словарей-книг примерное количество символов на отрывок
 // ==/UserScript== 
@@ -17,7 +17,7 @@ function calc(html)
 
 function pluralForm(d, b, a, c) {
     d = Math.abs(d) % 100;
-    n1 = d % 10;
+    var n1 = d % 10;
     if (d > 10 && d < 20) {
         return c
     }
@@ -32,7 +32,7 @@ function pluralForm(d, b, a, c) {
 	
 if(!document.getElementById('KTS_avgSize_BookPart')) {
 
-	if (/http:\/\/klavogonki.ru\/vocs\/(top\/|search\/?\?)/.test(location.href))
+	if (/https?:\/\/klavogonki.ru\/vocs\/(top\/|search\/?\?)/.test(location.href))
 	{
 	    var content = document.getElementsByClassName("symbols");
 	    for (var i = 0; i < content.length; i++)
