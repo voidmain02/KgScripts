@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name           hide_cars
-// @version        1.0.0
+// @version        1.0.1
 // @namespace      klavogonki
 // @description    Скрытие машинок во время набора текста
 // @include        http*://klavogonki.ru/g/*
@@ -16,19 +16,34 @@ function HideCars() {
 		return;
 
 	var status = document.getElementById("status").className;
-	if (status == "steady")
+	if (status == "steady") {
 		hidecars_toggle("hide");
-	
+		return;
+	}
+
 	var you = document.getElementById("players").getElementsByClassName("you")[0];
+
+	// finished successfully
 	if (you.getElementsByClassName("rating")[0].style.display == "") {
-		clearInterval(document.getElementById("hide_cars_flag").value);
 		hidecars_toggle("show");
+		return;
+	}
+
+	// failed in "NoError" mode
+	var gametype = document.querySelector("#gamedesc > span");
+	if (gametype && gametype.className == "gametype-noerror") {
+		var race_failed_img = you.getElementsByClassName("car")[0].querySelector("tbody > tr > td:nth-child(2) > div > img");
+		if (race_failed_img && race_failed_img.className == "noerror-fail") {
+			hidecars_toggle("show");
+			return;
+		}
 	}
 }
 
 function hidecars_toggle(act){
 	var dsp = "none";
 	if (act == "show") {
+		clearInterval(document.getElementById("hide_cars_flag").value);
 		dsp = "";
 	}
 	/*var players = document.getElementsByClassName("player");
