@@ -1,8 +1,8 @@
-## IgnoreList [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/voidmain02/KgScripts/raw/master/scripts/KG_PowerIgnore.user.js)
+## IgnoreList [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](https://github.com/ambineura/KgScripts/raw/master/scripts/KG_PowerIgnore.user.js)
 **Авторы:** [un4given](http://klavogonki.ru/u/#/111001/), немножко [Fenex](http://klavogonki.ru/u/#/82885/)
 
 #### Благодатный Мощный Игнор™ на форуме и в чате, привязанный к штатному игнор-листу на странице настроек профиля.
-Имеет скрытые плюшки. Может (и будет!) глючить. 
+Имеет скрытые плюшки. Может (и будет!) глючить. Возможны конфликты с [IgnoreList](docs/IgnoreList.md) для чата.
 
 Алгоритм действий простой: 
 1. добавляете человека в игнор штатными средствами (в его профиле, через менюшку → игнорировать)
