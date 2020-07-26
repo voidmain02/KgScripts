@@ -1,11 +1,12 @@
 // ==UserScript==
 // @name           KG_PowerIgnore
 // @namespace      klavogonki
+// @include        http*://klavogonki.ru/
 // @include        http*://klavogonki.ru/g*
 // @include        http*://klavogonki.ru/forum*
 // @include        http*://klavogonki.ru/u*
 // @author         un4given
-// @version        1.0.1
+// @version        1.1.0
 // @description    Игнор-лист (в чате, на форуме и в заездах), привязанный к штатному игнору на странице настроек профиля
 // ==/UserScript==
 
@@ -34,7 +35,7 @@ function main() {
 	function getDefaultParams()
 	{
 		return {
-			  ver: '1.01', //version of params (preferences)
+			  ver: '1.10', //version of params (preferences)
 			forum: {ignoreMode: 'remove', blur: '5px'}, 
 			 chat: {ignoreMode: 'blur', blur: '2px', updateInterval: 10},
 			 race: {ignoreMode: 'remove', blur: '5px', updateInterval: 500, enableSound: false}	//added in version 1.01 
@@ -84,7 +85,7 @@ function main() {
 
 	function getCurrentPageID()
 	{
-		// returns one of the ['forum', 'forum_feed', 'gamelist', 'in_race', 'prefs', 'profile']
+		// returns one of the ['forum', 'forum_feed', 'gamelist', 'in_race', 'prefs', 'profile', 'index']
 
 		if (/\/\/klavogonki.ru\/gamelist\/?/.test(window.location.href)) 
 			return 'gamelist';
@@ -105,6 +106,9 @@ function main() {
 
 		if (/\/\/klavogonki.ru\/u\//.test(window.location.href) && location.hash)
 			return 'profile';
+
+		if (/\/\/klavogonki.ru\/?$/.test(window.location.href)) 
+			return 'index';
 	}
 
 	function addUI()
@@ -369,6 +373,17 @@ function main() {
 					}
 				}
 			}
+		} else if (currentPage == 'index') {
+			//so, we are on the index page and need to make some changes to 'last discussions' (forum) block
+			var users = document.getElementById('discussing_forum').getElementsByClassName('user-link');
+			for (var i=0; i<users.length; i++)
+			{
+				var user_id = users[i].href.split('/')[5].toString();
+				if (~ignored_ids.indexOf(user_id))
+				{
+						users[i].style.filter = 'blur('+params.forum.blur+')';
+				}
+			}
 		}
 
 	}
@@ -534,6 +549,24 @@ function main() {
 	// perform additional processing, if needed
 	if (localStorage["KG_PowerIgnore_process_additional"] == true)
 	{
+		//process last discussions (!!!except forum block!!!) on index page
+		if (currentPage == 'index')
+		{
+			['discussing_today', 'discussing_week', 'discussing_recent'].map(function(block_name){
+				var users = document.getElementById(block_name).getElementsByClassName('user-link');
+
+				for (var i=0; i<users.length; i++)
+				{
+					var user_id = users[i].href.split('/')[5].toString();
+					if (~ignored_ids.indexOf(user_id))
+					{
+							users[i].parentElement.parentElement.style.display = 'none';
+					}
+				}
+			});
+		}
+
+		//process profile of ignored person
 		if (currentPage == 'profile')
 		{
 			var user_id = location.hash.split('/')[1];
