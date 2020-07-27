@@ -6,7 +6,7 @@
 // @include        http*://klavogonki.ru/forum*
 // @include        http*://klavogonki.ru/u*
 // @author         un4given
-// @version        1.1.2
+// @version        1.1.3
 // @description    Игнор-лист (в чате, на форуме и в заездах), привязанный к штатному игнору на странице настроек профиля
 // ==/UserScript==
 
@@ -454,6 +454,10 @@ function main() {
 						{
 							case 'blur':
 								messages[i].style.filter = 'blur('+params.chat.blur+')';
+
+								//remove indication of personally addressed message
+								if (messages[i].children[0].style.backgroundColor)
+									messages[i].children[0].style.backgroundColor = "";
 								break;
 								
 							case 'remove':
@@ -462,7 +466,7 @@ function main() {
 						}
 					}
 					
-					messages[i].setAttribute('checked', 'BlackList');
+					messages[i].setAttribute('checked', 'PowerIgnore');
 				}
 			}, params.chat.updateInterval, params, ignored_ids, ignored_logins);
 
@@ -497,9 +501,9 @@ function main() {
 					try {
 						for (var i=0; i<cars.length; i++)
 						{
-							if (cars[i].hasClassName('ignore_checked')) continue;
+							if (cars[i].hasAttribute('checked')) continue;
 
-							cars[i].addClassName('ignore_checked');
+							cars[i].setAttribute('checked', 'PowerIgnore');
 						
 							var user_id = cars[i].nextElementSibling.children[1].href.split('/')[4];
 							if (~ignored_ids.indexOf(user_id))
@@ -538,9 +542,9 @@ function main() {
 						var isRemoved = false;						
 						for (var i=0; i<cars.length; i++)
 						{
-							if (cars[i].hasClassName('ignore_checked')) continue;
+							if (cars[i].hasAttribute('checked')) continue;
 
-							cars[i].addClassName('ignore_checked');
+							cars[i].setAttribute('checked', 'PowerIgnore');
 						
 							var user_id = userLinks[i].href.split('/')[4];
 							if (~ignored_ids.indexOf(user_id))
@@ -651,8 +655,6 @@ function main() {
 
 // --- END OF FUNCTION MAIN --- //
 }
-
-
 
 function exec(fn) {
     var script = document.createElement('script');
