@@ -68,7 +68,11 @@ localStorage["KG_PowerIgnore_params"] = JSON.stringify(params);
 
 ---
 
-![](img/kg_powerignore/forum-feed 'лента сообщений')
+![](img/kg_powerignore/forum-feed.jpg 'лента сообщений')
+
+---
+
+![](img/kg_powerignore/index-last-on-forum.jpg 'последнее сообщение игнорируемого')
 
 ---
 
