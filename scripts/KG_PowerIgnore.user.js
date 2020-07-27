@@ -6,7 +6,7 @@
 // @include        http*://klavogonki.ru/forum*
 // @include        http*://klavogonki.ru/u*
 // @author         un4given
-// @version        1.1.1
+// @version        1.1.2
 // @description    Игнор-лист (в чате, на форуме и в заездах), привязанный к штатному игнору на странице настроек профиля
 // ==/UserScript==
 
@@ -35,7 +35,7 @@ function main() {
 	function getDefaultParams()
 	{
 		return {
-			  ver: '1.11', //version of params (preferences)
+			  ver: '1.12', //version of params (preferences)
 			forum: {ignoreMode: 'remove', blur: '5px'}, 
 			 chat: {ignoreMode: 'blur', blur: '2px', updateInterval: 10},
 			 race: {ignoreMode: 'remove', blur: '5px', updateInterval: 500, enableSound: false}	//added in version 1.01 
@@ -239,6 +239,14 @@ function main() {
 				}
 			});
 		})).observe(document, {childList: true, subtree: true});
+	}
+
+	function addStyle(css)
+	{
+		var style=document.createElement('style');
+		style.textContent = css;
+		var target = document.getElementsByTagName('head')[0] || document.body || document.documentElement;
+		target.appendChild(style);
 	}
 
 // --- ENTRY POINT --- //
@@ -457,6 +465,21 @@ function main() {
 					messages[i].setAttribute('checked', 'BlackList');
 				}
 			}, params.chat.updateInterval, params, ignored_ids, ignored_logins);
+
+			//also create additional css rules for removing\blurring ignored persons in chat userlist
+			var css = ignored_ids.map(function(id){return ('.userlist-content ins.user'+id)}).join(', ');
+			switch (params.chat.ignoreMode)
+			{
+				case 'blur':
+					css += '{filter: blur('+params.chat.blur+')}';
+					break;
+
+				case 'remove':
+					css += '{display: none;}';
+					break;
+			}
+
+			addStyle(css);
 		}
 	}
 
