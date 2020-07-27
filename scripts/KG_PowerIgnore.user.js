@@ -93,7 +93,7 @@ function main() {
 
 		// !!! do not switch order with next forum check !!!
 		if (/\/\/klavogonki.ru\/forum\/feed\/?/.test(window.location.href))
-			return 'feed';
+			return 'forum_feed';
 
 		if (/\/\/klavogonki.ru\/forum\/?/.test(window.location.href)) 
 			return 'forum';
@@ -379,13 +379,13 @@ function main() {
 						switch(params.forum.ignoreMode)
 						{
 							case 'blur':
-								posts[i].style.filter = 'blur('+params.forum.blur+')';	
+								posts[i].style.filter = 'blur('+params.forum.blur+')';
 								break;
 		
 							case 'remove':
 								//well... who can do better? :D
+								posts[i].children[1].children[0].children[0].style.filter = 'blur('+params.forum.blur+')';
 								posts[i].children[0].children[0].style.display = 'none';
-								posts[i].children[1].children[0].children[0].style.textDecoration = 'line-through';
 								posts[i].children[1].children[0].children[1].style.display = 'none';
 								break;
 						}
