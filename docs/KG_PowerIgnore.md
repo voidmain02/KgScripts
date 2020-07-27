@@ -44,36 +44,44 @@ localStorage["KG_PowerIgnore_params"] = JSON.stringify(params);
 
 #### Как это выглядит на скринах:
 
-![](https://i.imgur.com/NmHxl2b.png 'пример настроек')
+![](img/kg_powerignore/settings.jpg 'пример настроек')
 
 ---
 
-![](https://i.imgur.com/3ReXsp5.png 'чатик')
+![](img/kg_powerignore/chat-blur.jpg 'чатик')
 
 ---
 
-![](https://i.imgur.com/NlrfVnd.png 'профиль игнорируемого')
+![](img/kg_powerignore/profile.jpg 'профиль игнорируемого')
 
 ---
 
-![](https://i.imgur.com/GHJvwdp.png 'список форумов')
+![](img/kg_powerignore/forum-main.jpg 'список форумов')
 
 ---
 
-![](https://i.imgur.com/VE0mseS.png 'список топиков')
+![](img/kg_powerignore/forum-topics.jpg 'список топиков')
 
 ---
 
-![](https://i.imgur.com/13WbslI.png 'список сообщений')
+![](img/kg_powerignore/forum-posts.jpg 'список сообщений')
 
 ---
 
-![](https://i.imgur.com/Rsk7NCh.png 'лента сообщений')
+![](img/kg_powerignore/forum-feed 'лента сообщений')
 
 ---
 
-![](https://i.imgur.com/3gKtHIL.png 'геймлист') 
+![](img/kg_powerignore/in-gamelist.jpg 'геймлист') 
 
 ---
 
-![](https://i.imgur.com/HeCCJkR.png 'в заезде')
+![](img/kg_powerignore/in-race-blur.jpg 'в заезде')
+
+---
+
+![](img/kg_powerignore/in-race-abuser.jpg 'заезд со стороны абузера')
+
+---
+
+![](img/kg_powerignore/in-race-ignorer.jpg 'заезд со стороны игнорщика')
