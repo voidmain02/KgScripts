@@ -6,7 +6,7 @@
 // @include        http*://klavogonki.ru/forum*
 // @include        http*://klavogonki.ru/u*
 // @author         un4given
-// @version        1.1.0
+// @version        1.1.1
 // @description    Игнор-лист (в чате, на форуме и в заездах), привязанный к штатному игнору на странице настроек профиля
 // ==/UserScript==
 
@@ -35,7 +35,7 @@ function main() {
 	function getDefaultParams()
 	{
 		return {
-			  ver: '1.10', //version of params (preferences)
+			  ver: '1.11', //version of params (preferences)
 			forum: {ignoreMode: 'remove', blur: '5px'}, 
 			 chat: {ignoreMode: 'blur', blur: '2px', updateInterval: 10},
 			 race: {ignoreMode: 'remove', blur: '5px', updateInterval: 500, enableSound: false}	//added in version 1.01 
@@ -83,9 +83,9 @@ function main() {
 		return params;
 	}
 
+	// returns one of the ['forum', 'forum_feed', 'gamelist', 'in_race', 'prefs', 'profile', 'index']
 	function getCurrentPageID()
 	{
-		// returns one of the ['forum', 'forum_feed', 'gamelist', 'in_race', 'prefs', 'profile', 'index']
 
 		if (/\/\/klavogonki.ru\/gamelist\/?/.test(window.location.href)) 
 			return 'gamelist';
@@ -111,6 +111,7 @@ function main() {
 			return 'index';
 	}
 
+	//add controls on the profile settings page
 	function addUI()
 	{
 		//all this crap with MutationObserver is needed for adding controls not only after 
@@ -313,6 +314,17 @@ function main() {
 						}
 					}
 				}
+
+				//also check if authors of last post are also in ignore list
+				var lastWriters = document.querySelectorAll(".last-post a.user-link");
+				for (var i=0; i<lastWriters.length; i++)
+				{
+					var user_id = lastWriters[i].href.split('/')[5].toString();
+					if (~ignored_ids.indexOf(user_id))
+					{
+						lastWriters[i].style.filter = 'blur('+params.forum.blur+')';
+					}
+				}
 			}
 
 			//if we are inside of the particular topic
@@ -331,11 +343,12 @@ function main() {
 						switch(params.forum.ignoreMode)
 						{
 							case 'blur':
-								posts[i].style.filter = 'blur('+params.forum.blur+')';	
+								posts[i].style.filter = 'blur('+params.forum.blur+')';
 								break;
 		
 							case 'remove':
-								headers[i].style.textDecoration = 'line-through';
+//								headers[i].style.textDecoration = 'line-through';
+								headers[i].style.filter = 'blur('+params.forum.blur+')';
 								headers[i].style.borderBottom = '1px solid #dddddd';
 								posts[i].style.display = 'none';
 								break;
@@ -413,7 +426,6 @@ function main() {
 						var id = username[0].getElementsByTagName('span')[0].getAttribute('data-user');
 						needToIgnore = ~ignored_ids.indexOf(id);
 					} else {
-
 						//no time to find out wtf is going on here, so I just leave it as it is... :(
 						var sm = messages[i].getElementsByClassName('system-message');
 						if(sm.length) {
