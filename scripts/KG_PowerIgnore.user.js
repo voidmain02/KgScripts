@@ -23,12 +23,10 @@ function main() {
 
 // --- internal functions --- //
 	function updateCache() {
-		ignored_ids		= [];
-		ignored_logins	= [];
-		
-		for(var i=0; i<IgnoreList.length; i++) {
-			ignored_ids.push(IgnoreList[i].id);
-			ignored_logins.push(IgnoreList[i].login);
+		if (IgnoreList.length)
+		{
+			ignored_ids		= IgnoreList.map(user => user.id);
+			ignored_logins	= IgnoreList.map(user => user.login);
 		}
 	}
 
