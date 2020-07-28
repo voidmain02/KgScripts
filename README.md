@@ -17,7 +17,7 @@
 [KG_SaveGameResult](docs/KG_SaveGameResult.md) | Добавляет ссылку на сохранение результатов заезда в JSON формате |
 [save_race_in_blog](docs/save_race_in_blog.md) | Добавляет кнопку для сохранения результата любого заезда в бортжурнале | ![][i]
 [hide_cars](docs/hide_cars.md) | Скрытие машинок во время набора текста | ![][i]
-[IgnoreList](docs/IgnoreList.md) | Чёрный список в чате | ![][i]
+[IgnoreList](docs/IgnoreList.md) | Чёрный список в чате | ![][i]![][c]
 [KG_HideText](docs/KG_HideText.md) | Скрывает набираемый текст, хоткей Ctrl+. Предназначен для тренировки памяти |
 [KG_GameLog](docs/KG_GameLog.md) | Позволяет вести журнал всех заездов |
 [KG_FullStatisticsLink](docs/KG_FullStatisticsLink.md) | Добавляет ссылку на скачивание полной статистики |
@@ -61,6 +61,7 @@
 [KG_ShowStatOfThisMode](docs/KG_ShowStatOfThisMode.md) | Показывает в верхней панели статистику по текущему режиму: в заездах, на страницах словарей, на страницах топов |
 [KG_DisableMenuKey](docs/KG_DisableMenuKey.md) | Отключает кнопку ContextMenu в поле ввода текста во время заезда | ![][i]
 [KG_DailyProgress](docs/KG_DailyProgress.md) | Визуальная полоса прогресса выполнения «Задачи дня» | ![][i]
+[KG_PowerIgnore](docs/KG_PowerIgnore.md) | Игнор-лист в чате и на форуме, привязанный к штатному игнору на странице настроек профиля | ![][c]
 
 Условные обозначения:
 
