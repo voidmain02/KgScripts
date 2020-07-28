@@ -1,17 +1,15 @@
 // ==UserScript==
 // @name           KG_PowerIgnore
 // @namespace      klavogonki
+// @run-at         document-start
 // @include        http*://klavogonki.ru/
 // @include        http*://klavogonki.ru/g*
 // @include        http*://klavogonki.ru/forum*
 // @include        http*://klavogonki.ru/u*
 // @author         un4given
-// @version        1.1.3
+// @version        1.1.4
 // @description    Игнор-лист (в чате, на форуме и в заездах), привязанный к штатному игнору на странице настроек профиля
 // ==/UserScript==
-
-//do nothing, if we are not in main window (honestly I dunno if this shit is still needed in 2020)
-if (window.self != window.top) return;
 
 function main() {
 
@@ -663,5 +661,8 @@ function exec(fn) {
 }
 
 window.addEventListener('load', function() {
-    exec(main);
+	//do nothing, if we are not in main window (honestly I dunno if this shit is still needed in 2020)
+	if (window.self == window.top) {
+		exec(main);
+	}
 }, false);
