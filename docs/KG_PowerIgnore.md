@@ -1,4 +1,4 @@
-## IgnoreList [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](../raw/master/scripts/KG_PowerIgnore.user.js)
+## IgnoreList [![Установить](http://s43.radikal.ru/i101/1406/15/25aa0cc99cf2.png)](../../../raw/master/scripts/KG_PowerIgnore.user.js)
 **Авторы:** [un4given](http://klavogonki.ru/u/#/111001/), немножко [Fenex](http://klavogonki.ru/u/#/82885/)
 
 #### Благодатный Мощный Игнор™ (на форуме, в чате и в заездах), привязанный к штатному игнор-листу на странице настроек профиля.
