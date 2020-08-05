@@ -128,18 +128,13 @@ function createNewGameAndRedirect() {
 }
 
 function getFailText() {
-	const someText = document.getElementById('afterfocus').innerText;
-	let cntEng = 0;
-	let cntRus = 0;
+	let someText = document.getElementById('typetext').textContent, 
+		cntEng, cntRus;
 
-	someText.split('').forEach(item => {
-		if (item.charCodeAt() >= 65 && item.charCodeAt() <= 122) {
-			cntEng++;
-		} else {
-			cntRus++;
-		}
-	});
-
+	someText = someText.replace(/\s/g, '');
+	cntEng     = someText.replace(/\W/g, '').length;
+	cntRus     = someText.replace(/\w/g, '').length;
+	
 	return (cntEng > cntRus) ? 'Fail' : 'Провал';
 }
 
