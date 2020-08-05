@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         KG_StopErrorsRace
 // @namespace    klavogonki
-// @version      1.2.0
+// @version      1.3.0
 // @description  Останавливает заезд и создает новый если количество ошибок больше, чем указанное в настройках.
 // @author       Akmat
 // @include      http*://klavogonki.ru/g/*
@@ -127,9 +127,20 @@ function createNewGameAndRedirect() {
 	window.location = `/g/${url}.replay`;
 }
 
+function getFailText() {
+	let someText = document.getElementById('typetext').textContent, 
+		cntEng, cntRus;
+
+	someText = someText.replace(/\s/g, '');
+	cntEng     = someText.replace(/\W/g, '').length;
+	cntRus     = someText.replace(/\w/g, '').length;
+	
+	return (cntEng > cntRus) ? 'Fail' : 'Провал';
+}
+
 function creatFailWord() {
     const p = document.createElement("p");
-    p.innerText = 'Провал';
+    p.innerText = getFailText();
     p.setAttribute( 'class', 'stop-error-fail');
     
     if (document.getElementsByClassName('stop-error-fail').length === 0) {
