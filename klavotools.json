@@ -206,6 +206,19 @@
     "description": "Добавляет панель прогноза сложности текста в заездах"
   },
   {
+    "name": "KG_ComplexityPanel_MultiLanguage",
+    "version": "3.0.0",
+    "authors": [
+      "Silly_Sergio",
+      "490344",
+      "vnest"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Добавляет панель прогноза сложности текста в заездах (мультиязычный вариант)"
+  },
+  {
     "name": "KG_DialogLink",
     "version": "1.0.5",
     "authors": [
@@ -701,6 +714,22 @@
     "description": "Добавляет кнопку для сохранения результата любого заезда в бортжурнале (устаревший)"
   },
   {
+    "name": "save_race_in_blog_custom",
+    "version": "2.0.0",
+    "authors": [
+      "Lexin13",
+      "agile",
+      "490344",
+      "vnest"
+    ],
+    "tags": [
+      "Заезд",
+      "Профиль",
+      "Бортжурнал"
+    ],
+    "description": "Добавляет кнопку для сохранения результата любого заезда в бортжурнале (с процентом от рекорда и обложкой)"
+  },
+  {
     "name": "tagHide",
     "version": "2.2.0",
     "authors": [
@@ -749,6 +778,39 @@
       "Чат"
     ],
     "description": "Игнор-лист (в чате, на форуме и в заездах), привязанный к штатному игнору на странице настроек профиля"
+  },
+  {
+    "name": "WordHighlighting",
+    "version": "0.12",
+    "authors": [
+      "490344"
+    ],
+    "disabled": true,
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Подсветка. Gold Edition. https://klavogonki.ru/forum/software/38/"
+  },
+  {
+    "name": "KG_AutoScrollLongTexts",
+    "version": "1.0.3",
+    "authors": [
+      "NIN"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Автоматическая прокрутка длинных текстов, чтобы помещались на экране"
+  },
+  {
+    "name": "KG_NextCompetition 2077",
+    "version": "0.14",
+    "authors": [
+      "490344"
+    ],
+    "tags": [
+      "Заезд"
+    ],
+    "description": "Добавляет в блок ввода текста таймер со ссылкой на следующий икс"
   }
-  
 ]
