@@ -199,6 +199,7 @@
     "authors": [
       "Silly_Sergio"
     ],
+    "disabled": true,
     "tags": [
       "Заезд"
     ],
@@ -685,18 +686,19 @@
   },
   {
     "name": "save_race_in_blog",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "authors": [
       "Lexin13",
       "agile"
     ],
     "integrated": true,
+    "disabled": true,
     "tags": [
       "Заезд",
       "Профиль",
       "Бортжурнал"
     ],
-    "description": "Добавляет кнопку для сохранения результата любого заезда в бортжурнале"
+    "description": "Добавляет кнопку для сохранения результата любого заезда в бортжурнале (устаревший)"
   },
   {
     "name": "tagHide",
