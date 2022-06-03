@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name          save_race_in_blog
 // @namespace     klavogonki
-// @version       1.2.0
+// @version       1.2.2
 // @description   добавляет кнопку для сохранения результата любого заезда в бортжурнале
 // @include       http*://klavogonki.ru/g/*
 // @author        Lexin13, agile
@@ -14,6 +14,12 @@ function saveRaceInBlog () {
   }
 
   var userId = parseInt(link.href.match(/\/u\/#\/(\d+)/)[1]);
+
+	function getCookie(name) {
+		const value = `; ${document.cookie}`;
+		const parts = value.split(`; ${name}=`);
+		if (parts.length === 2) return parts.pop().split(';').shift();
+	}
 
   function checkJSON (response) {
     try {
@@ -53,8 +59,8 @@ function saveRaceInBlog () {
       text += '**' + gameTypes[result.gameType] + '**: ';
     }
 
-    text += result.stats.speed + '&nbsp;зн/мин, ' +
-      result.stats.errors.replace(')', '&#41;') + '; ' +
+    text += result.stats.speed + ' зн/мин, ' +
+      result.stats.errors.replace('(', '[').replace(')', ']') + '; ' +
       result.stats.time + '\n\n';
 
     var typedMarked = result.typedHtml
@@ -67,6 +73,7 @@ function saveRaceInBlog () {
     if (confirm('Добавить запись в бортжурнал?')) {
       var xhr = new XMLHttpRequest();
       xhr.open('POST', '/api/profile/add-journal-post');
+      xhr.setRequestHeader('X-XSRF-TOKEN', getCookie('XSRF-TOKEN'));
       xhr.onload = function () {
         if (this.status !== 200) {
           throw new Error('Something went wrong.');
