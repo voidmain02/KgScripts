@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/voidmain02/KgScripts#readme",
   "devDependencies": {
-    "ava": "^3.3.0",
+    "ava": "^5.2.0",
     "typescript": "^3.8.2"
   }
 }
